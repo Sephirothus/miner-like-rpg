@@ -24,18 +24,25 @@ public class Map {
         mContext = context;
     }
 
-    public Map generateMap() {
+    public Map create() {
+        mView.setNumColumns(TOTAL_CELLS);
+        return this;
+    }
+
+    public Map setUnits() {
         CellAdapter adapter = new CellAdapter(mContext);
         Random r = new Random();
+        int curPos;
         while (mCountUnits-- > 0) {
-            int curPos = r.nextInt(TOTAL_CELLS);
+            curPos = r.nextInt(TOTAL_CELLS);
             if (adapter.isEmptyCell(curPos)) {
-                adapter.add(Unit.getRandomUnit());
+                adapter.add(curPos, Unit.getRandomUnit());
             } else {
                 mCountUnits++;
             }
         }
+        adapter.fillEmptyCells(TOTAL_CELLS);
         mView.setAdapter(adapter);
-        return null;
+        return this;
     }
 }

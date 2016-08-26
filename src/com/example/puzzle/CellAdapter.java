@@ -6,14 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by konst on 22.08.16.
  */
 public class CellAdapter extends BaseAdapter {
 
-    ArrayList<Unit> mUnits = new ArrayList<Unit>();
+    HashMap mUnits = new HashMap<Integer, Unit>();
     Context mContext;
 
     CellAdapter(Context context) {
@@ -35,12 +35,12 @@ public class CellAdapter extends BaseAdapter {
         return position;
     }
 
-    public void add(Unit unit) {
-        mUnits.add(unit);
+    public void add(int pos, Unit unit) {
+        mUnits.put(pos, unit);
     }
 
     public boolean isEmptyCell(int position) {
-        if (mUnits.size() == 0) return false;
+        if (getCount() == 0) return true;
         return mUnits.get(position) == null;
     }
 
@@ -51,7 +51,20 @@ public class CellAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.cell, parent, false);
         }
+        view.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 
-        return null;
+            }
+        });
+        return view;
+    }
+
+    public void fillEmptyCells(int totalCells) {
+        for (int i = 0; i < totalCells; i++) {
+            if (isEmptyCell(i)) {
+                //add(i, );
+            }
+        }
     }
 }

@@ -15,6 +15,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         Map map = new Map(getApplicationContext(), (GridView) findViewById(R.id.gridView));
-        map.generateMap();
+        map.create().setUnits();
     }
 }
