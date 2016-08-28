@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -26,8 +27,8 @@ public class CellAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return mUnits.get(position);
+    public Unit getItem(int position) {
+        return (Unit) mUnits.get(position);
     }
 
     @Override
@@ -37,11 +38,6 @@ public class CellAdapter extends BaseAdapter {
 
     public void add(int pos, Unit unit) {
         mUnits.put(pos, unit);
-    }
-
-    public boolean isEmptyCell(int position) {
-        if (getCount() == 0) return true;
-        return mUnits.get(position) == null;
     }
 
     @Override
@@ -54,17 +50,16 @@ public class CellAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                TextView text = (TextView) v.findViewById(R.id.title);
+                if (text.getText().toString() == "") {
+                    Unit unit = getItem(position);
+                    text.setText(unit.getTitle());
+                    text.setTextColor(unit.getColor());
+                    v.setBackgroundColor(Map.OPENED_CELL_COLOR);
+                    unit.action();
+                }
             }
         });
         return view;
-    }
-
-    public void fillEmptyCells(int totalCells) {
-        for (int i = 0; i < totalCells; i++) {
-            if (isEmptyCell(i)) {
-                //add(i, );
-            }
-        }
     }
 }
