@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.GridView;
 
-public class MainActivity extends Activity {
+import java.io.Serializable;
+
+public class MainActivity extends Activity implements Serializable {
 
     private Player mPlayer;
 
@@ -18,7 +20,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         mPlayer = new Player();
-
         Map map = new Map(this, (GridView) findViewById(R.id.gridView));
         map.create().setUnits();
     }

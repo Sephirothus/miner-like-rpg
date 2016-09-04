@@ -22,8 +22,10 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     Enemy (Context context, Integer lvl, Integer position) {
         Random r = new Random();
         mContext = context;
-        mHp = r.nextInt(lvl - HP_LVL_RANGE) + HP_LVL_RANGE;
-        mStr = r.nextInt(lvl - STR_LVL_RANGE) + STR_LVL_RANGE;
+        mHp = r.nextInt((lvl + HP_LVL_RANGE) - (lvl - HP_LVL_RANGE)) + (lvl - HP_LVL_RANGE);
+        if (mHp < 1) mHp = 1;
+        mStr = r.nextInt((lvl + STR_LVL_RANGE) - (lvl - STR_LVL_RANGE)) + (lvl - STR_LVL_RANGE);
+        if (mStr < 1) mStr = 1;
         mPosition = position;
     }
 

@@ -15,7 +15,7 @@ public class Player implements BattleUnitInterface, Serializable {
     }
 
     public int strike(int dmg) {
-        return dmg + mStr;
+        return dmg > 0 ? dmg + mStr : 0;
     }
 
     public boolean checkHp() {

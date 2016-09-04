@@ -49,8 +49,8 @@ public class Map {
         return this;
     }
 
-    public Map setDmgPoints(Enemy enemy, Battle battle) {
-        CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy, battle);
+    public Map setDmgPoints(Enemy enemy) {
+        CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
                 adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT));

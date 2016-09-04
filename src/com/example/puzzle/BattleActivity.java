@@ -3,6 +3,8 @@ package com.example.puzzle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 /**
@@ -20,9 +22,19 @@ public class BattleActivity extends Activity {
         Player player = (Player) intent.getSerializableExtra("player");
         Enemy enemy = (Enemy) intent.getSerializableExtra("enemy");
 
-        Battle battle = new Battle(this, player, enemy, (CellBattleAdapter) gridView.getAdapter());
-        battle.move();
         Map map = new Map(this, gridView);
-        map.create().setDmgPoints(enemy, battle);
+        map.create().setDmgPoints(enemy);
+        Battle battle = new Battle(this, player, enemy, gridView);
+        setListener(gridView, battle);
+        battle.move();
+    }
+
+    private void setListener(GridView gridView, Battle battle) {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                battle.playerMove(battle.openCell(view, position));
+            }
+        });
     }
 }
