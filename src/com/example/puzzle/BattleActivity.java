@@ -12,6 +12,8 @@ import android.widget.GridView;
  */
 public class BattleActivity extends Activity {
 
+    private Battle mBattle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,17 +26,11 @@ public class BattleActivity extends Activity {
 
         Map map = new Map(this, gridView);
         map.create().setDmgPoints(enemy);
-        Battle battle = new Battle(this, player, enemy, gridView);
-        setListener(gridView, battle);
-        battle.move();
+        mBattle = new Battle(this, player, enemy, gridView);
+        mBattle.move();
     }
 
-    private void setListener(GridView gridView, Battle battle) {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                battle.playerMove(battle.openCell(view, position));
-            }
-        });
+    public void battlePlayerMove(int dmg) {
+        mBattle.playerMove(dmg);
     }
 }

@@ -16,6 +16,7 @@ public class CellBattleAdapter extends BaseAdapter {
 
     private Context mContext;
     private Enemy mEnemy;
+    private boolean mIsPlayerMove = true;
 
     HashMap mDmgs = new HashMap<Integer, Integer>();
 
@@ -56,6 +57,24 @@ public class CellBattleAdapter extends BaseAdapter {
         if (mEnemy.getPosition() == position) {
             textView.setText(mEnemy.getTitle());
         }
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textView.getText().toString() == "") {
+                    Integer dmg = getItem(position);
+                    if (mIsPlayerMove) {
+                        ((BattleActivity) mContext).battlePlayerMove(dmg);
+                    }
+                    textView.setText(dmg.toString());
+                    textView.setTextColor(Color.RED);
+                    v.setBackgroundColor(Map.OPENED_CELL_COLOR);
+                }
+            }
+        });
         return view;
+    }
+
+    public void setIsPlayerMove(boolean isPlayerMove) {
+        mIsPlayerMove = isPlayerMove;
     }
 }

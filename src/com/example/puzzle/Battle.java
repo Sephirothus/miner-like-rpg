@@ -44,35 +44,26 @@ public class Battle {
     }
 
     public void enemyMove() {
-        Integer dmg = getClosedCell();
+        mAdapter.setIsPlayerMove(false);
+        Integer dmg = openCell();
         mPlayer.getHit(mEnemy.strike(dmg));
         if (!mPlayer.checkHp()) {
             Toast.makeText(mContext, "You lost!", Toast.LENGTH_LONG).show();
             endBattle();
         }
+        mAdapter.setIsPlayerMove(true);
     }
 
-    public int getClosedCell() {
+    public int openCell() {
         Random r = new Random();
         int pos = r.nextInt(Map.TOTAL_CELLS);
         /* TODO check if cell is closed
         while (cell.) {
 
         }*/
-        View view = mGridView.getChildAt(pos);
-        return openCell(view, pos);
-    }
-
-    public Integer openCell(View view, int position) {
-        TextView textView = (TextView) view.findViewById(R.id.title);
-        if (textView.getText().toString() == "") {
-            Integer dmg = mAdapter.getItem(position);
-            textView.setText(dmg.toString());
-            textView.setTextColor(Color.RED);
-            view.setBackgroundColor(Map.OPENED_CELL_COLOR);
-            return dmg;
-        }
-        return null;
+        View view = mAdapter.getView(pos, null, mGridView);
+        view.performClick();
+        return mAdapter.getItem(pos);
     }
 
     public void endBattle() {
