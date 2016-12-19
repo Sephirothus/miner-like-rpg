@@ -57,17 +57,18 @@ public class CellBattleAdapter extends BaseAdapter {
         if (mEnemy.getPosition() == position) {
             textView.setText(mEnemy.getTitle());
         }
+        View finalView = view;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (textView.getText().toString() == "") {
                     Integer dmg = getItem(position);
+                    textView.setText(dmg.toString());
+                    textView.setTextColor(Color.RED);
+                    finalView.setBackgroundColor(Map.OPENED_CELL_COLOR);
                     if (mIsPlayerMove) {
                         ((BattleActivity) mContext).battlePlayerMove(dmg);
                     }
-                    textView.setText(dmg.toString());
-                    textView.setTextColor(Color.RED);
-                    v.setBackgroundColor(Map.OPENED_CELL_COLOR);
                 }
             }
         });

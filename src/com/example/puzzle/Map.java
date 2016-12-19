@@ -40,7 +40,7 @@ public class Map {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
                 mCountUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, 1, pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((MainActivity) mContext).getLvl(), pos));
             } else {
                 adapter.add(pos, new Empty());
             }

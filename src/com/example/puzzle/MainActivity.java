@@ -9,7 +9,8 @@ import java.io.Serializable;
 
 public class MainActivity extends Activity implements Serializable {
 
-    private Player mPlayer;
+    private Player mPlayer = new Player();
+    private int mLvl = 1;
 
     /**
      * Called when the activity is first created.
@@ -19,7 +20,6 @@ public class MainActivity extends Activity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mPlayer = new Player();
         Map map = new Map(this, (GridView) findViewById(R.id.gridView));
         map.create().setUnits();
     }
@@ -29,5 +29,13 @@ public class MainActivity extends Activity implements Serializable {
         intent.putExtra("enemy", enemy);
         intent.putExtra("player", mPlayer);
         startActivity(intent);
+    }
+
+    public int getLvl() {
+        return mLvl;
+    }
+
+    public void nextLvl() {
+        mLvl++;
     }
 }
