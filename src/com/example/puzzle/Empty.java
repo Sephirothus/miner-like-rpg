@@ -14,6 +14,11 @@ public class Empty extends Unit {
     }
 
     @Override
+    public Integer getImg() {
+        return null;
+    }
+
+    @Override
     public int getColor() {
         return 0;
     }

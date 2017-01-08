@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import java.util.HashMap;
 
 /**
@@ -32,7 +31,7 @@ public class CellBattleAdapter extends BaseAdapter {
 
     @Override
     public Integer getItem(int position) {
-        return (int) mDmgs.get(position);
+        return (Integer) mDmgs.get(position);
     }
 
     @Override
@@ -51,31 +50,19 @@ public class CellBattleAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.cell, parent, false);
         }
-        TextView textView = (TextView) view.findViewById(R.id.title);
         view.setBackgroundColor(Color.RED);
 
         if (mEnemy.getPosition() == position) {
-            textView.setText(mEnemy.getTitle());
+            mEnemy.addUnitToCell(mContext, view);
         }
-        View finalView = view;
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (textView.getText().toString() == "") {
-                    Integer dmg = getItem(position);
-                    textView.setText(dmg.toString());
-                    textView.setTextColor(Color.RED);
-                    finalView.setBackgroundColor(Map.OPENED_CELL_COLOR);
-                    if (mIsPlayerMove) {
-                        ((BattleActivity) mContext).battlePlayerMove(dmg);
-                    }
-                }
-            }
-        });
         return view;
     }
 
     public void setIsPlayerMove(boolean isPlayerMove) {
         mIsPlayerMove = isPlayerMove;
+    }
+
+    public boolean isPlayerMove() {
+        return mIsPlayerMove;
     }
 }

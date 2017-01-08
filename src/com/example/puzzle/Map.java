@@ -2,7 +2,11 @@ package com.example.puzzle;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -11,10 +15,10 @@ import java.util.Random;
  */
 public class Map {
 
-    final static int TOTAL_CELLS = 32;
+    final static int TOTAL_CELLS = 30;
     final static int MAX_UNITS = 20;
     final static int MIN_UNITS = 5;
-    final static int CELLS_PER_LINE = 8;
+    final static int CELLS_PER_LINE = 6;
     final static int OPENED_CELL_COLOR = Color.BLACK;
     final static int MAX_DMG_POINT = 10;
 
@@ -46,6 +50,7 @@ public class Map {
             }
         }
         mView.setAdapter(adapter);
+        setMapClick();
         return this;
     }
 
@@ -59,6 +64,46 @@ public class Map {
             }
         }
         mView.setAdapter(adapter);
+        setBattleClick();
         return this;
+    }
+
+    private void setMapClick() {
+        CellAdapter adapter = (CellAdapter) mView.getAdapter();
+        mView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view.findViewById(R.id.cell_img) == null) {
+                    Unit unit = adapter.getItem(position);
+                    unit.addUnitToCell(mContext, view);
+                    unit.action();
+                }
+            }
+        });
+    }
+
+    private void setBattleClick() {
+        CellBattleAdapter adapter = (CellBattleAdapter) mView.getAdapter();
+        mView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = (TextView) view.findViewById(R.id.text);
+                if (textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null) {
+                    Integer dmg = adapter.getItem(position);
+                    textView.setText(dmg.toString());
+                    textView.setTextColor(Color.RED);
+
+                    ViewGroup.LayoutParams params = textView.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    textView.setLayoutParams(params);
+
+                    view.setBackgroundColor(Map.OPENED_CELL_COLOR);
+                    if (adapter.isPlayerMove()) {
+                        ((BattleActivity) mContext).battlePlayerMove(dmg);
+                    }
+                }
+            }
+        });
     }
 }

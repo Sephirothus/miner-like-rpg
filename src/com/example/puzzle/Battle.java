@@ -1,10 +1,8 @@
 package com.example.puzzle;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -47,7 +45,8 @@ public class Battle {
         mAdapter.setIsPlayerMove(false);
         Integer dmg = openCell();
         mPlayer.getHit(mEnemy.strike(dmg));
-        if (!mPlayer.checkHp()) {
+        Boolean check = mPlayer.checkHp();
+        if (!check) {
             Toast.makeText(mContext, "You lost!", Toast.LENGTH_LONG).show();
             endBattle();
         }

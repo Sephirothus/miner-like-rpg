@@ -39,6 +39,11 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }
 
     @Override
+    public Integer getImg() {
+        return R.drawable.enemy;
+    }
+
+    @Override
     public int getColor() {
         return Color.RED;
     }

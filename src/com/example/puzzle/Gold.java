@@ -27,6 +27,11 @@ public class Gold extends Unit {
     }
 
     @Override
+    public Integer getImg() {
+        return R.drawable.treasure;
+    }
+
+    @Override
     public int getColor() {
         return Color.YELLOW;
     }
