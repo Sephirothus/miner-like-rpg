@@ -2,13 +2,13 @@ package com.example.puzzle;
 
 import android.content.Context;
 import android.graphics.Color;
-import java.io.Serializable;
+
 import java.util.Random;
 
 /**
  * Created by konst on 22.08.16.
  */
-public class Enemy extends Unit implements BattleUnitInterface, Serializable {
+public class Enemy extends Unit implements BattleUnitInterface {
 
     final static int HP_LVL_RANGE = 3;
     final static int STR_LVL_RANGE = 3;
@@ -30,7 +30,7 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }
 
     public void action() {
-        ((MainActivity) mContext).startBattle(this);
+        ((MainActivity) mContext).mFieldFragment.createBattleField(this);
     }
 
     @Override

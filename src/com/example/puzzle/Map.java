@@ -20,21 +20,34 @@ public class Map {
     final static int MIN_UNITS = 5;
     final static int CELLS_PER_LINE = 6;
     final static int OPENED_CELL_COLOR = Color.BLACK;
-    final static int MAX_DMG_POINT = 10;
+    final static int MAX_DMG_POINT = 9;
 
-    private GridView mView;
+    private int mLvl = 1;
+    private Player mPlayer;
+    private GridView mGridView;
     private Context mContext;
     private Random mRandom;
     private int mCountUnits;
 
-    Map(Context context, GridView view) {
+    Map (Context context) {
         mRandom = new Random();
-        mView = view;
+        mGridView = ((MainActivity) context).mFieldFragment.mGridView;
         mContext = context;
+        mPlayer = ((MainActivity) mContext).mPlayer;
+    }
+
+    public int getLvl() {
+        return mLvl;
+    }
+
+    public void nextLvl() {
+        mLvl++;
+        mPlayer.refreshSteps();
+        create().setUnits();
     }
 
     public Map create() {
-        mView.setNumColumns(CELLS_PER_LINE);
+        mGridView.setNumColumns(CELLS_PER_LINE);
         return this;
     }
 
@@ -44,12 +57,12 @@ public class Map {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
                 mCountUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((MainActivity) mContext).getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, getLvl(), pos));
             } else {
                 adapter.add(pos, new Empty());
             }
         }
-        mView.setAdapter(adapter);
+        mGridView.setAdapter(adapter);
         setMapClick();
         return this;
     }
@@ -58,33 +71,39 @@ public class Map {
         CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
-                adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT));
+                adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT) + 1);
             } else {
                 adapter.add(pos, 0);
             }
         }
-        mView.setAdapter(adapter);
+        mGridView.setAdapter(adapter);
         setBattleClick();
         return this;
     }
 
     private void setMapClick() {
-        CellAdapter adapter = (CellAdapter) mView.getAdapter();
-        mView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view.findViewById(R.id.cell_img) == null) {
+                    mPlayer.removeStep();
+                    ((MainActivity) mContext).mStatsPanelFragment.changeStatText("steps", mPlayer.getSteps(), "Steps");
+
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();
+                    if (mPlayer.getSteps() == 0) {
+                        nextLvl();
+                    }
                 }
             }
         });
     }
 
     private void setBattleClick() {
-        CellBattleAdapter adapter = (CellBattleAdapter) mView.getAdapter();
-        mView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        CellBattleAdapter adapter = (CellBattleAdapter) mGridView.getAdapter();
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view.findViewById(R.id.text);
@@ -100,7 +119,7 @@ public class Map {
 
                     view.setBackgroundColor(Map.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
-                        ((BattleActivity) mContext).battlePlayerMove(dmg);
+                        ((MainActivity) mContext).mFieldFragment.mBattle.playerMove(dmg);
                     }
                 }
             }

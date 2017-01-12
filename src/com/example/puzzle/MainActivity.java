@@ -1,16 +1,17 @@
 package com.example.puzzle;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.widget.GridView;
 
-import java.io.Serializable;
+public class MainActivity extends Activity {
 
-public class MainActivity extends Activity implements Serializable {
+    public Player mPlayer;
 
-    private Player mPlayer = new Player();
-    private int mLvl = 1;
+    private FragmentManager mFragmentManager;
+    public StatsPanelFragment mStatsPanelFragment = new StatsPanelFragment();
+    public FieldFragment mFieldFragment = new FieldFragment();
+    public LogHistoryFragment mLogHistoryFragment = new LogHistoryFragment();
 
     /**
      * Called when the activity is first created.
@@ -20,22 +21,13 @@ public class MainActivity extends Activity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        Map map = new Map(this, (GridView) findViewById(R.id.gridView));
-        map.create().setUnits();
-    }
+        mPlayer = new Player(this);
 
-    public void startBattle(Enemy enemy) {
-        Intent intent = new Intent(this, BattleActivity.class);
-        intent.putExtra("enemy", enemy);
-        intent.putExtra("player", mPlayer);
-        startActivity(intent);
-    }
-
-    public int getLvl() {
-        return mLvl;
-    }
-
-    public void nextLvl() {
-        mLvl++;
+        mFragmentManager = getFragmentManager();
+        mFragmentManager.beginTransaction()
+            .add(R.id.stats_panel, mStatsPanelFragment)
+            .add(R.id.field, mFieldFragment)
+            .add(R.id.log_history, mLogHistoryFragment)
+            .commit();
     }
 }

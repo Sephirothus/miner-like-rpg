@@ -3,6 +3,7 @@ package com.example.puzzle;
 import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -18,12 +19,12 @@ public class Battle {
     private Enemy mEnemy;
     private Context mContext;
 
-    Battle (Context context, Player player, Enemy enemy, GridView gridView) {
+    Battle (Context context, Enemy enemy) {
         mContext = context;
         mEnemy = enemy;
-        mPlayer = player;
-        mAdapter = (CellBattleAdapter) gridView.getAdapter();
-        mGridView = gridView;
+        mPlayer = ((MainActivity) context).mPlayer;
+        mGridView = ((MainActivity) context).mFieldFragment.mGridView;
+        mAdapter = (CellBattleAdapter) mGridView.getAdapter();
     }
 
     public void move() {
@@ -66,6 +67,6 @@ public class Battle {
     }
 
     public void endBattle() {
-        ((BattleActivity) mContext).finish();
+        ((MainActivity) mContext).mFieldFragment.createPlayField();
     }
 }
