@@ -22,11 +22,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         mPlayer = new Player(this);
-
         mFragmentManager = getFragmentManager();
+
         mFragmentManager.beginTransaction()
-            .add(R.id.stats_panel, mStatsPanelFragment)
             .add(R.id.field, mFieldFragment)
+            .add(R.id.stats_panel, mStatsPanelFragment)
             .add(R.id.log_history, mLogHistoryFragment)
             .commit();
     }

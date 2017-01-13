@@ -12,15 +12,17 @@ public class Player implements BattleUnitInterface {
     private int mHp = 1;
     private int mStr = 1;
     private int mSteps = 3;
-    private int mCurSteps = 3;
+    private int mCurSteps;
 
     Player (Context context) {
         mContext = context;
+        mCurSteps = mSteps;
     }
 
     public void getHit(int dmg) {
         mHp -= dmg;
-        ((MainActivity) mContext).mStatsPanelFragment.changeStatText("hp", mHp, "HP");
+        ((MainActivity) mContext).mStatsPanelFragment.changeHpStat();
+        ((MainActivity) mContext).mLogHistoryFragment.addRecord("Enemy hit you on " + dmg + " points");
     }
 
     public int strike(int dmg) {

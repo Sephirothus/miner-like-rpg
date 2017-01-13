@@ -18,7 +18,7 @@ public class Gold extends Unit {
     }
 
     public void action() {
-
+        ((MainActivity) mContext).mLogHistoryFragment.addRecord("You found treasure");
     }
 
     @Override

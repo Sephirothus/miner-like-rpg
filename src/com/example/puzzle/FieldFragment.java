@@ -1,6 +1,5 @@
 package com.example.puzzle;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,13 +15,7 @@ public class FieldFragment extends Fragment {
     public Map mMap;
     public Battle mBattle;
     public GridView mGridView;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mGridView = (GridView) activity.findViewById(R.id.gridView);
-        mMap = new Map(activity);
-    }
+    public CellAdapter mSavedCellAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +31,8 @@ public class FieldFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mGridView = (GridView) getActivity().findViewById(R.id.gridView);
+        mMap = new Map(getActivity());
         createPlayField();
     }
 
@@ -46,8 +41,15 @@ public class FieldFragment extends Fragment {
     }
 
     public void createBattleField(Enemy enemy) {
+        mSavedCellAdapter = (CellAdapter) mGridView.getAdapter();
         mMap.create().setDmgPoints(enemy);
         mBattle = new Battle(getActivity(), enemy);
         mBattle.move();
+    }
+
+    public void closeBattleField() {
+        mGridView.setAdapter(mSavedCellAdapter);
+        mMap.setGridView().setMapClick();
+        mGridView.invalidateViews();
     }
 }

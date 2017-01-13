@@ -31,9 +31,14 @@ public class Map {
 
     Map (Context context) {
         mRandom = new Random();
-        mGridView = ((MainActivity) context).mFieldFragment.mGridView;
         mContext = context;
         mPlayer = ((MainActivity) mContext).mPlayer;
+        setGridView();
+    }
+
+    public Map setGridView() {
+        mGridView = ((MainActivity) mContext).mFieldFragment.mGridView;
+        return this;
     }
 
     public int getLvl() {
@@ -43,6 +48,7 @@ public class Map {
     public void nextLvl() {
         mLvl++;
         mPlayer.refreshSteps();
+        ((MainActivity) mContext).mStatsPanelFragment.changeLvlStat().changeStepsStat();
         create().setUnits();
     }
 
@@ -81,8 +87,8 @@ public class Map {
         return this;
     }
 
-    private void setMapClick() {
-        CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
+    public void setMapClick() {
+        final CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,8 +107,8 @@ public class Map {
         });
     }
 
-    private void setBattleClick() {
-        CellBattleAdapter adapter = (CellBattleAdapter) mGridView.getAdapter();
+    public void setBattleClick() {
+        final CellBattleAdapter adapter = (CellBattleAdapter) mGridView.getAdapter();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

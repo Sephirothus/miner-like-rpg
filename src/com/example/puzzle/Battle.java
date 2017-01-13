@@ -67,6 +67,6 @@ public class Battle {
     }
 
     public void endBattle() {
-        ((MainActivity) mContext).mFieldFragment.createPlayField();
+        ((MainActivity) mContext).mFieldFragment.closeBattleField();
     }
 }

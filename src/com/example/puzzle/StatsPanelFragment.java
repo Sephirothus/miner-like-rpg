@@ -19,8 +19,6 @@ public class StatsPanelFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mPlayer = ((MainActivity) activity).mPlayer;
-        mMap = ((MainActivity) activity).mFieldFragment.mMap;
     }
 
     @Override
@@ -37,16 +35,38 @@ public class StatsPanelFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mPlayer = ((MainActivity) getActivity()).mPlayer;
+        mMap = ((MainActivity) getActivity()).mFieldFragment.mMap;
 
-        changeStatText("lvl", mMap.getLvl(), "Lvl");
-        changeStatText("hp", mPlayer.getHp(), "HP");
-        changeStatText("str", mPlayer.getStr(), "Str");
-        changeStatText("steps", mPlayer.getSteps(), "Steps");
+        changeLvlStat();
+        changeHpStat();
+        changeStrStat();
+        changeStepsStat();
     }
 
     public void changeStatText(String statName, int value, String statText) {
         int resId = getResources().getIdentifier(statName, "id", getActivity().getPackageName());
         TextView text = (TextView) getActivity().findViewById(resId);
         text.setText(statText + ": " + String.valueOf(value));
+    }
+
+    public StatsPanelFragment changeLvlStat() {
+        changeStatText("lvl", mMap.getLvl(), "Lvl");
+        return this;
+    }
+
+    public StatsPanelFragment changeHpStat() {
+        changeStatText("hp", mPlayer.getHp(), "HP");
+        return this;
+    }
+
+    public StatsPanelFragment changeStrStat() {
+        changeStatText("str", mPlayer.getStr(), "Str");
+        return this;
+    }
+
+    public StatsPanelFragment changeStepsStat() {
+        changeStatText("steps", mPlayer.getSteps(), "Steps");
+        return this;
     }
 }

@@ -30,6 +30,7 @@ public class Enemy extends Unit implements BattleUnitInterface {
     }
 
     public void action() {
+        ((MainActivity) mContext).mLogHistoryFragment.addRecord("You have met an enemy");
         ((MainActivity) mContext).mFieldFragment.createBattleField(this);
     }
 
@@ -54,6 +55,7 @@ public class Enemy extends Unit implements BattleUnitInterface {
 
     public void getHit(int dmg) {
         mHp -= dmg;
+        ((MainActivity) mContext).mLogHistoryFragment.addRecord("You hit enemy on " + dmg + " points");
     }
 
     public int strike(int dmg) {
