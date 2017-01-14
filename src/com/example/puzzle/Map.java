@@ -22,7 +22,6 @@ public class Map {
     final static int OPENED_CELL_COLOR = Color.BLACK;
     final static int MAX_DMG_POINT = 9;
 
-    private int mLvl = 1;
     private Player mPlayer;
     private GridView mGridView;
     private Context mContext;
@@ -33,23 +32,7 @@ public class Map {
         mRandom = new Random();
         mContext = context;
         mPlayer = ((MainActivity) mContext).mPlayer;
-        setGridView();
-    }
-
-    public Map setGridView() {
-        mGridView = ((MainActivity) mContext).mFieldFragment.mGridView;
-        return this;
-    }
-
-    public int getLvl() {
-        return mLvl;
-    }
-
-    public void nextLvl() {
-        mLvl++;
-        mPlayer.refreshSteps();
-        ((MainActivity) mContext).mStatsPanelFragment.changeLvlStat().changeStepsStat();
-        create().setUnits();
+        mGridView = (GridView) ((MainActivity) mContext).findViewById(R.id.gridView);
     }
 
     public Map create() {
@@ -63,7 +46,7 @@ public class Map {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
                 mCountUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((MainActivity) mContext).getLvl(), pos));
             } else {
                 adapter.add(pos, new Empty());
             }
@@ -94,13 +77,19 @@ public class Map {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view.findViewById(R.id.cell_img) == null) {
                     mPlayer.removeStep();
-                    ((MainActivity) mContext).mStatsPanelFragment.changeStatText("steps", mPlayer.getSteps(), "Steps");
+                    ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
 
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();
                     if (mPlayer.getSteps() == 0) {
-                        nextLvl();
+                        adapter.disableAdapter();
+                        mGridView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((MainActivity) mContext).nextLvl();
+                            }
+                        }, 1000);
                     }
                 }
             }
@@ -113,7 +102,7 @@ public class Map {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view.findViewById(R.id.text);
-                if (textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null) {
+                if (Battle.isCellEmpty(view)) {
                     Integer dmg = adapter.getItem(position);
                     textView.setText(dmg.toString());
                     textView.setTextColor(Color.RED);
@@ -125,7 +114,7 @@ public class Map {
 
                     view.setBackgroundColor(Map.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
-                        ((MainActivity) mContext).mFieldFragment.mBattle.playerMove(dmg);
+                        ((MainActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
                     }
                 }
             }

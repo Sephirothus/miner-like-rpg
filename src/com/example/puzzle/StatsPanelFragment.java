@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 /**
@@ -14,7 +15,7 @@ import android.widget.TextView;
 public class StatsPanelFragment extends Fragment {
 
     private Player mPlayer;
-    private Map mMap;
+    private TableLayout mStatsTable;
 
     @Override
     public void onAttach(Activity activity) {
@@ -36,12 +37,27 @@ public class StatsPanelFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPlayer = ((MainActivity) getActivity()).mPlayer;
-        mMap = ((MainActivity) getActivity()).mFieldFragment.mMap;
+        mStatsTable = (TableLayout) getActivity().findViewById(R.id.enemy_stats);
 
         changeLvlStat();
         changeHpStat();
         changeStrStat();
         changeStepsStat();
+    }
+
+    public void addEnemyStats(String enemyName, int enemyHp, int enemyStr) {
+        changeStatText("enemy_stats_hp", enemyHp, "HP");
+        changeStatText("enemy_stats_str", enemyStr, "Str");
+        ((TextView) getActivity().findViewById(R.id.enemy_name)).setText(enemyName);
+        mStatsTable.setVisibility(View.VISIBLE);
+    }
+
+    public void changeEnemyHp(int hp) {
+        changeStatText("enemy_stats_hp", hp, "HP");
+    }
+
+    public void removeEnemyStats() {
+        mStatsTable.setVisibility(View.GONE);
     }
 
     public void changeStatText(String statName, int value, String statText) {
@@ -51,7 +67,7 @@ public class StatsPanelFragment extends Fragment {
     }
 
     public StatsPanelFragment changeLvlStat() {
-        changeStatText("lvl", mMap.getLvl(), "Lvl");
+        changeStatText("lvl", ((MainActivity) getActivity()).getLvl(), "Lvl");
         return this;
     }
 

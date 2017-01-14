@@ -1,7 +1,11 @@
 package com.example.puzzle;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +35,57 @@ public class LogHistoryFragment extends Fragment {
         mLogText = (TextView) getActivity().findViewById(R.id.log_text);
     }
 
-    public void addRecord(String record) {
-        mLogText.setText(mLogText.getText() + record + "\n");
+    public void addRecord(String record, int textColor) {
+        Spannable span = new SpannableString(record + "\n");
+        span.setSpan(new ForegroundColorSpan(textColor), 0,
+                record.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mLogText.append(span);
+    }
+
+    public void addNewLvlRec(int lvl) {
+        addRecord("You've reached " + lvl + " level", Color.GREEN);
+    }
+
+    public void addEnemyMeetupRec(String name) {
+        addRecord("<=== BATTLE START ===>", Color.RED);
+        addRecord("You've met " + name, Color.RED);
+    }
+
+    public void addEndBattleRec(String playerResult) {
+        addRecord(playerResult, Color.RED);
+        addRecord("<=== BATTLE END ===>", Color.RED);
+    }
+
+    public void addPlayerHitEnemyRec(int dmg) {
+        String text = "You hit enemy on " + dmg + " point(s)";
+        if (dmg == 0) text = "You hit and missed";
+        addRecord(text, Color.RED);
+    }
+
+    public void addEnemyHitPlayerRec(int dmg) {
+        String text = "Enemy hit you on " + dmg + " point(s)";
+        if (dmg == 0) text = "Enemy hit and missed";
+        addRecord(text, Color.RED);
+    }
+
+    public void addTreasureFoundRec() {
+        addRecord("You've found a treasure", Color.YELLOW);
+    }
+
+    public void addStatIncreaseRec(String playerStat) {
+        String stat = "";
+        int statVal = ((MainActivity) getActivity()).mPlayer.LVL_STAT_INCREASE;
+        switch (playerStat) {
+            case "mHp":
+                stat = "Health Points";
+                break;
+            case "mStr":
+                stat = "Strength";
+                break;
+            case "mSteps":
+                stat = "Steps";
+                break;
+        }
+        addRecord("Your " + stat + " increased by " + statVal, Color.CYAN);
     }
 }

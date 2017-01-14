@@ -1,14 +1,12 @@
 package com.example.puzzle;
 
 import android.content.Context;
-import android.graphics.Color;
 
 /**
  * Created by konst on 22.08.16.
  */
 public class Gold extends Unit {
 
-    private String mTitle = "G";
     private int mPosition;
     private Context mContext;
 
@@ -18,21 +16,11 @@ public class Gold extends Unit {
     }
 
     public void action() {
-        ((MainActivity) mContext).mLogHistoryFragment.addRecord("You found treasure");
-    }
-
-    @Override
-    public String getTitle() {
-        return mTitle;
+        ((MainActivity) mContext).mLogHistoryFragment.addTreasureFoundRec();
     }
 
     @Override
     public Integer getImg() {
         return R.drawable.treasure;
-    }
-
-    @Override
-    public int getColor() {
-        return Color.YELLOW;
     }
 }

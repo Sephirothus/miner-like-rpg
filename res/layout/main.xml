@@ -12,6 +12,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/field" />
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:visibility="gone"
+            android:id="@+id/enemy_stats">
+        <TableRow>
+            <TextView android:textSize="20sp" android:id="@+id/enemy_name"/>
+            <TextView android:textSize="20sp" android:id="@+id/enemy_stats_hp"/>
+            <TextView android:textSize="20sp" android:id="@+id/enemy_stats_str"/>
+        </TableRow>
+    </TableLayout>
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

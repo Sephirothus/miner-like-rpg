@@ -52,7 +52,5 @@ public abstract class Unit {
     }
 
     public abstract void action();
-    public abstract String getTitle();
     public abstract Integer getImg();
-    public abstract int getColor();
 }

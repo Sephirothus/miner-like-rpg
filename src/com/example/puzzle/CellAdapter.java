@@ -14,6 +14,7 @@ public class CellAdapter extends BaseAdapter {
 
     HashMap mUnits = new HashMap<Integer, Unit>();
     Context mContext;
+    private boolean mIsEnabled = true;
 
     CellAdapter(Context context) {
         mContext = context;
@@ -27,6 +28,15 @@ public class CellAdapter extends BaseAdapter {
     @Override
     public Unit getItem(int position) {
         return (Unit) mUnits.get(position);
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return mIsEnabled;
+    }
+
+    public void disableAdapter() {
+        mIsEnabled = false;
     }
 
     @Override

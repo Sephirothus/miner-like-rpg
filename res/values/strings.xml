@@ -2,4 +2,11 @@
 <resources>
     <string name="app_name">puzzle</string>
     <item name="cell_img" type="id"/>
+    <string-array name="enemies">
+        <item>enemies_barbarian:Barbarian</item>
+        <item>enemies_dead_warrior:Dead Warrior</item>
+        <item>enemies_forest_troll:Forest Troll</item>
+        <item>enemies_orc_archer:Orc Archer</item>
+        <item>enemies_wizard_gnome:Wizard Gnome</item>
+    </string-array>
 </resources>

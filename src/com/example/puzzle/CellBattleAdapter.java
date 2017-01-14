@@ -16,6 +16,7 @@ public class CellBattleAdapter extends BaseAdapter {
     private Context mContext;
     private Enemy mEnemy;
     private boolean mIsPlayerMove = true;
+    private boolean mIsEnabled = true;
 
     HashMap mDmgs = new HashMap<Integer, Integer>();
 
@@ -56,6 +57,19 @@ public class CellBattleAdapter extends BaseAdapter {
             mEnemy.addUnitToCell(mContext, view);
         }
         return view;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return mIsEnabled;
+    }
+
+    public void disableAdapter() {
+        mIsEnabled = false;
+    }
+
+    public void enableAdapter() {
+        mIsEnabled = true;
     }
 
     public void setIsPlayerMove(boolean isPlayerMove) {
