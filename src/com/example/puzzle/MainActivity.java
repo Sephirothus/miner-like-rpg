@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 
 public class MainActivity extends Activity {
 
@@ -45,6 +46,19 @@ public class MainActivity extends Activity {
         return mLvl;
     }
 
+    public void checkIsLvlEnd() {
+        if (mPlayer.getSteps() == 0) {
+            GridView gridView = (GridView) findViewById(R.id.gridView);
+            ((CellAdapter) gridView.getAdapter()).disableAdapter();
+            gridView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nextLvl();
+                }
+            }, 1000);
+        }
+    }
+
     public void nextLvl() {
         mLvl++;
         mLogHistoryFragment.addNewLvlRec(mLvl);
@@ -73,5 +87,6 @@ public class MainActivity extends Activity {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
         mStatsPanelFragment.removeEnemyStats();
+        mBattleFieldFragment = null;
     }
 }

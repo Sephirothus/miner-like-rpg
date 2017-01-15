@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -40,6 +41,13 @@ public class LogHistoryFragment extends Fragment {
         span.setSpan(new ForegroundColorSpan(textColor), 0,
                 record.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mLogText.append(span);
+        ScrollView scroll = (ScrollView) mLogText.getParent();
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
 
     public void addNewLvlRec(int lvl) {
@@ -68,13 +76,12 @@ public class LogHistoryFragment extends Fragment {
         addRecord(text, Color.RED);
     }
 
-    public void addTreasureFoundRec() {
-        addRecord("You've found a treasure", Color.YELLOW);
+    public void addTreasureFoundRec(String name) {
+        addRecord("You open treasure chest and get " + name, Color.YELLOW);
     }
 
-    public void addStatIncreaseRec(String playerStat) {
+    public String addStatIncreaseRec(String playerStat, int statVal) {
         String stat = "";
-        int statVal = ((MainActivity) getActivity()).mPlayer.LVL_STAT_INCREASE;
         switch (playerStat) {
             case "mHp":
                 stat = "Health Points";
@@ -86,6 +93,8 @@ public class LogHistoryFragment extends Fragment {
                 stat = "Steps";
                 break;
         }
-        addRecord("Your " + stat + " increased by " + statVal, Color.CYAN);
+        String text = "Your " + stat + " increased by " + statVal;
+        addRecord(text, Color.CYAN);
+        return text;
     }
 }

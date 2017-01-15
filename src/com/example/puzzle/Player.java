@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Player implements BattleUnitInterface {
 
-    final static int LVL_STAT_INCREASE = 3;
+    final static int LVL_STAT_INCREASE = 1;
 
     private Context mContext;
 
@@ -42,12 +42,24 @@ public class Player implements BattleUnitInterface {
         return mHp;
     }
 
+    public void addHp(int hp) {
+        mHp += hp;
+    }
+
     public int getStr() {
         return mStr;
     }
 
+    public void addStr(int str) {
+        mStr += str;
+    }
+
     public int getSteps() {
         return mCurSteps;
+    }
+
+    public void addSteps(int steps) {
+        mSteps += steps;
     }
 
     public void removeStep() {
@@ -66,7 +78,7 @@ public class Player implements BattleUnitInterface {
             Field field = getClass().getDeclaredField(incrStat);
             int statVal = ((int) field.get(this)) + LVL_STAT_INCREASE;
             field.set(this, statVal);
-            ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat);
+            ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

@@ -82,15 +82,7 @@ public class Map {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();
-                    if (mPlayer.getSteps() == 0) {
-                        adapter.disableAdapter();
-                        mGridView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((MainActivity) mContext).nextLvl();
-                            }
-                        }, 1000);
-                    }
+                    ((MainActivity) mContext).checkIsLvlEnd();
                 }
             }
         });

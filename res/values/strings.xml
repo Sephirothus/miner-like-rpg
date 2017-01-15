@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">puzzle</string>
+    <string name="app_name">Random Traveler</string>
     <item name="cell_img" type="id"/>
     <string-array name="enemies">
-        <item>enemies_barbarian:Barbarian</item>
-        <item>enemies_dead_warrior:Dead Warrior</item>
-        <item>enemies_forest_troll:Forest Troll</item>
-        <item>enemies_orc_archer:Orc Archer</item>
-        <item>enemies_wizard_gnome:Wizard Gnome</item>
+        <item>enemy_barbarian:Barbarian</item>
+        <item>enemy_dead_warrior:Dead Warrior</item>
+        <item>enemy_forest_troll:Forest Troll</item>
+        <item>enemy_orc_archer:Orc Archer</item>
+        <item>enemy_wizard_gnome:Wizard Gnome</item>
+        <item>enemy_ice_golem:Ice Golem</item>
+        <item>enemy_water_monk:Water Monk</item>
+        <item>enemy_elf_huntress:Elf Huntress</item>
+        <item>enemy_vampire:Vampire</item>
+        <item>enemy_tree_guardian:Tree Guardian</item>
+    </string-array>
+    <string-array name="treasures">
+        <item>weapon_battle_axe:Battle Axe:mStr:10</item>
+        <item>weapon_flail:Flail:mStr:5</item>
+        <item>weapon_shard_sword:Shard Sword:mStr:7</item>
+        <item>weapon_bone_knife:Bone Knife:mStr:3</item>
+        <item>weapon_broadsword:Broadsword:mStr:4</item>
+        <item>armor_iron_breastplate:Iron Breastplate:mHp:10</item>
+        <item>armor_iron_gauntlet:Iron Gauntlet:mHp:3</item>
+        <item>armor_iron_helmet:Iron Helmet:mHp:7</item>
+        <item>treasure_diamond_ring:Diamond Ring:mSteps:3</item>
+        <item>treasure_pendant_of_life:Pendant of Life:mHp:5</item>
+        <item>treasure_strength_potion:Strength Potion:mStr:3</item>
+        <item>treasure_health_potion:Health Potion:mHp:3</item>
+        <item>junk_simple_ring:Simple Ring</item>
+        <item>junk_old_stone_tablet:Old Stone Tablet</item>
+        <item>junk_wine_jug:Wine Jug</item>
+        <item>junk_fishbone:Fish-bone</item>
+        <item>junk_nasty_spill:Unknown Nasty Spill</item>
+        <item>junk_tooth:Tooth</item>
+        <item>junk_dice:Dice</item>
+        <item>junk_quill_ink:Quill and Ink</item>
+        <item>junk_old_book:Old Book</item>
+        <item>junk_oily_nut:Oily Nut</item>
     </string-array>
 </resources>
