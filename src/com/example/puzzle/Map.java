@@ -77,8 +77,6 @@ public class Map {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (view.findViewById(R.id.cell_img) == null) {
                     mPlayer.removeStep();
-                    ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
-
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();

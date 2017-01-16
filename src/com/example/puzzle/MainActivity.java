@@ -61,10 +61,10 @@ public class MainActivity extends Activity {
 
     public void nextLvl() {
         mLvl++;
+        mStatsPanelFragment.changeLvlStat();
         mLogHistoryFragment.addNewLvlRec(mLvl);
         mPlayer.lvlStatIncrease();
         mPlayer.refreshSteps();
-        mStatsPanelFragment.changeLvlStat().changeStepsStat().changeHpStat().changeStrStat();
         mFieldFragment.mMap.create().setUnits();
     }
 

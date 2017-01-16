@@ -35,22 +35,7 @@ public class Gold extends Unit {
         log.addTreasureFoundRec(mName);
         if (curTreasure.length > 2) {
             int value = Integer.parseInt(curTreasure[3]);
-            Player player = ((MainActivity) mContext).mPlayer;
-            StatsPanelFragment statsPanel = ((MainActivity) mContext).mStatsPanelFragment;
-            switch (curTreasure[2]) {
-                case "mHp":
-                    player.addHp(value);
-                    statsPanel.changeHpStat();
-                    break;
-                case "mStr":
-                    player.addStr(value);
-                    statsPanel.changeStrStat();
-                    break;
-                case "mSteps":
-                    player.addSteps(value);
-                    statsPanel.changeStepsStat();
-                    break;
-            }
+            ((MainActivity) mContext).mPlayer.addStat(curTreasure[2], value);
             text = log.addStatIncreaseRec(curTreasure[2], value);
         }
         return text;

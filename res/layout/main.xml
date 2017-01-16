@@ -24,6 +24,17 @@
             <TextView android:textSize="20sp" android:id="@+id/enemy_stats_str"/>
         </TableRow>
     </TableLayout>
+    <!--<TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+        <TableRow>
+            <ImageView android:id="@+id/equipment"/>
+            <ImageView android:id="@+id/spell_book"/>
+            <ImageView android:id="@+id/market"/>
+            <ImageView android:id="@+id/achievements"/>
+        </TableRow>
+    </TableLayout>-->
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

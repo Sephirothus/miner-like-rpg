@@ -15,18 +15,18 @@
         <item>enemy_tree_guardian:Tree Guardian</item>
     </string-array>
     <string-array name="treasures">
-        <item>weapon_battle_axe:Battle Axe:mStr:10</item>
-        <item>weapon_flail:Flail:mStr:5</item>
-        <item>weapon_shard_sword:Shard Sword:mStr:7</item>
-        <item>weapon_bone_knife:Bone Knife:mStr:3</item>
-        <item>weapon_broadsword:Broadsword:mStr:4</item>
-        <item>armor_iron_breastplate:Iron Breastplate:mHp:10</item>
-        <item>armor_iron_gauntlet:Iron Gauntlet:mHp:3</item>
-        <item>armor_iron_helmet:Iron Helmet:mHp:7</item>
-        <item>treasure_diamond_ring:Diamond Ring:mSteps:3</item>
-        <item>treasure_pendant_of_life:Pendant of Life:mHp:5</item>
-        <item>treasure_strength_potion:Strength Potion:mStr:3</item>
-        <item>treasure_health_potion:Health Potion:mHp:3</item>
+        <item>weapon_battle_axe:Battle Axe:str:10</item>
+        <item>weapon_flail:Flail:str:5</item>
+        <item>weapon_shard_sword:Shard Sword:str:7</item>
+        <item>weapon_bone_knife:Bone Knife:str:3</item>
+        <item>weapon_broadsword:Broadsword:str:4</item>
+        <item>armor_iron_breastplate:Iron Breastplate:hp:10</item>
+        <item>armor_iron_gauntlet:Iron Gauntlet:hp:3</item>
+        <item>armor_iron_helmet:Iron Helmet:hp:7</item>
+        <item>treasure_diamond_ring:Diamond Ring:steps:3</item>
+        <item>treasure_pendant_of_life:Pendant of Life:hp:5</item>
+        <item>treasure_strength_potion:Strength Potion:str:3</item>
+        <item>treasure_health_potion:Health Potion:hp:3</item>
         <item>junk_simple_ring:Simple Ring</item>
         <item>junk_old_stone_tablet:Old Stone Tablet</item>
         <item>junk_wine_jug:Wine Jug</item>

@@ -2,8 +2,8 @@ package com.example.puzzle;
 
 import android.content.Context;
 
-import java.lang.reflect.Field;
-import java.util.Random;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * Created by sephiroth on 28.08.16.
@@ -13,76 +13,91 @@ public class Player implements BattleUnitInterface {
     final static int LVL_STAT_INCREASE = 1;
 
     private Context mContext;
-
-    private int mHp = 20;
-    private int mStr = 1;
-    private int mSteps = 3;
-    private int mCurSteps;
+    private HashMap mStats = new HashMap<String, Integer>() {{
+        put("hp", 20);
+        put("str", 1);
+        put("mp", 0);
+        put("steps", 3);
+    }};
+    private HashMap mCurStats = new HashMap<String, Integer>() {{
+        putAll(mStats);
+    }};
 
     Player (Context context) {
         mContext = context;
-        mCurSteps = mSteps;
+    }
+
+    public int getCurStat(String stat) {
+        return (int) mCurStats.get(stat);
+    }
+
+    public void addCurStat(String stat, int addValue) {
+        mCurStats.put(stat, getCurStat(stat) + addValue);
+    }
+
+    public void refreshCurStat(String stat) {
+        mCurStats.put(stat, mStats.get(stat));
+    }
+
+    public void addStat(String stat, int addValue) {
+        addCurStat(stat, addValue);
+        mStats.put(stat, (int) mStats.get(stat) + addValue);
+        // change stats panel
+        String statName = Character.toUpperCase(stat.charAt(0)) + stat.substring(1);
+        StatsPanelFragment statsPanel = ((MainActivity) mContext).mStatsPanelFragment;
+        try {
+            statsPanel.getClass()
+                .getDeclaredMethod("change" + statName + "Stat")
+                .invoke(statsPanel);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getHit(int dmg) {
-        mHp -= dmg;
+        addCurStat("hp", -dmg);
         ((MainActivity) mContext).mStatsPanelFragment.changeHpStat();
         ((MainActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
     }
 
     public int strike(int dmg) {
-        return dmg > 0 ? dmg + mStr : 0;
+        return dmg > 0 ? dmg + getStr() : 0;
     }
 
     public boolean checkHp() {
-        return mHp > 0;
+        return getHp() > 0;
     }
 
     public int getHp() {
-        return mHp;
-    }
-
-    public void addHp(int hp) {
-        mHp += hp;
+        return getCurStat("hp");
     }
 
     public int getStr() {
-        return mStr;
-    }
-
-    public void addStr(int str) {
-        mStr += str;
+        return getCurStat("str");
     }
 
     public int getSteps() {
-        return mCurSteps;
-    }
-
-    public void addSteps(int steps) {
-        mSteps += steps;
+        return getCurStat("steps");
     }
 
     public void removeStep() {
-        mCurSteps--;
+        addCurStat("steps", -1);
+        ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void refreshSteps() {
-        mCurSteps = mSteps;
+        refreshCurStat("steps");
+        ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void lvlStatIncrease() {
-        // TODO add choice of what stat to increase through dialog
-        String[] stats = {"mHp", "mStr", "mSteps"};
-        try {
-            String incrStat = stats[(new Random()).nextInt(stats.length)];
-            Field field = getClass().getDeclaredField(incrStat);
-            int statVal = ((int) field.get(this)) + LVL_STAT_INCREASE;
-            field.set(this, statVal);
-            ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        Object[] stats = mStats.keySet().toArray();
+        String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
+        addStat(incrStat, LVL_STAT_INCREASE);
+        ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
     }
 }
