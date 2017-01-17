@@ -16,7 +16,7 @@ public class Player implements BattleUnitInterface {
     private HashMap mStats = new HashMap<String, Integer>() {{
         put("hp", 20);
         put("str", 1);
-        put("mp", 0);
+        //put("mp", 0);
         put("steps", 3);
     }};
     private HashMap mCurStats = new HashMap<String, Integer>() {{

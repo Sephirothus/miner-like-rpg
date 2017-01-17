@@ -3,9 +3,6 @@
     <string name="app_name">Random Traveler</string>
     <item name="cell_img" type="id"/>
     <string-array name="enemies">
-        <item>enemy_barbarian:Barbarian</item>
-        <item>enemy_dead_warrior:Dead Warrior</item>
-        <item>enemy_forest_troll:Forest Troll</item>
         <item>enemy_orc_archer:Orc Archer</item>
         <item>enemy_wizard_gnome:Wizard Gnome</item>
         <item>enemy_ice_golem:Ice Golem</item>
@@ -15,9 +12,6 @@
         <item>enemy_tree_guardian:Tree Guardian</item>
     </string-array>
     <string-array name="treasures">
-        <item>weapon_battle_axe:Battle Axe:str:10</item>
-        <item>weapon_flail:Flail:str:5</item>
-        <item>weapon_shard_sword:Shard Sword:str:7</item>
         <item>weapon_bone_knife:Bone Knife:str:3</item>
         <item>weapon_broadsword:Broadsword:str:4</item>
         <item>armor_iron_breastplate:Iron Breastplate:hp:10</item>

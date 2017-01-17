@@ -41,7 +41,7 @@ public class LogHistoryFragment extends Fragment {
         span.setSpan(new ForegroundColorSpan(textColor), 0,
                 record.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mLogText.append(span);
-        ScrollView scroll = (ScrollView) mLogText.getParent();
+        final ScrollView scroll = (ScrollView) mLogText.getParent();
         scroll.post(new Runnable() {
             @Override
             public void run() {

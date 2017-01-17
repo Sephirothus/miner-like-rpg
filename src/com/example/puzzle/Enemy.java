@@ -11,9 +11,11 @@ import java.util.Random;
  */
 public class Enemy extends Unit implements BattleUnitInterface, Serializable {
 
-    final static int HP_LVL_RANGE = 3;
-    final static int STR_LVL_RANGE = 3;
-    final static int MP_LVL_RANGE = 3;
+    final static int MIN_HP_LVL_PERCENT = 120;
+    final static int MAX_HP_LVL_PERCENT = 150;
+    final static int MIN_STR_LVL_PERCENT = 30;
+    final static int MAX_STR_LVL_PERCENT = 50;
+    //final static int MP_LVL_RANGE = 3;
 
     private Context mContext;
     private HashMap mStats = new HashMap<String, Integer>() {{
@@ -26,20 +28,16 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }};
 
     private int mPosition;
-    private int mImg;
-    private String mName;
+    private Config mConfig;
 
     Enemy (Context context, Integer lvl, Integer position) {
         Random r = new Random();
         mContext = context;
         mPosition = position;
-        setStat("hp", r.nextInt((lvl + HP_LVL_RANGE) - (lvl - HP_LVL_RANGE)) + (lvl - HP_LVL_RANGE));
-        setStat("str", r.nextInt((lvl + STR_LVL_RANGE) - (lvl - STR_LVL_RANGE)) + (lvl - STR_LVL_RANGE));
-
-        String[] enemies = context.getResources().getStringArray(R.array.enemies);
-        String[] curEnemy = (enemies[r.nextInt(enemies.length)]).split(":");
-        mImg = context.getResources().getIdentifier(curEnemy[0], "drawable", context.getPackageName());
-        mName = curEnemy[1];
+        setStat("hp", r.nextInt(lvl * (MAX_HP_LVL_PERCENT - MIN_HP_LVL_PERCENT) / 100 + 1) + lvl * MIN_HP_LVL_PERCENT / 100);
+        setStat("str", r.nextInt(lvl * (MAX_STR_LVL_PERCENT - MIN_STR_LVL_PERCENT) / 100 + 1) + lvl * MIN_STR_LVL_PERCENT / 100);
+        mConfig = new Config(mContext);
+        mConfig.randomEnemy();
     }
 
     public void setStat(String stat, int value) {
@@ -61,13 +59,13 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }
 
     public void action() {
-        ((MainActivity) mContext).mLogHistoryFragment.addEnemyMeetupRec(mName);
+        ((MainActivity) mContext).mLogHistoryFragment.addEnemyMeetupRec(mConfig.getCurItemName());
         ((MainActivity) mContext).startBattle(this);
     }
 
     @Override
     public Integer getImg() {
-        return mImg;
+        return mConfig.getCurItemImg();
     }
 
     public int getPosition() {
@@ -97,6 +95,6 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }
 
     public String getName() {
-        return mName;
+        return mConfig.getCurItemName();
     }
 }
