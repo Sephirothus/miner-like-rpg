@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         mPlayer = new Player(this);
+        mPlayer.equipmentClick();
         mFragmentManager = getFragmentManager();
 
         mFragmentManager.beginTransaction()

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:padding="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+        <TableRow>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_first_ring"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:src="@drawable/armor_hat"
+                       android:id="@+id/equip_head"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_second_ring"/>
+        </TableRow>
+        <TableRow>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_gauntlets"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:src="@drawable/armor_shirt"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_chest"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_necklace"/>
+        </TableRow>
+        <TableRow>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_weapon"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:src="@drawable/armor_trousers"
+                       android:id="@+id/equip_legs"/>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:id="@+id/equip_weapon_or_shield"/>
+        </TableRow>
+    </TableLayout>
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:stretchColumns="*">
+        <TableRow>
+            <ImageView android:layout_width="70dp"
+                       android:layout_height="70dp"
+                       android:background="@android:color/black"
+                       android:src="@drawable/armor_wooden_clogs"
+                       android:id="@+id/equip_boots"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

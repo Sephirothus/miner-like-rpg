@@ -42,6 +42,7 @@ public class Battle {
         mEnemy.getHit(mPlayer.strike(dmg));
         Boolean check = mEnemy.checkHp();
         if (!check) {
+            mAdapter.disableAdapter();
             ((MainActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
             endBattle();
         } else enemyMove();

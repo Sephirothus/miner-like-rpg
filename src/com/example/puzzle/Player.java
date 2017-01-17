@@ -1,6 +1,10 @@
 package com.example.puzzle;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -99,5 +103,25 @@ public class Player implements BattleUnitInterface {
         String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
         addStat(incrStat, LVL_STAT_INCREASE);
         ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
+    }
+
+    public void equipmentClick() {
+        ImageView view = (ImageView) ((MainActivity) mContext).findViewById(R.id.equipment);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setView((((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null))
+                        .setCancelable(false)
+                        .setNegativeButton("Close",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }
