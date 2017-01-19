@@ -46,14 +46,14 @@ public class StatsPanelFragment extends Fragment {
     }
 
     public void addEnemyStats(String enemyName, int enemyHp, int enemyStr) {
-        changeStatText("enemy_stats_hp", enemyHp, "HP");
-        changeStatText("enemy_stats_str", enemyStr, "Str");
+        changeStatText("enemy_stats_hp", enemyHp, Config.getShortStatName("hp"));
+        changeStatText("enemy_stats_str", enemyStr, Config.getShortStatName("str"));
         ((TextView) getActivity().findViewById(R.id.enemy_name)).setText(enemyName);
         mStatsTable.setVisibility(View.VISIBLE);
     }
 
     public void changeEnemyHp(int hp) {
-        changeStatText("enemy_stats_hp", hp, "HP");
+        changeStatText("enemy_stats_hp", hp, Config.getShortStatName("hp"));
     }
 
     public void removeEnemyStats() {
@@ -67,22 +67,27 @@ public class StatsPanelFragment extends Fragment {
     }
 
     public StatsPanelFragment changeLvlStat() {
-        changeStatText("lvl", ((MainActivity) getActivity()).getLvl(), "Lvl");
+        changeStatText("lvl", ((MainActivity) getActivity()).getLvl(), Config.getShortStatName("lvl"));
         return this;
     }
 
     public StatsPanelFragment changeHpStat() {
-        changeStatText("hp", mPlayer.getHp(), "HP");
+        changeStatText("hp", mPlayer.getHp(), Config.getShortStatName("hp"));
         return this;
     }
 
     public StatsPanelFragment changeStrStat() {
-        changeStatText("str", mPlayer.getStr(), "Str");
+        changeStatText("str", mPlayer.getStr(), Config.getShortStatName("str"));
+        return this;
+    }
+
+    public StatsPanelFragment changeMpStat() {
+        changeStatText("mp", mPlayer.getMp(), Config.getShortStatName("mp"));
         return this;
     }
 
     public StatsPanelFragment changeStepsStat() {
-        changeStatText("steps", mPlayer.getSteps(), "Steps");
+        changeStatText("steps", mPlayer.getSteps(), Config.getShortStatName("steps"));
         return this;
     }
 }

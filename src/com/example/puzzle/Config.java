@@ -14,7 +14,7 @@ public class Config {
     public HashMap<String, String> mCurItem;
     public Context mContext;
 
-    public ArrayList<HashMap<String, String>> mTreasures = new ArrayList<HashMap<String, String>>() {{
+    public static ArrayList<HashMap<String, String>> mTreasures = new ArrayList<HashMap<String, String>>() {{
         add(new HashMap<String, String>() {{
            put("name", "Battle Axe");
            put("img", "weapon_battle_axe");
@@ -97,7 +97,7 @@ public class Config {
             put("img", "treasure_health_potion");
             put("stat", "hp");
             put("stat_points", "3");
-            put("description", "This Health Potion gives you additional 3 health points");
+            put("description", "This Health Potion restores 3 health points");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Simple Ring");
@@ -151,7 +151,7 @@ public class Config {
         }});
     }};
 
-    public ArrayList<HashMap<String, String>> mEnemies = new ArrayList<HashMap<String, String>>() {{
+    public static ArrayList<HashMap<String, String>> mEnemies = new ArrayList<HashMap<String, String>>() {{
         add(new HashMap<String, String>() {{
             put("name", "Barbarian");
             put("img", "enemy_barbarian");
@@ -194,8 +194,33 @@ public class Config {
         }});
     }};
 
+    private static HashMap mShortStatNames = new HashMap<String, String>() {{
+        put("lvl", "Lvl");
+        put("hp", "HP");
+        put("str", "Str");
+        put("mp", "MP");
+        put("steps", "Steps");
+        put("gold", "Gold");
+    }};
+    private static HashMap mFullStatNames = new HashMap<String, String>() {{
+        put("lvl", "Level");
+        put("hp", "Health Points");
+        put("str", "Strength");
+        put("mp", "Mana Points");
+    }};
+
     Config (Context context) {
         mContext = context;
+    }
+
+    public void treasureByName(String name) {
+        HashMap<String, String> foundItem = null;
+        for (HashMap<String, String> item : mTreasures) {
+            if (item.get("name") == name) {
+                mCurItem = item;
+                break;
+            }
+        }
     }
 
     public void randomTreasure() {
@@ -224,5 +249,14 @@ public class Config {
 
     public int getCurTreasureStatPoints() {
         return Integer.parseInt(mCurItem.get("stat_points"));
+    }
+
+    public static String getShortStatName(String name) {
+        return mShortStatNames.get(name).toString();
+    }
+
+    public static String getFullStatName(String name) {
+        Object str = mFullStatNames.get(name);
+        return str == null ? getShortStatName(name) : str.toString();
     }
 }

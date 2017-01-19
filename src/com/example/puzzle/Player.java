@@ -1,10 +1,6 @@
 package com.example.puzzle;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -17,6 +13,8 @@ public class Player implements BattleUnitInterface {
     final static int LVL_STAT_INCREASE = 1;
 
     private Context mContext;
+    private int mGold = 0;
+    private ArrayList<String> mInventory = new ArrayList();
     private HashMap mStats = new HashMap<String, Integer>() {{
         put("hp", 20);
         put("str", 1);
@@ -43,6 +41,10 @@ public class Player implements BattleUnitInterface {
         mCurStats.put(stat, mStats.get(stat));
     }
 
+    public int getStat(String stat) {
+        return (int) mStats.get(stat);
+    }
+
     public void addStat(String stat, int addValue) {
         addCurStat(stat, addValue);
         mStats.put(stat, (int) mStats.get(stat) + addValue);
@@ -60,6 +62,14 @@ public class Player implements BattleUnitInterface {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addItemToInventory(String itemName) {
+        mInventory.add(itemName);
+    }
+
+    public ArrayList<String> getInventoryItems() {
+        return mInventory;
     }
 
     public void getHit(int dmg) {
@@ -84,8 +94,16 @@ public class Player implements BattleUnitInterface {
         return getCurStat("str");
     }
 
+    public int getMp() {
+        return getCurStat("mp");
+    }
+
     public int getSteps() {
         return getCurStat("steps");
+    }
+
+    public int getGold() {
+        return mGold;
     }
 
     public void removeStep() {
@@ -105,23 +123,7 @@ public class Player implements BattleUnitInterface {
         ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
     }
 
-    public void equipmentClick() {
-        ImageView view = (ImageView) ((MainActivity) mContext).findViewById(R.id.equipment);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setView((((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null))
-                        .setCancelable(false)
-                        .setNegativeButton("Close",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
+    public Object[] getAllStats() {
+        return mStats.keySet().toArray();
     }
 }

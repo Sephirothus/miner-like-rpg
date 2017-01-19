@@ -33,10 +33,11 @@ public class Gold extends Unit {
         mConfig = new Config(mContext);
         mConfig.randomTreasure();
         log.addTreasureFoundRec(mConfig.getCurItemName());
-        if (mConfig.getCurTreasureStat() != null) {
+        ((MainActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName());
+        /*if (mConfig.getCurTreasureStat() != null) {
             ((MainActivity) mContext).mPlayer.addStat(mConfig.getCurTreasureStat(), mConfig.getCurTreasureStatPoints());
             log.addStatIncreaseRec(mConfig.getCurTreasureStat(), mConfig.getCurTreasureStatPoints());
-        }
+        }*/
     }
 
     public void showTreasure() {

@@ -81,19 +81,7 @@ public class LogHistoryFragment extends Fragment {
     }
 
     public String addStatIncreaseRec(String playerStat, int statVal) {
-        String stat = "";
-        switch (playerStat) {
-            case "hp":
-                stat = "Health Points";
-                break;
-            case "str":
-                stat = "Strength";
-                break;
-            case "steps":
-                stat = "Steps";
-                break;
-        }
-        String text = "Your " + stat + " increased by " + statVal;
+        String text = "Your " + Config.getFullStatName(playerStat) + " increased by " + statVal;
         addRecord(text, Color.CYAN);
         return text;
     }
