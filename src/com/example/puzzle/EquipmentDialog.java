@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -31,6 +33,7 @@ public class EquipmentDialog {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 View view = (((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null);
+                showEquipment(view);
                 showStats(view);
                 showInventory(view);
                 builder.setView(view)
@@ -45,6 +48,18 @@ public class EquipmentDialog {
                 alert.show();
             }
         });
+    }
+
+    private void showEquipment(View view) {
+        Player player = ((MainActivity) mContext).mPlayer;
+        Config conf = new Config(mContext);
+        for (String item : player.getEquipmentItems()) {
+            conf.treasureByName(item);
+            ImageView imageView = (ImageView) view.findViewById(mContext.getResources()
+                    .getIdentifier(conf.getCurTreasureEquipSlot(), "id", mContext.getPackageName()));
+            imageView.setImageResource(conf.getCurItemImg());
+            setInventoryItemActions(imageView, conf);
+        }
     }
 
     private void showStats(View view) {
@@ -90,13 +105,35 @@ public class EquipmentDialog {
         }
     }
 
-    private void setInventoryItemActions(ImageView imageView, Config conf) {
+    private void setInventoryItemActions(final ImageView imageView, Config conf) {
         final String desc = conf.getCurItemDescription();
+        final String name = conf.getCurItemName();
         final GestureDetector gesture = (new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
-            public boolean onDoubleTap(MotionEvent e) {
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                int color = Color.TRANSPARENT;
+                Drawable background = imageView.getBackground();
+                if (background instanceof ColorDrawable)
+                    color = ((ColorDrawable) background).getColor();
+
+                imageView.setBackgroundColor(color == Color.WHITE ? Color.TRANSPARENT : Color.WHITE);
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
                 Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                useInventoryItem(name);
                 return false;
             }
         }));
@@ -106,5 +143,10 @@ public class EquipmentDialog {
                 return gesture.onTouchEvent(event);
             }
         });
+    }
+
+    private void useInventoryItem(String name) {
+        Player player = ((MainActivity) mContext).mPlayer;
+
     }
 }

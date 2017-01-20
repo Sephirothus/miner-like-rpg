@@ -16,7 +16,6 @@
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
                        android:background="@android:color/black"
-                       android:src="@drawable/armor_hat"
                        android:id="@+id/equip_head"/>
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
@@ -30,7 +29,6 @@
                        android:id="@+id/equip_gauntlets"/>
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
-                       android:src="@drawable/armor_shirt"
                        android:background="@android:color/black"
                        android:id="@+id/equip_chest"/>
             <ImageView android:layout_width="70dp"
@@ -46,7 +44,6 @@
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
                        android:background="@android:color/black"
-                       android:src="@drawable/armor_trousers"
                        android:id="@+id/equip_legs"/>
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
@@ -63,29 +60,26 @@
             <ImageView android:layout_width="70dp"
                        android:layout_height="70dp"
                        android:background="@android:color/black"
-                       android:src="@drawable/armor_wooden_clogs"
                        android:id="@+id/equip_boots"/>
         </TableRow>
     </TableLayout>
 
-    <LinearLayout android:layout_width="wrap_content"
+    <RelativeLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="10dp"
-                  android:orientation="horizontal">
+                  android:layout_marginTop="10dp">
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginRight="10dp"
-                      android:layout_weight="1"
                       android:orientation="vertical"
                       android:id="@+id/equipment_stats" />
-        <ScrollView android:layout_weight="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-            <GridLayout android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+        <ScrollView android:layout_width="wrap_content"
+                    android:layout_height="160dp"
+                    android:layout_alignParentRight="true">
+            <GridLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:padding="5dp"
-                        android:columnCount="4"
+                        android:columnCount="3"
                         android:id="@+id/inventory" />
         </ScrollView>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

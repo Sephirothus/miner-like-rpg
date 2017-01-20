@@ -15,6 +15,12 @@ public class Player implements BattleUnitInterface {
     private Context mContext;
     private int mGold = 0;
     private ArrayList<String> mInventory = new ArrayList();
+    private ArrayList<String> mEquipment = new ArrayList<String>() {{
+        add("Hat");
+        add("White Shirt");
+        add("Trousers");
+        add("Wooden clogs");
+    }};
     private HashMap mStats = new HashMap<String, Integer>() {{
         put("hp", 20);
         put("str", 1);
@@ -70,6 +76,10 @@ public class Player implements BattleUnitInterface {
 
     public ArrayList<String> getInventoryItems() {
         return mInventory;
+    }
+
+    public ArrayList<String> getEquipmentItems() {
+        return mEquipment;
     }
 
     public void getHit(int dmg) {
