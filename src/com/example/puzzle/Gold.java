@@ -29,15 +29,10 @@ public class Gold extends Unit {
     }
 
     private void getTreasure() {
-        LogHistoryFragment log = ((MainActivity) mContext).mLogHistoryFragment;
         mConfig = new Config(mContext);
         mConfig.randomTreasure();
-        log.addTreasureFoundRec(mConfig.getCurItemName());
+        (((MainActivity) mContext).mLogHistoryFragment).addTreasureFoundRec(mConfig.getCurItemName());
         ((MainActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName());
-        /*if (mConfig.getCurTreasureStat() != null) {
-            ((MainActivity) mContext).mPlayer.addStat(mConfig.getCurTreasureStat(), mConfig.getCurTreasureStatPoints());
-            log.addStatIncreaseRec(mConfig.getCurTreasureStat(), mConfig.getCurTreasureStatPoints());
-        }*/
     }
 
     public void showTreasure() {
@@ -49,7 +44,7 @@ public class Gold extends Unit {
         TextView name = (TextView) view.findViewById(R.id.treasure_name);
         name.setText(mConfig.getCurItemName());
         TextView description = (TextView) view.findViewById(R.id.treasure_description);
-        description.setText(mConfig.getCurItemDescription());
+        description.setText(mConfig.getCurTreasureDescription());
 
         builder.setView(view)
                 .setCancelable(false)

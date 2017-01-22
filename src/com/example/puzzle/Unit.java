@@ -48,7 +48,7 @@ public abstract class Unit {
             img.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         }
         layout.addView(img);
-        view.setBackgroundColor(Map.OPENED_CELL_COLOR);
+        view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
     }
 
     public abstract void action();

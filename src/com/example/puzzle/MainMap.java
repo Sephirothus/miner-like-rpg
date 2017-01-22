@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by konst on 22.08.16.
  */
-public class Map {
+public class MainMap {
 
     final static int TOTAL_CELLS = 30;
     final static int MAX_UNITS = 20;
@@ -28,19 +28,19 @@ public class Map {
     private Random mRandom;
     private int mCountUnits;
 
-    Map (Context context) {
+    MainMap(Context context) {
         mRandom = new Random();
         mContext = context;
         mPlayer = ((MainActivity) mContext).mPlayer;
         mGridView = (GridView) ((MainActivity) mContext).findViewById(R.id.gridView);
     }
 
-    public Map create() {
+    public MainMap create() {
         mGridView.setNumColumns(CELLS_PER_LINE);
         return this;
     }
 
-    public Map setUnits() {
+    public MainMap setUnits() {
         mCountUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
         CellAdapter adapter = new CellAdapter(mContext);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
@@ -56,7 +56,7 @@ public class Map {
         return this;
     }
 
-    public Map setDmgPoints(Enemy enemy) {
+    public MainMap setDmgPoints(Enemy enemy) {
         CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
@@ -67,6 +67,14 @@ public class Map {
         }
         mGridView.setAdapter(adapter);
         setBattleClick();
+        return this;
+    }
+
+    public MainMap setTrapsAndTreasures() {
+        return this;
+    }
+
+    public MainMap setLabyrinth() {
         return this;
     }
 
@@ -102,7 +110,7 @@ public class Map {
                     params.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     textView.setLayoutParams(params);
 
-                    view.setBackgroundColor(Map.OPENED_CELL_COLOR);
+                    view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
                         ((MainActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
                     }

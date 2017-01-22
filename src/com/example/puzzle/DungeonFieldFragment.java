@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by sephirothus on 13.01.17.
+ * Created by sephirothus on 22.01.17.
  */
-public class BattleFieldFragment extends Fragment {
-
-    public MainMap mMainMap;
-    public Battle mBattle;
+public class DungeonFieldFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,14 +25,6 @@ public class BattleFieldFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMainMap = new MainMap(getActivity());
-        createBattleField();
-    }
-
-    public void createBattleField() {
-        Enemy enemy = (Enemy) getArguments().getSerializable("enemy");
-        mMainMap.create().setDmgPoints(enemy);
-        mBattle = new Battle(getActivity(), enemy);
-        mBattle.move();
+        //mMainMap = new MainMap(getActivity());
     }
 }

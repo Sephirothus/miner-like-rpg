@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -20,10 +18,19 @@ import android.widget.*;
  */
 public class EquipmentDialog {
 
+    final static int MAX_IDENTICAL_SLOTS = 5;
+
     private Context mContext;
+    private int mInventorySize;
+    private Config mConf;
+    private View mView;
 
     EquipmentDialog (Context context) {
         mContext = context;
+        mConf = new Config(mContext);
+        mInventorySize = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 50, mContext.getResources().getDisplayMetrics()
+        );
     }
 
     public void equipmentClick() {
@@ -31,12 +38,12 @@ public class EquipmentDialog {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mView = (((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                View view = (((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null);
-                showEquipment(view);
-                showStats(view);
-                showInventory(view);
-                builder.setView(view)
+                showEquipment();
+                showStats();
+                showInventory();
+                builder.setView(mView)
                     .setCancelable(false)
                     .setNegativeButton("Close",
                         new DialogInterface.OnClickListener() {
@@ -50,21 +57,27 @@ public class EquipmentDialog {
         });
     }
 
-    private void showEquipment(View view) {
+    private void showEquipment() {
         Player player = ((MainActivity) mContext).mPlayer;
-        Config conf = new Config(mContext);
-        for (String item : player.getEquipmentItems()) {
-            conf.treasureByName(item);
-            ImageView imageView = (ImageView) view.findViewById(mContext.getResources()
-                    .getIdentifier(conf.getCurTreasureEquipSlot(), "id", mContext.getPackageName()));
-            imageView.setImageResource(conf.getCurItemImg());
-            setInventoryItemActions(imageView, conf);
+        for (Object item : player.getEquipmentItems()) {
+            addItemToEquipmentOrUse(item.toString(), player.getEquipmentSlotByItem(item.toString()));
         }
     }
 
-    private void showStats(View view) {
+    private String addItemToEquipmentOrUse(String item, String slot) {
+        mConf.treasureByName(item);
+        if (slot == null) slot = mConf.getCurTreasureEquipSlot(mView);
+        if (slot != null) {
+            ImageView imageView = (ImageView) mView.findViewById(mConf.getIdByStr(slot));
+            imageView.setImageResource(mConf.getCurItemImg());
+            setInventoryItemActions(imageView, false);
+        }
+        return slot;
+    }
+
+    private void showStats() {
         Player player = ((MainActivity) mContext).mPlayer;
-        LinearLayout eqStats = (LinearLayout) view.findViewById(R.id.equipment_stats);
+        LinearLayout eqStats = (LinearLayout) mView.findViewById(R.id.equipment_stats);
         eqStats.removeAllViews();
         addTextViewToStats(eqStats, Config.getFullStatName("lvl"), String.valueOf(((MainActivity) mContext).getLvl()));
         for (Object stat : player.getAllStats()) {
@@ -88,26 +101,23 @@ public class EquipmentDialog {
         eqStats.addView(textView);
     }
 
-    private void showInventory(View view) {
+    private void showInventory() {
         Player player = ((MainActivity) mContext).mPlayer;
-        GridLayout eqStats = (GridLayout) view.findViewById(R.id.inventory);
-        Config conf = new Config(mContext);
-        int size = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 50, mContext.getResources().getDisplayMetrics()
-        );
+        GridLayout inventory = (GridLayout) mView.findViewById(R.id.inventory);
+        inventory.removeAllViews();
         for (String item : player.getInventoryItems()) {
-            conf.treasureByName(item);
+            mConf.treasureByName(item);
             ImageView imageView = new ImageView(mContext);
-            imageView.setImageResource(conf.getCurItemImg());
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            eqStats.addView(imageView);
-            setInventoryItemActions(imageView, conf);
+            imageView.setImageResource(mConf.getCurItemImg());
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(mInventorySize, mInventorySize));
+            inventory.addView(imageView);
+            setInventoryItemActions(imageView, true);
         }
     }
 
-    private void setInventoryItemActions(final ImageView imageView, Config conf) {
-        final String desc = conf.getCurItemDescription();
-        final String name = conf.getCurItemName();
+    private void setInventoryItemActions(final ImageView imageView, Boolean fromInventory) {
+        final String desc = mConf.getCurTreasureDescription();
+        final String name = mConf.getCurItemName();
         final GestureDetector gesture = (new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
@@ -117,36 +127,80 @@ public class EquipmentDialog {
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                int color = Color.TRANSPARENT;
-                Drawable background = imageView.getBackground();
-                if (background instanceof ColorDrawable)
-                    color = ((ColorDrawable) background).getColor();
-
-                imageView.setBackgroundColor(color == Color.WHITE ? Color.TRANSPARENT : Color.WHITE);
+                Toast.makeText(mContext, name + "\n" + desc, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             @Override
             public void onLongPress(MotionEvent e) {
-                Toast.makeText(mContext, desc, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                useInventoryItem(name);
-                return false;
+                useItem(imageView, name, fromInventory);
+                return true;
             }
         }));
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                /*switch (event.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                }*/
                 return gesture.onTouchEvent(event);
             }
         });
     }
 
-    private void useInventoryItem(String name) {
+    private void useItem(ImageView selectedImage, String name, Boolean fromInventory) {
         Player player = ((MainActivity) mContext).mPlayer;
+        if (fromInventory) {
+            if (player.isItemEquiped(name)) {
+                Toast.makeText(mContext, "You are already wearing such item", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            String slot = addItemToEquipmentOrUse(name, null);
+            if (slot != null || mConf.getCurTreasureStat() != null) {
+                player.removeItemFromInventory(name);
+            }
+            if (slot != null) {
+                String item = player.getItemByEquipmentSlot(slot);
+                if (item != null) {
+                    player.addItemToInventory(item);
+                    player.removeItemFromEquipment(item);
+                    // set temp treasure
+                    mConf.treasureByName(item);
+                    if (mConf.getCurTreasureStat() != null) {
+                        player.decreaseStat(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
+                    }
+                    // return current treasure
+                    mConf.treasureByName(name);
+                }
+                player.addItemToEquipment(name, slot);
+            }
+            if (mConf.getCurTreasureStat() != null) {
+                player.increaseStat(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
+                if (slot == null) {
+                    (((MainActivity) mContext).mLogHistoryFragment)
+                            .addStatIncreaseRec(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
+                }
+            }
+            showStats();
+        } else {
+            player.addItemToInventory(name);
+            player.removeItemFromEquipment(name);
+            mConf.treasureByName(name);
+            if (mConf.getCurTreasureStat() != null) {
+                player.decreaseStat(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
+                showStats();
+            }
+            selectedImage.setImageResource(0);
+        }
+        showInventory();
     }
 }

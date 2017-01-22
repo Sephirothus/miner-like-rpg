@@ -6,7 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import java.util.HashMap;
+
+import java.util.ArrayList;
 
 /**
  * Created by sephiroth on 28.08.16.
@@ -18,7 +19,7 @@ public class CellBattleAdapter extends BaseAdapter {
     private boolean mIsPlayerMove = true;
     private boolean mIsEnabled = true;
 
-    HashMap mDmgs = new HashMap<Integer, Integer>();
+    private ArrayList<Integer> mDmgs = new ArrayList<>();
 
     CellBattleAdapter(Context context, Enemy enemy) {
         mContext = context;
@@ -32,7 +33,7 @@ public class CellBattleAdapter extends BaseAdapter {
 
     @Override
     public Integer getItem(int position) {
-        return (Integer) mDmgs.get(position);
+        return mDmgs.get(position);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CellBattleAdapter extends BaseAdapter {
     }
 
     public void add(int pos, int dmg) {
-        mDmgs.put(pos, dmg);
+        mDmgs.add(pos, dmg);
     }
 
     @Override

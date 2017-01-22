@@ -6,14 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 /**
  * Created by konst on 22.08.16.
  */
 public class CellAdapter extends BaseAdapter {
 
-    HashMap mUnits = new HashMap<Integer, Unit>();
-    Context mContext;
+    private ArrayList<Unit> mUnits = new ArrayList<>();
+    private Context mContext;
     private boolean mIsEnabled = true;
 
     CellAdapter(Context context) {
@@ -27,7 +27,7 @@ public class CellAdapter extends BaseAdapter {
 
     @Override
     public Unit getItem(int position) {
-        return (Unit) mUnits.get(position);
+        return mUnits.get(position);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CellAdapter extends BaseAdapter {
     }
 
     public void add(int pos, Unit unit) {
-        mUnits.put(pos, unit);
+        mUnits.add(pos, unit);
     }
 
     @Override

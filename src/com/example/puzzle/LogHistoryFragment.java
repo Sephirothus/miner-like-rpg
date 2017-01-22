@@ -81,7 +81,12 @@ public class LogHistoryFragment extends Fragment {
     }
 
     public String addStatIncreaseRec(String playerStat, int statVal) {
-        String text = "Your " + Config.getFullStatName(playerStat) + " increased by " + statVal;
+        String text = "Your " + Config.getFullStatName(playerStat);
+        if (statVal == 0) {
+            text += " have been fully restored";
+        } else {
+            text += " increased by " + statVal;
+        }
         addRecord(text, Color.CYAN);
         return text;
     }

@@ -14,12 +14,12 @@ public class Player implements BattleUnitInterface {
 
     private Context mContext;
     private int mGold = 0;
-    private ArrayList<String> mInventory = new ArrayList();
-    private ArrayList<String> mEquipment = new ArrayList<String>() {{
-        add("Hat");
-        add("White Shirt");
-        add("Trousers");
-        add("Wooden clogs");
+    private ArrayList<String> mInventory = new ArrayList<>();
+    private HashMap<String, String> mEquipment = new HashMap<String, String>() {{
+        put("Hat", "equip_head");
+        put("White Shirt", "equip_chest");
+        put("Trousers", "equip_legs");
+        put("Wooden Clogs", "equip_boots");
     }};
     private HashMap mStats = new HashMap<String, Integer>() {{
         put("hp", 20);
@@ -52,15 +52,34 @@ public class Player implements BattleUnitInterface {
     }
 
     public void addStat(String stat, int addValue) {
-        addCurStat(stat, addValue);
-        mStats.put(stat, (int) mStats.get(stat) + addValue);
+        mStats.put(stat, getStat(stat) + addValue);
+    }
+
+    public void increaseStat(String stat, int addValue) {
+        if (addValue == 0) {
+            refreshCurStat(stat);
+        } else {
+            addStat(stat, addValue);
+            addCurStat(stat, addValue);
+        }
+        changeStatsPanel(stat);
+    }
+
+    public void decreaseStat(String stat, int removeValue) {
+        addStat(stat, -removeValue);
+        addCurStat(stat, -removeValue);
+        //if (getCurStat(stat) < 1) mCurStats.put(stat, 1);
+        changeStatsPanel(stat);
+    }
+
+    public void changeStatsPanel(String stat) {
         // change stats panel
         String statName = Character.toUpperCase(stat.charAt(0)) + stat.substring(1);
         StatsPanelFragment statsPanel = ((MainActivity) mContext).mStatsPanelFragment;
         try {
             statsPanel.getClass()
-                .getDeclaredMethod("change" + statName + "Stat")
-                .invoke(statsPanel);
+                    .getDeclaredMethod("change" + statName + "Stat")
+                    .invoke(statsPanel);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -74,12 +93,39 @@ public class Player implements BattleUnitInterface {
         mInventory.add(itemName);
     }
 
+    public void removeItemFromInventory(String itemName) {
+        mInventory.remove(itemName);
+    }
+
+    public void addItemToEquipment(String itemName, String slot) {
+        mEquipment.put(itemName, slot);
+    }
+
+    public void removeItemFromEquipment(String itemName) {
+        mEquipment.remove(itemName);
+    }
+
+    public String getEquipmentSlotByItem(String item) {
+        return mEquipment.get(item);
+    }
+
+    public String getItemByEquipmentSlot(String slot) {
+        for (Object item : getEquipmentItems()) {
+            if (mEquipment.get(item) == slot) return item.toString();
+        }
+        return null;
+    }
+
+    public Boolean isItemEquiped(String item) {
+        return mEquipment.containsKey(item);
+    }
+
     public ArrayList<String> getInventoryItems() {
         return mInventory;
     }
 
-    public ArrayList<String> getEquipmentItems() {
-        return mEquipment;
+    public Object[] getEquipmentItems() {
+        return mEquipment.keySet().toArray();
     }
 
     public void getHit(int dmg) {
@@ -129,7 +175,7 @@ public class Player implements BattleUnitInterface {
     public void lvlStatIncrease() {
         Object[] stats = mStats.keySet().toArray();
         String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
-        addStat(incrStat, LVL_STAT_INCREASE);
+        increaseStat(incrStat, LVL_STAT_INCREASE);
         ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
     }
 

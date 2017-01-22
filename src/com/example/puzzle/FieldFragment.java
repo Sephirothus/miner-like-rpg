@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  */
 public class FieldFragment extends Fragment {
 
-    public Map mMap;
+    public MainMap mMainMap;
     private View mRootView;
 
     @Override
@@ -42,13 +42,13 @@ public class FieldFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mMap == null) {
-            mMap = new Map(getActivity());
+        if (mMainMap == null) {
+            mMainMap = new MainMap(getActivity());
             createPlayField();
         }
     }
 
     public void createPlayField() {
-        mMap.create().setUnits();
+        mMainMap.create().setUnits();
     }
 }

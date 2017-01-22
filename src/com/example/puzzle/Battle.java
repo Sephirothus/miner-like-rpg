@@ -44,6 +44,7 @@ public class Battle {
         if (!check) {
             mAdapter.disableAdapter();
             ((MainActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
+            mPlayer.lvlStatIncrease();
             endBattle();
         } else enemyMove();
     }
@@ -65,10 +66,10 @@ public class Battle {
 
     public int openCell() {
         Random r = new Random();
-        int pos = r.nextInt(Map.TOTAL_CELLS);
+        int pos = r.nextInt(MainMap.TOTAL_CELLS);
         View view = mGridView.getChildAt(pos);
         while (!isCellEmpty(view)) {
-            pos = r.nextInt(Map.TOTAL_CELLS);
+            pos = r.nextInt(MainMap.TOTAL_CELLS);
             view = mGridView.getChildAt(pos);
         }
         mGridView.performItemClick(view, pos, mAdapter.getItemId(pos));

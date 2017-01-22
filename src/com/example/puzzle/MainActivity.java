@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
@@ -18,6 +19,8 @@ public class MainActivity extends Activity {
     public FieldFragment mFieldFragment = new FieldFragment();
     public LogHistoryFragment mLogHistoryFragment = new LogHistoryFragment();
     public BattleFieldFragment mBattleFieldFragment;
+    public DungeonFieldFragment mDungeonFieldFragment;
+    private MerchantDialog mMerchantDialog;
 
     /**
      * Called when the activity is first created.
@@ -34,6 +37,8 @@ public class MainActivity extends Activity {
 
         mPlayer = new Player(this);
         (new EquipmentDialog(this)).equipmentClick();
+        mMerchantDialog = new MerchantDialog(this);
+        mMerchantDialog.setShopItems().merchantClick();
         mFragmentManager = getFragmentManager();
 
         mFragmentManager.beginTransaction()
@@ -66,10 +71,12 @@ public class MainActivity extends Activity {
         mLogHistoryFragment.addNewLvlRec(mLvl);
         mPlayer.lvlStatIncrease();
         mPlayer.refreshSteps();
-        mFieldFragment.mMap.create().setUnits();
+        mFieldFragment.mMainMap.create().setUnits();
+        mMerchantDialog.setShopItems();
     }
 
     public void startBattle(Enemy enemy) {
+        mMerchantDialog.disableShop();
         mBattleFieldFragment = new BattleFieldFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("enemy", enemy);
@@ -89,5 +96,24 @@ public class MainActivity extends Activity {
                 .commit();
         mStatsPanelFragment.removeEnemyStats();
         mBattleFieldFragment = null;
+        mMerchantDialog.enableShop();
+    }
+
+    public void startDungeon() {
+        mMerchantDialog.disableShop();
+        mDungeonFieldFragment = new DungeonFieldFragment();
+        mFragmentManager.beginTransaction()
+                .replace(R.id.field, mDungeonFieldFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    public void endDungeon() {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.field, mFieldFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+        mDungeonFieldFragment = null;
+        mMerchantDialog.enableShop();
     }
 }
