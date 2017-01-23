@@ -115,7 +115,7 @@ public class EquipmentDialog {
         }
     }
 
-    private void setInventoryItemActions(final ImageView imageView, Boolean fromInventory) {
+    private void setInventoryItemActions(final ImageView imageView, final Boolean fromInventory) {
         final String desc = mConf.getCurTreasureDescription();
         final String name = mConf.getCurItemName();
         final GestureDetector gesture = (new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {

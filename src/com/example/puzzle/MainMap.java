@@ -75,6 +75,7 @@ public class MainMap {
     }
 
     public MainMap setLabyrinth() {
+
         return this;
     }
 

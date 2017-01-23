@@ -162,6 +162,14 @@ public class Player implements BattleUnitInterface {
         return mGold;
     }
 
+    public void increaseGold(int value) {
+        mGold += value;
+    }
+
+    public void decreaseGold(int value) {
+        mGold -= value;
+    }
+
     public void removeStep() {
         addCurStat("steps", -1);
         ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();

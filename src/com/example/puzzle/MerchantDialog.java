@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class MerchantDialog {
 
     final static int MAX_COUNT_SHOP_ITEMS = 10;
+    final static int ITEMS_DISCOUNT_PERCENT_FOR_SELL = 30;
 
     private Context mContext;
     private View mView;
@@ -40,7 +41,8 @@ public class MerchantDialog {
             public void onClick(View v) {
                 mView = (((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.merchant, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                setPlayerHeadImgAndGold();
+                setPlayerHeadImg();
+                setPlayerGold();
                 showShopItems();
                 showInventory();
                 builder.setView(mView)
@@ -92,12 +94,15 @@ public class MerchantDialog {
         }
     }
 
-    private void setPlayerHeadImgAndGold() {
+    private void setPlayerGold() {
         Player player = ((MainActivity) mContext).mPlayer;
         TextView text = (TextView) mView.findViewById(R.id.player_gold);
         text.setText(player.getGold() + " gold");
         text.setTextColor(Color.YELLOW);
+    }
 
+    private void setPlayerHeadImg() {
+        Player player = ((MainActivity) mContext).mPlayer;
         String head = player.getItemByEquipmentSlot("equip_head");
         if (head != null) {
             ImageView image = (ImageView) mView.findViewById(R.id.player_head);
@@ -120,7 +125,7 @@ public class MerchantDialog {
         }
     }
 
-    private void setShopItemActions(final ImageView imageView, Boolean fromInventory) {
+    private void setShopItemActions(final ImageView imageView, final Boolean fromInventory) {
         final String desc = mConf.getCurTreasureDescription();
         final String name = mConf.getCurItemName();
         final GestureDetector gesture = (new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
@@ -143,7 +148,7 @@ public class MerchantDialog {
 
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                //useItem(imageView, name, fromInventory);
+                useItem(name, fromInventory);
                 return false;
             }
         }));
@@ -155,12 +160,64 @@ public class MerchantDialog {
         });
     }
 
-    private void useItem(ImageView selectedImage, String name, Boolean fromInventory) {
-        Player player = ((MainActivity) mContext).mPlayer;
+    private void useItem(final String name, Boolean fromInventory) {
+        final Player player = ((MainActivity) mContext).mPlayer;
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        mConf.treasureByName(name);
+        final int curPrice = mConf.getCurTreasurePrice();
         if (fromInventory) {
-
+            final int price = curPrice - Math.round(curPrice * ITEMS_DISCOUNT_PERCENT_FOR_SELL / 100f);
+            if (price < 1) {
+                Toast.makeText(mContext, "I don't want that", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            builder.setTitle("Sell " + name)
+                    .setMessage("I'll take this for " + price + " gold, agreed?")
+                    .setCancelable(false)
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            player.removeItemFromInventory(name);
+                            mShopItems.add(name);
+                            player.increaseGold(price);
+                            setPlayerGold();
+                            showShopItems();
+                            showInventory();
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         } else {
-
+            builder.setTitle("Buy " + name)
+                    .setMessage("You can take it for " + curPrice + " gold, it's a fair price")
+                    .setCancelable(false)
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            if (player.getGold() >= curPrice) {
+                                player.addItemToInventory(name);
+                                mShopItems.remove(name);
+                                player.decreaseGold(curPrice);
+                                setPlayerGold();
+                                showShopItems();
+                                showInventory();
+                            } else {
+                                Toast.makeText(mContext, "You don't have enough gold :(", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 }
