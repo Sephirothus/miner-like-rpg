@@ -3,13 +3,13 @@ package com.example.puzzle;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-public class MainActivity extends Activity {
+public class ArcadeActivity extends Activity {
 
     public Player mPlayer;
     private int mLvl = 1;
@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        setContentView(R.layout.main);
+        setContentView(R.layout.arcade);
 
         mPlayer = new Player(this);
         (new EquipmentDialog(this)).equipmentClick();
@@ -50,6 +50,10 @@ public class MainActivity extends Activity {
 
     public int getLvl() {
         return mLvl;
+    }
+
+    public void setLvl(int lvl) {
+        mLvl = lvl;
     }
 
     public void checkIsLvlEnd() {

@@ -59,8 +59,8 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     }
 
     public void action() {
-        ((MainActivity) mContext).mLogHistoryFragment.addEnemyMeetupRec(mConfig.getCurItemName());
-        ((MainActivity) mContext).startBattle(this);
+        ((ArcadeActivity) mContext).mLogHistoryFragment.addEnemyMeetupRec(mConfig.getCurItemName());
+        ((ArcadeActivity) mContext).startBattle(this);
     }
 
     @Override
@@ -74,8 +74,8 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
 
     public void getHit(int dmg) {
         addCurStat("hp", -dmg);
-        ((MainActivity) mContext).mStatsPanelFragment.changeEnemyHp(getHp());
-        ((MainActivity) mContext).mLogHistoryFragment.addPlayerHitEnemyRec(dmg);
+        ((ArcadeActivity) mContext).mStatsPanelFragment.changeEnemyHp(getHp());
+        ((ArcadeActivity) mContext).mLogHistoryFragment.addPlayerHitEnemyRec(dmg);
     }
 
     public int strike(int dmg) {

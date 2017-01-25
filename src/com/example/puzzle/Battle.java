@@ -21,8 +21,8 @@ public class Battle {
     Battle (Context context, Enemy enemy) {
         mContext = context;
         mEnemy = enemy;
-        mPlayer = ((MainActivity) context).mPlayer;
-        mGridView = (GridView) ((MainActivity) context).findViewById(R.id.gridView);
+        mPlayer = ((ArcadeActivity) context).mPlayer;
+        mGridView = (GridView) ((ArcadeActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
     }
 
@@ -43,7 +43,7 @@ public class Battle {
         Boolean check = mEnemy.checkHp();
         if (!check) {
             mAdapter.disableAdapter();
-            ((MainActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
+            ((ArcadeActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
             mPlayer.lvlStatIncrease();
             endBattle();
         } else enemyMove();
@@ -56,7 +56,7 @@ public class Battle {
         mPlayer.getHit(mEnemy.strike(dmg));
         Boolean check = mPlayer.checkHp();
         if (!check) {
-            ((MainActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
+            ((ArcadeActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
             endBattle();
         } else {
             mAdapter.setIsPlayerMove(true);
@@ -85,7 +85,7 @@ public class Battle {
         mGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((MainActivity) mContext).endBattle();
+                ((ArcadeActivity) mContext).endBattle();
             }
         }, 1000);
     }

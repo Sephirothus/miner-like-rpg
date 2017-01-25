@@ -35,11 +35,11 @@ public class MerchantDialog {
     }
 
     public void merchantClick() {
-        ImageView view = (ImageView) ((MainActivity) mContext).findViewById(R.id.merchant);
+        ImageView view = (ImageView) ((ArcadeActivity) mContext).findViewById(R.id.merchant);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mView = (((MainActivity) mContext).getLayoutInflater()).inflate(R.layout.merchant, null);
+                mView = (((ArcadeActivity) mContext).getLayoutInflater()).inflate(R.layout.merchant, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 setPlayerHeadImg();
                 setPlayerGold();
@@ -60,12 +60,12 @@ public class MerchantDialog {
     }
 
     public void disableShop() {
-        ImageView view = (ImageView) ((MainActivity) mContext).findViewById(R.id.merchant);
+        ImageView view = (ImageView) ((ArcadeActivity) mContext).findViewById(R.id.merchant);
         view.setClickable(false);
     }
 
     public void enableShop() {
-        ImageView view = (ImageView) ((MainActivity) mContext).findViewById(R.id.merchant);
+        ImageView view = (ImageView) ((ArcadeActivity) mContext).findViewById(R.id.merchant);
         view.setClickable(true);
     }
 
@@ -95,14 +95,14 @@ public class MerchantDialog {
     }
 
     private void setPlayerGold() {
-        Player player = ((MainActivity) mContext).mPlayer;
+        Player player = ((ArcadeActivity) mContext).mPlayer;
         TextView text = (TextView) mView.findViewById(R.id.player_gold);
         text.setText(player.getGold() + " gold");
         text.setTextColor(Color.YELLOW);
     }
 
     private void setPlayerHeadImg() {
-        Player player = ((MainActivity) mContext).mPlayer;
+        Player player = ((ArcadeActivity) mContext).mPlayer;
         String head = player.getItemByEquipmentSlot("equip_head");
         if (head != null) {
             ImageView image = (ImageView) mView.findViewById(R.id.player_head);
@@ -112,7 +112,7 @@ public class MerchantDialog {
     }
 
     private void showInventory() {
-        Player player = ((MainActivity) mContext).mPlayer;
+        Player player = ((ArcadeActivity) mContext).mPlayer;
         GridLayout inventory = (GridLayout) mView.findViewById(R.id.inventory_in_shop);
         inventory.removeAllViews();
         for (String item : player.getInventoryItems()) {
@@ -161,7 +161,7 @@ public class MerchantDialog {
     }
 
     private void useItem(final String name, Boolean fromInventory) {
-        final Player player = ((MainActivity) mContext).mPlayer;
+        final Player player = ((ArcadeActivity) mContext).mPlayer;
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         mConf.treasureByName(name);
         final int curPrice = mConf.getCurTreasurePrice();

@@ -31,8 +31,8 @@ public class MainMap {
     MainMap(Context context) {
         mRandom = new Random();
         mContext = context;
-        mPlayer = ((MainActivity) mContext).mPlayer;
-        mGridView = (GridView) ((MainActivity) mContext).findViewById(R.id.gridView);
+        mPlayer = ((ArcadeActivity) mContext).mPlayer;
+        mGridView = (GridView) ((ArcadeActivity) mContext).findViewById(R.id.gridView);
     }
 
     public MainMap create() {
@@ -46,7 +46,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
                 mCountUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((MainActivity) mContext).getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((ArcadeActivity) mContext).getLvl(), pos));
             } else {
                 adapter.add(pos, new Empty());
             }
@@ -89,7 +89,7 @@ public class MainMap {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();
-                    ((MainActivity) mContext).checkIsLvlEnd();
+                    ((ArcadeActivity) mContext).checkIsLvlEnd();
                 }
             }
         });
@@ -113,7 +113,7 @@ public class MainMap {
 
                     view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
-                        ((MainActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
+                        ((ArcadeActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
                     }
                 }
             }

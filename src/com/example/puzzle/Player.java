@@ -1,9 +1,14 @@
 package com.example.puzzle;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by sephiroth on 28.08.16.
@@ -33,6 +38,7 @@ public class Player implements BattleUnitInterface {
 
     Player (Context context) {
         mContext = context;
+        loadObject();
     }
 
     public int getCurStat(String stat) {
@@ -75,7 +81,7 @@ public class Player implements BattleUnitInterface {
     public void changeStatsPanel(String stat) {
         // change stats panel
         String statName = Character.toUpperCase(stat.charAt(0)) + stat.substring(1);
-        StatsPanelFragment statsPanel = ((MainActivity) mContext).mStatsPanelFragment;
+        StatsPanelFragment statsPanel = ((ArcadeActivity) mContext).mStatsPanelFragment;
         try {
             statsPanel.getClass()
                     .getDeclaredMethod("change" + statName + "Stat")
@@ -130,8 +136,8 @@ public class Player implements BattleUnitInterface {
 
     public void getHit(int dmg) {
         addCurStat("hp", -dmg);
-        ((MainActivity) mContext).mStatsPanelFragment.changeHpStat();
-        ((MainActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
+        ((ArcadeActivity) mContext).mStatsPanelFragment.changeHpStat();
+        ((ArcadeActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
     }
 
     public int strike(int dmg) {
@@ -172,22 +178,37 @@ public class Player implements BattleUnitInterface {
 
     public void removeStep() {
         addCurStat("steps", -1);
-        ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
+        ((ArcadeActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void refreshSteps() {
         refreshCurStat("steps");
-        ((MainActivity) mContext).mStatsPanelFragment.changeStepsStat();
+        ((ArcadeActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void lvlStatIncrease() {
         Object[] stats = mStats.keySet().toArray();
         String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
         increaseStat(incrStat, LVL_STAT_INCREASE);
-        ((MainActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
+        ((ArcadeActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
     }
 
     public Object[] getAllStats() {
         return mStats.keySet().toArray();
+    }
+
+    public void saveObject() {
+        SharedPreferences sharedPreferences = ((ArcadeActivity) mContext).getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("lvl", ((ArcadeActivity) mContext).getLvl());
+        editor.putInt("gold", mGold);
+    }
+
+    public void loadObject() {
+        ArcadeActivity activity = ((ArcadeActivity) mContext);
+        SharedPreferences sharedPreferences = activity.getPreferences(MODE_PRIVATE);
+        activity.setLvl(sharedPreferences.getInt("lvl", ((ArcadeActivity) mContext).getLvl()));
+        mGold = sharedPreferences.getInt("gold", mGold);
     }
 }
