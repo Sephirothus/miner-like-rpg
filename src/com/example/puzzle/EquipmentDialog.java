@@ -34,11 +34,11 @@ public class EquipmentDialog {
     }
 
     public void equipmentClick() {
-        ImageView view = (ImageView) ((ArcadeActivity) mContext).findViewById(R.id.equipment);
+        ImageView view = (ImageView) ((ExtendActivity) mContext).findViewById(R.id.equipment);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mView = (((ArcadeActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null);
+                mView = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.equipment, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 showEquipment();
                 showStats();
@@ -58,7 +58,7 @@ public class EquipmentDialog {
     }
 
     private void showEquipment() {
-        Player player = ((ArcadeActivity) mContext).mPlayer;
+        Player player = ((ExtendActivity) mContext).mPlayer;
         for (Object item : player.getEquipmentItems()) {
             addItemToEquipmentOrUse(item.toString(), player.getEquipmentSlotByItem(item.toString()));
         }
@@ -76,10 +76,10 @@ public class EquipmentDialog {
     }
 
     private void showStats() {
-        Player player = ((ArcadeActivity) mContext).mPlayer;
+        Player player = ((ExtendActivity) mContext).mPlayer;
         LinearLayout eqStats = (LinearLayout) mView.findViewById(R.id.equipment_stats);
         eqStats.removeAllViews();
-        addTextViewToStats(eqStats, Config.getFullStatName("lvl"), String.valueOf(((ArcadeActivity) mContext).getLvl()));
+        addTextViewToStats(eqStats, Config.getFullStatName("lvl"), String.valueOf(((ExtendActivity) mContext).getLvl()));
         for (Object stat : player.getAllStats()) {
             addTextViewToStats(
                     eqStats,
@@ -102,7 +102,7 @@ public class EquipmentDialog {
     }
 
     private void showInventory() {
-        Player player = ((ArcadeActivity) mContext).mPlayer;
+        Player player = ((ExtendActivity) mContext).mPlayer;
         GridLayout inventory = (GridLayout) mView.findViewById(R.id.inventory);
         inventory.removeAllViews();
         for (String item : player.getInventoryItems()) {
@@ -157,7 +157,7 @@ public class EquipmentDialog {
     }
 
     private void useItem(ImageView selectedImage, String name, Boolean fromInventory) {
-        Player player = ((ArcadeActivity) mContext).mPlayer;
+        Player player = ((ExtendActivity) mContext).mPlayer;
         if (fromInventory) {
             if (player.isItemEquiped(name)) {
                 Toast.makeText(mContext, "You are already wearing such item", Toast.LENGTH_SHORT).show();
@@ -186,7 +186,7 @@ public class EquipmentDialog {
             if (mConf.getCurTreasureStat() != null) {
                 player.increaseStat(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
                 if (slot == null) {
-                    (((ArcadeActivity) mContext).mLogHistoryFragment)
+                    (((ExtendActivity) mContext).mLogHistoryFragment)
                             .addStatIncreaseRec(mConf.getCurTreasureStat(), mConf.getCurTreasureStatPoints());
                 }
             }

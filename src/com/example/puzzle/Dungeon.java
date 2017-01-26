@@ -17,7 +17,7 @@ public class Dungeon extends Unit {
 
     @Override
     public void action() {
-        ((ArcadeActivity) mContext).startDungeon();
+        ((AdventureActivity) mContext).startDungeon();
     }
 
     @Override

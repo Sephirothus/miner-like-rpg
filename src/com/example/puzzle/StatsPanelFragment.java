@@ -36,7 +36,7 @@ public class StatsPanelFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mPlayer = ((ArcadeActivity) getActivity()).mPlayer;
+        mPlayer = ((ExtendActivity) getActivity()).mPlayer;
         mStatsTable = (TableLayout) getActivity().findViewById(R.id.enemy_stats);
 
         changeLvlStat();
@@ -67,7 +67,7 @@ public class StatsPanelFragment extends Fragment {
     }
 
     public StatsPanelFragment changeLvlStat() {
-        changeStatText("lvl", ((ArcadeActivity) getActivity()).getLvl(), Config.getShortStatName("lvl"));
+        changeStatText("lvl", ((ExtendActivity) getActivity()).getLvl(), Config.getShortStatName("lvl"));
         return this;
     }
 

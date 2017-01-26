@@ -21,8 +21,8 @@ public class Battle {
     Battle (Context context, Enemy enemy) {
         mContext = context;
         mEnemy = enemy;
-        mPlayer = ((ArcadeActivity) context).mPlayer;
-        mGridView = (GridView) ((ArcadeActivity) context).findViewById(R.id.gridView);
+        mPlayer = ((ExtendActivity) context).mPlayer;
+        mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
     }
 
@@ -43,7 +43,7 @@ public class Battle {
         Boolean check = mEnemy.checkHp();
         if (!check) {
             mAdapter.disableAdapter();
-            ((ArcadeActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
+            ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
             mPlayer.lvlStatIncrease();
             endBattle();
         } else enemyMove();
@@ -52,13 +52,16 @@ public class Battle {
     public void enemyMove() {
         mAdapter.setIsPlayerMove(false);
         mAdapter.disableAdapter();
+        if (!checkEmptyCells()) return;
+
         Integer dmg = openCell();
         mPlayer.getHit(mEnemy.strike(dmg));
         Boolean check = mPlayer.checkHp();
         if (!check) {
-            ((ArcadeActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
+            ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
             endBattle();
         } else {
+            if (!checkEmptyCells()) return;
             mAdapter.setIsPlayerMove(true);
             mAdapter.enableAdapter();
         }
@@ -66,14 +69,24 @@ public class Battle {
 
     public int openCell() {
         Random r = new Random();
-        int pos = r.nextInt(MainMap.TOTAL_CELLS);
+        int pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
         View view = mGridView.getChildAt(pos);
         while (!isCellEmpty(view)) {
-            pos = r.nextInt(MainMap.TOTAL_CELLS);
+            pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
             view = mGridView.getChildAt(pos);
         }
         mGridView.performItemClick(view, pos, mAdapter.getItemId(pos));
         return mAdapter.getItem(pos);
+    }
+
+    private boolean checkEmptyCells() {
+        for (int i = 0; i < MainMap.BATTLE_TOTAL_CELLS; i++) {
+            if (isCellEmpty(mGridView.getChildAt(i))) {
+                return true;
+            }
+        }
+        continueBattle();
+        return false;
     }
 
     public static boolean isCellEmpty(View view) {
@@ -85,7 +98,16 @@ public class Battle {
         mGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((ArcadeActivity) mContext).endBattle();
+                ((ExtendActivity) mContext).endBattle();
+            }
+        }, 1000);
+    }
+
+    public void continueBattle() {
+        mGridView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((ExtendActivity) mContext).startBattle(mEnemy);
             }
         }, 1000);
     }

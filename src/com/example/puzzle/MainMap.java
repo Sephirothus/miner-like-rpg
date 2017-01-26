@@ -16,6 +16,7 @@ import java.util.Random;
 public class MainMap {
 
     final static int TOTAL_CELLS = 30;
+    final static int BATTLE_TOTAL_CELLS = 30;
     final static int MAX_UNITS = 20;
     final static int MIN_UNITS = 5;
     final static int CELLS_PER_LINE = 6;
@@ -31,8 +32,8 @@ public class MainMap {
     MainMap(Context context) {
         mRandom = new Random();
         mContext = context;
-        mPlayer = ((ArcadeActivity) mContext).mPlayer;
-        mGridView = (GridView) ((ArcadeActivity) mContext).findViewById(R.id.gridView);
+        mPlayer = ((ExtendActivity) mContext).mPlayer;
+        mGridView = (GridView) ((ExtendActivity) mContext).findViewById(R.id.gridView);
     }
 
     public MainMap create() {
@@ -46,7 +47,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
                 mCountUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((ArcadeActivity) mContext).getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).getLvl(), pos));
             } else {
                 adapter.add(pos, new Empty());
             }
@@ -58,7 +59,7 @@ public class MainMap {
 
     public MainMap setDmgPoints(Enemy enemy) {
         CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
-        for (int pos = 0; pos < TOTAL_CELLS; pos++) {
+        for (int pos = 0; pos < BATTLE_TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
                 adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT) + 1);
             } else {
@@ -89,7 +90,7 @@ public class MainMap {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view);
                     unit.action();
-                    ((ArcadeActivity) mContext).checkIsLvlEnd();
+                    ((ExtendActivity) mContext).checkIsLvlEnd();
                 }
             }
         });
@@ -113,7 +114,7 @@ public class MainMap {
 
                     view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
-                        ((ArcadeActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
+                        ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
                     }
                 }
             }

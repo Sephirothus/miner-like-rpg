@@ -38,7 +38,6 @@ public class Player implements BattleUnitInterface {
 
     Player (Context context) {
         mContext = context;
-        loadObject();
     }
 
     public int getCurStat(String stat) {
@@ -81,7 +80,7 @@ public class Player implements BattleUnitInterface {
     public void changeStatsPanel(String stat) {
         // change stats panel
         String statName = Character.toUpperCase(stat.charAt(0)) + stat.substring(1);
-        StatsPanelFragment statsPanel = ((ArcadeActivity) mContext).mStatsPanelFragment;
+        StatsPanelFragment statsPanel = ((ExtendActivity) mContext).mStatsPanelFragment;
         try {
             statsPanel.getClass()
                     .getDeclaredMethod("change" + statName + "Stat")
@@ -136,8 +135,8 @@ public class Player implements BattleUnitInterface {
 
     public void getHit(int dmg) {
         addCurStat("hp", -dmg);
-        ((ArcadeActivity) mContext).mStatsPanelFragment.changeHpStat();
-        ((ArcadeActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
+        ((ExtendActivity) mContext).mStatsPanelFragment.changeHpStat();
+        ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
     }
 
     public int strike(int dmg) {
@@ -178,19 +177,19 @@ public class Player implements BattleUnitInterface {
 
     public void removeStep() {
         addCurStat("steps", -1);
-        ((ArcadeActivity) mContext).mStatsPanelFragment.changeStepsStat();
+        ((ExtendActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void refreshSteps() {
         refreshCurStat("steps");
-        ((ArcadeActivity) mContext).mStatsPanelFragment.changeStepsStat();
+        ((ExtendActivity) mContext).mStatsPanelFragment.changeStepsStat();
     }
 
     public void lvlStatIncrease() {
         Object[] stats = mStats.keySet().toArray();
         String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
         increaseStat(incrStat, LVL_STAT_INCREASE);
-        ((ArcadeActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
+        ((ExtendActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
     }
 
     public Object[] getAllStats() {
@@ -198,17 +197,17 @@ public class Player implements BattleUnitInterface {
     }
 
     public void saveObject() {
-        SharedPreferences sharedPreferences = ((ArcadeActivity) mContext).getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = ((ExtendActivity) mContext).getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("lvl", ((ArcadeActivity) mContext).getLvl());
+        editor.putInt("lvl", ((ExtendActivity) mContext).getLvl());
         editor.putInt("gold", mGold);
     }
 
     public void loadObject() {
-        ArcadeActivity activity = ((ArcadeActivity) mContext);
+        ExtendActivity activity = ((ExtendActivity) mContext);
         SharedPreferences sharedPreferences = activity.getPreferences(MODE_PRIVATE);
-        activity.setLvl(sharedPreferences.getInt("lvl", ((ArcadeActivity) mContext).getLvl()));
+        activity.setLvl(sharedPreferences.getInt("lvl", ((ExtendActivity) mContext).getLvl()));
         mGold = sharedPreferences.getInt("gold", mGold);
     }
 }

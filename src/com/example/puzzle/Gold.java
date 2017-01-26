@@ -28,14 +28,14 @@ public class Gold extends Unit {
     private void getTreasure() {
         mConfig = new Config(mContext);
         mConfig.randomTreasure();
-        ((ArcadeActivity) mContext).mLogHistoryFragment.addTreasureFoundRec(mConfig.getCurItemName());
-        ((ArcadeActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName());
+        ((ExtendActivity) mContext).mLogHistoryFragment.addTreasureFoundRec(mConfig.getCurItemName());
+        ((ExtendActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName());
     }
 
     public void showTreasure() {
         getTreasure();
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        View view = ((ArcadeActivity) mContext).getLayoutInflater().inflate(R.layout.treasure_window, null);
+        View view = ((ExtendActivity) mContext).getLayoutInflater().inflate(R.layout.treasure_window, null);
         ImageView image = (ImageView) view.findViewById(R.id.treasure_img);
         image.setImageResource(mConfig.getCurItemImg());
         TextView name = (TextView) view.findViewById(R.id.treasure_name);

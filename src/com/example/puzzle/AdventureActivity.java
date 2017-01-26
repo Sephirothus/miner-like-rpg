@@ -1,24 +1,32 @@
 package com.example.puzzle;
 
-import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
 /**
  * Created by sephirothus on 25.01.17.
  */
-public class AdventureActivity extends Activity{
+public class AdventureActivity extends ExtendActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
-        setContentView(R.layout.arcade);
 
+    }
+
+    public void startDungeon() {
+        mDungeonFieldFragment = new DungeonFieldFragment();
+        mFragmentManager.beginTransaction()
+                .replace(R.id.field, mDungeonFieldFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    public void endDungeon() {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.field, mFieldFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+        mDungeonFieldFragment = null;
     }
 }
