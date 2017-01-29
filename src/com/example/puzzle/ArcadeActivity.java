@@ -9,6 +9,9 @@ public class ArcadeActivity extends ExtendActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFieldFragment = new FieldFragment();
+        setContentView(R.layout.arcade);
+        init();
 
         mMerchantDialog = new MerchantDialog(this);
         mMerchantDialog.setShopItems().merchantClick();
@@ -21,7 +24,7 @@ public class ArcadeActivity extends ExtendActivity {
     }
 
     @Override
-    public void startBattle(Enemy enemy) {
+    public void startBattle(UnitEnemy enemy) {
         mMerchantDialog.disableShop();
         super.startBattle(enemy);
     }

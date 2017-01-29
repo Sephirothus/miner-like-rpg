@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class CellAdapter extends BaseAdapter {
 
-    private ArrayList<Unit> mUnits = new ArrayList<>();
-    private Context mContext;
+    protected ArrayList<Unit> mUnits = new ArrayList<>();
+    protected Context mContext;
     private boolean mIsEnabled = true;
 
     CellAdapter(Context context) {

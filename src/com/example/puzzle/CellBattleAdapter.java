@@ -15,13 +15,13 @@ import java.util.ArrayList;
 public class CellBattleAdapter extends BaseAdapter {
 
     private Context mContext;
-    private Enemy mEnemy;
+    private UnitEnemy mEnemy;
     private boolean mIsPlayerMove = true;
     private boolean mIsEnabled = true;
 
     private ArrayList<Integer> mDmgs = new ArrayList<>();
 
-    CellBattleAdapter(Context context, Enemy enemy) {
+    CellBattleAdapter(Context context, UnitEnemy enemy) {
         mContext = context;
         mEnemy = enemy;
     }
@@ -55,7 +55,7 @@ public class CellBattleAdapter extends BaseAdapter {
         view.setBackgroundColor(Color.RED);
 
         if (mEnemy.getPosition() == position) {
-            mEnemy.addUnitToCell(mContext, view);
+            mEnemy.addUnitToCell(mContext, view, true);
         }
         return view;
     }

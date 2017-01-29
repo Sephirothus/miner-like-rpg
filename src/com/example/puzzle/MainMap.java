@@ -27,7 +27,6 @@ public class MainMap {
     private GridView mGridView;
     private Context mContext;
     private Random mRandom;
-    private int mCountUnits;
 
     MainMap(Context context) {
         mRandom = new Random();
@@ -42,14 +41,15 @@ public class MainMap {
     }
 
     public MainMap setUnits() {
-        mCountUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
+        int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
+        Unit.units = new Class[] {UnitEnemy.class, UnitTreasure.class};
         CellAdapter adapter = new CellAdapter(mContext);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
-            if (mRandom.nextInt(2) == 1 && mCountUnits > 0) {
-                mCountUnits--;
+            if (mRandom.nextInt(2) == 1 && countUnits > 0) {
+                countUnits--;
                 adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).getLvl(), pos));
             } else {
-                adapter.add(pos, new Empty());
+                adapter.add(pos, new UnitEmpty());
             }
         }
         mGridView.setAdapter(adapter);
@@ -57,7 +57,7 @@ public class MainMap {
         return this;
     }
 
-    public MainMap setDmgPoints(Enemy enemy) {
+    public MainMap setDmgPoints(UnitEnemy enemy) {
         CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
         for (int pos = 0; pos < BATTLE_TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
@@ -71,13 +71,47 @@ public class MainMap {
         return this;
     }
 
+    public MainMap setTownUnits() {
+        int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
+        TownCellAdapter adapter = new TownCellAdapter(mContext);
+        Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
+        int lvl = ((ExtendActivity) mContext).getLvl();
+        for (int pos = 0; pos < TOTAL_CELLS; pos++) {
+            if (mRandom.nextInt(2) == 1 && countUnits > 0) {
+                countUnits--;
+                adapter.add(pos, Unit.getRandomUnit(mContext, lvl, pos));
+            } else {
+                adapter.add(pos, new UnitEmpty());
+            }
+        }
+        // changing two random units to unitsOnePerField
+        Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
+        for (Class unit: unitsOnePerField) {
+            int pos = mRandom.nextInt(TOTAL_CELLS);
+            adapter.changeItem(pos, Unit.newInstance(unit, mContext, lvl, pos));
+        }
+        mGridView.setAdapter(adapter);
+        setTownMapClick();
+        return this;
+    }
+
     public MainMap setTrapsAndTreasures() {
         return this;
     }
 
     public MainMap setLabyrinth() {
-
         return this;
+    }
+
+    public void setTownMapClick() {
+        final TownCellAdapter adapter = (TownCellAdapter) mGridView.getAdapter();
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Unit unit = adapter.getItem(position);
+                unit.action();
+            }
+        });
     }
 
     public void setMapClick() {
@@ -88,7 +122,7 @@ public class MainMap {
                 if (view.findViewById(R.id.cell_img) == null) {
                     mPlayer.removeStep();
                     Unit unit = adapter.getItem(position);
-                    unit.addUnitToCell(mContext, view);
+                    unit.addUnitToCell(mContext, view, true);
                     unit.action();
                     ((ExtendActivity) mContext).checkIsLvlEnd();
                 }

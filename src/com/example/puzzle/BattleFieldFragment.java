@@ -33,7 +33,7 @@ public class BattleFieldFragment extends Fragment {
     }
 
     public void createBattleField() {
-        Enemy enemy = (Enemy) getArguments().getSerializable("enemy");
+        UnitEnemy enemy = (UnitEnemy) getArguments().getSerializable("enemy");
         mMainMap.create().setDmgPoints(enemy);
         mBattle = new Battle(getActivity(), enemy);
         mBattle.move();

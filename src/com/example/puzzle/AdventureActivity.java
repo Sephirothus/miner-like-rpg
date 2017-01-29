@@ -8,10 +8,14 @@ import android.os.Bundle;
  */
 public class AdventureActivity extends ExtendActivity {
 
+    public DungeonFieldFragment mDungeonFieldFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mFieldFragment = new TownFieldFragment();
+        setContentView(R.layout.town);
+        init();
     }
 
     public void startDungeon() {

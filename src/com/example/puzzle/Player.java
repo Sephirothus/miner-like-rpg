@@ -2,8 +2,6 @@ package com.example.puzzle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -116,7 +114,9 @@ public class Player implements BattleUnitInterface {
 
     public String getItemByEquipmentSlot(String slot) {
         for (Object item : getEquipmentItems()) {
-            if (mEquipment.get(item) == slot) return item.toString();
+            if (slot.equals(mEquipment.get(item))) {
+                return item.toString();
+            }
         }
         return null;
     }

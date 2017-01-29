@@ -14,13 +14,15 @@ import java.util.Random;
  */
 public abstract class Unit {
 
-    public static Class[] units = {Enemy.class, Gold.class};
+    public static Class[] units;
 
     public static Unit getRandomUnit(Context context, int lvl, int position) {
-        Random r = new Random();
-        Class c = units[r.nextInt(units.length)];
+        return newInstance(units[(new Random()).nextInt(units.length)], context, lvl, position);
+    }
+
+    public static Unit newInstance(Class unit, Context context, int lvl, int position) {
         try {
-            return (Unit) c
+            return (Unit) unit
                     .getDeclaredConstructor(Context.class, Integer.class, Integer.class)
                     .newInstance(context, lvl, position);
         } catch (InstantiationException e) {
@@ -35,7 +37,7 @@ public abstract class Unit {
         return null;
     }
 
-    public void addUnitToCell(Context context, View view) {
+    public void addUnitToCell(Context context, View view, Boolean changeBackColor) {
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.cell);
         Integer unitImg = getImg();
         ImageView img = new ImageView(context);
@@ -48,7 +50,7 @@ public abstract class Unit {
             img.setLayoutParams(new LinearLayout.LayoutParams(size, size));
         }
         layout.addView(img);
-        view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
+        if (changeBackColor) view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
     }
 
     public abstract void action();

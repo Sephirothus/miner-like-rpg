@@ -39,24 +39,28 @@ public class MerchantDialog {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mView = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.merchant, null);
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                setPlayerHeadImg();
-                setPlayerGold();
-                showShopItems();
-                showInventory();
-                builder.setView(mView)
-                        .setCancelable(false)
-                        .setNegativeButton("Bye",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                createDialog();
             }
         });
+    }
+
+    public void createDialog() {
+        mView = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.merchant, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        setPlayerHeadImg();
+        setPlayerGold();
+        showShopItems();
+        showInventory();
+        builder.setView(mView)
+                .setCancelable(false)
+                .setNegativeButton("Bye",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public void disableShop() {

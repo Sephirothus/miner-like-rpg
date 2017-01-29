@@ -10,13 +10,13 @@ import android.widget.TextView;
 /**
  * Created by konst on 22.08.16.
  */
-public class Gold extends Unit {
+public class UnitTreasure extends Unit {
 
     private int mPosition;
     private Context mContext;
     private Config mConfig;
 
-    Gold (Context context, Integer lvl, Integer position) {
+    UnitTreasure(Context context, Integer lvl, Integer position) {
         mContext = context;
         mPosition = position;
     }
@@ -48,6 +48,7 @@ public class Gold extends Unit {
                 .setNegativeButton("OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            mConfig = null;
                             dialog.cancel();
                         }
                     });

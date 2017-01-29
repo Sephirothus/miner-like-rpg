@@ -18,10 +18,9 @@ public class ExtendActivity extends Activity {
 
     protected FragmentManager mFragmentManager;
     public StatsPanelFragment mStatsPanelFragment = new StatsPanelFragment();
-    public FieldFragment mFieldFragment = new FieldFragment();
     public LogHistoryFragment mLogHistoryFragment = new LogHistoryFragment();
+    public FieldFragment mFieldFragment;
     public BattleFieldFragment mBattleFieldFragment;
-    public DungeonFieldFragment mDungeonFieldFragment;
 
     /**
      * Called when the activity is first created.
@@ -34,8 +33,9 @@ public class ExtendActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        setContentView(R.layout.arcade);
+    }
 
+    public void init() {
         mPlayer = new Player(this);
         (new EquipmentDialog(this)).equipmentClick();
         mFragmentManager = getFragmentManager();
@@ -77,7 +77,7 @@ public class ExtendActivity extends Activity {
         mFieldFragment.mMainMap.create().setUnits();
     }
 
-    public void startBattle(Enemy enemy) {
+    public void startBattle(UnitEnemy enemy) {
         mBattleFieldFragment = new BattleFieldFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("enemy", enemy);

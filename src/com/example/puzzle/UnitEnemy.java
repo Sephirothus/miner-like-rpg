@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by konst on 22.08.16.
  */
-public class Enemy extends Unit implements BattleUnitInterface, Serializable {
+public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable {
 
     final static int MIN_HP_LVL_PERCENT = 120;
     final static int MAX_HP_LVL_PERCENT = 150;
@@ -30,7 +30,7 @@ public class Enemy extends Unit implements BattleUnitInterface, Serializable {
     private int mPosition;
     private Config mConfig;
 
-    Enemy (Context context, Integer lvl, Integer position) {
+    UnitEnemy(Context context, Integer lvl, Integer position) {
         Random r = new Random();
         mContext = context;
         mPosition = position;

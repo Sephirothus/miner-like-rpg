@@ -15,10 +15,10 @@ public class Battle {
     private GridView mGridView;
     private CellBattleAdapter mAdapter;
     private Player mPlayer;
-    private Enemy mEnemy;
+    private UnitEnemy mEnemy;
     private Context mContext;
 
-    Battle (Context context, Enemy enemy) {
+    Battle (Context context, UnitEnemy enemy) {
         mContext = context;
         mEnemy = enemy;
         mPlayer = ((ExtendActivity) context).mPlayer;
