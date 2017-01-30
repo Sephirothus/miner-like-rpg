@@ -16,9 +16,14 @@ public class UnitHouse extends Unit {
         add("building_big_house");
         add("building_house");
     }};
+    private Integer mCurImg;
 
     UnitHouse(Context context, Integer lvl, Integer position) {
         mContext = context;
+        mCurImg = mContext.getResources().getIdentifier(
+                mImgs.get((new Random()).nextInt(mImgs.size())),
+                "drawable", mContext.getPackageName()
+        );
     }
 
     @Override
@@ -28,9 +33,6 @@ public class UnitHouse extends Unit {
 
     @Override
     public Integer getImg() {
-        return mContext.getResources().getIdentifier(
-                mImgs.get((new Random()).nextInt(mImgs.size())),
-                "drawable", mContext.getPackageName()
-        );
+        return mCurImg;
     }
 }

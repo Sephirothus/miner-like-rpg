@@ -7,6 +7,6 @@ public class TownFieldFragment extends FieldFragment {
 
     @Override
     public void createPlayField() {
-        mMainMap.create().setTownUnits();
+        mMainMap.create().setTownUnits(getArguments().getString("town_name"));
     }
 }

@@ -20,9 +20,14 @@ public class UnitDecor extends Unit {
         add("nature_oak");
         add("nature_wheat");
     }};
+    private Integer mCurImg;
 
     UnitDecor(Context context, Integer lvl, Integer position) {
         mContext = context;
+        mCurImg = mContext.getResources().getIdentifier(
+                mImgs.get((new Random()).nextInt(mImgs.size())),
+                "drawable", mContext.getPackageName()
+        );
     }
 
     @Override
@@ -32,9 +37,6 @@ public class UnitDecor extends Unit {
 
     @Override
     public Integer getImg() {
-        return mContext.getResources().getIdentifier(
-                mImgs.get((new Random()).nextInt(mImgs.size())),
-                "drawable", mContext.getPackageName()
-        );
+        return mCurImg;
     }
 }

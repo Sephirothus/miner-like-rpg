@@ -71,26 +71,11 @@ public class MainMap {
         return this;
     }
 
-    public MainMap setTownUnits() {
-        int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
-        TownCellAdapter adapter = new TownCellAdapter(mContext);
-        Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
-        int lvl = ((ExtendActivity) mContext).getLvl();
-        for (int pos = 0; pos < TOTAL_CELLS; pos++) {
-            if (mRandom.nextInt(2) == 1 && countUnits > 0) {
-                countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, lvl, pos));
-            } else {
-                adapter.add(pos, new UnitEmpty());
-            }
-        }
-        // changing two random units to unitsOnePerField
-        Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
-        for (Class unit: unitsOnePerField) {
-            int pos = mRandom.nextInt(TOTAL_CELLS);
-            adapter.changeItem(pos, Unit.newInstance(unit, mContext, lvl, pos));
-        }
+    public MainMap setTownUnits(String townName) {
+        TownCellAdapter adapter = ((AdventureActivity) mContext).mTown.getTownAdapter(townName);
         mGridView.setAdapter(adapter);
+        TextView textView = (TextView) ((ExtendActivity) mContext).findViewById(R.id.town_name);
+        textView.setText(townName);
         setTownMapClick();
         return this;
     }
