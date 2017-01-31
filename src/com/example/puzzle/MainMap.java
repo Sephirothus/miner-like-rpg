@@ -80,6 +80,23 @@ public class MainMap {
         return this;
     }
 
+    public MainMap setForestUnits() {
+        int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
+        Unit.units = new Class[] {UnitEnemy.class, UnitTreasure.class, UnitDungeon.class};
+        CellAdapter adapter = new CellAdapter(mContext);
+        for (int pos = 0; pos < TOTAL_CELLS; pos++) {
+            if (mRandom.nextInt(2) == 1 && countUnits > 0) {
+                countUnits--;
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).getLvl(), pos));
+            } else {
+                adapter.add(pos, new UnitEmpty());
+            }
+        }
+        mGridView.setAdapter(adapter);
+        setForestMapClick();
+        return this;
+    }
+
     public MainMap setTrapsAndTreasures() {
         return this;
     }
@@ -95,6 +112,22 @@ public class MainMap {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Unit unit = adapter.getItem(position);
                 unit.action();
+            }
+        });
+    }
+
+    public void setForestMapClick() {
+        final CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPlayer.removeStep();
+                Unit unit = adapter.getItem(position);
+                unit.addUnitToCell(mContext, view, true);
+                unit.action();
+                if (mPlayer.getSteps() == 0) {
+                    ((AdventureActivity) mContext).exitField();
+                }
             }
         });
     }

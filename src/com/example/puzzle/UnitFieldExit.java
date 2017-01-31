@@ -12,13 +12,20 @@ public class UnitFieldExit extends Unit {
 
     private Context mContext;
     private String mTownName;
+    private Integer mCountPathLength;
 
     UnitFieldExit(Context context, Integer lvl, Integer position) {
         mContext = context;
     }
 
-    public void setTownName(String townName) {
+    public UnitFieldExit setTownName(String townName) {
         mTownName = townName;
+        return this;
+    }
+
+    public UnitFieldExit setCountPathLength(int pathLen) {
+        mCountPathLength = pathLen;
+        return this;
     }
 
     @Override
@@ -34,7 +41,10 @@ public class UnitFieldExit extends Unit {
                 })
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ((AdventureActivity) mContext).exitField(mTownName);
+                        AdventureActivity activity = (AdventureActivity) mContext;
+                        activity.mCountPathLength = mCountPathLength;
+                        activity.mDestinationTown = mTownName;
+                        activity.exitField();
                         dialog.cancel();
                     }
                 });

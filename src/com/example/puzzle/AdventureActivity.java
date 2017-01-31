@@ -13,6 +13,8 @@ public class AdventureActivity extends ExtendActivity {
 
     public DungeonFieldFragment mDungeonFieldFragment;
     public Town mTown = new Town();
+    public Integer mCountPathLength;
+    public String mDestinationTown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,11 @@ public class AdventureActivity extends ExtendActivity {
         init();
     }
 
-    public void exitField(String townName) {
-        if ((new Random()).nextInt(2) == 0) {
+    public void exitField() {
+        if (mCountPathLength == 0) {
             mFieldFragment = new TownFieldFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("town_name", townName);
+            bundle.putString("town_name", mDestinationTown);
             mFieldFragment.setArguments(bundle);
 
             mFragmentManager.beginTransaction()
@@ -42,7 +44,8 @@ public class AdventureActivity extends ExtendActivity {
         } else {
             TextView textView = (TextView) findViewById(R.id.town_name);
             textView.setText("Forest");
-            mFieldFragment.mMainMap.create().setUnits();
+            mCountPathLength--;
+            mFieldFragment.mMainMap.create().setForestUnits();
         }
     }
 

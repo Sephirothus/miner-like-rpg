@@ -12,7 +12,12 @@ import java.util.Random;
 public class Town {
 
     public static String HOMETOWN_NAME = "Dusk town";
+    public static int MIN_TOWN_EXIT = 1;
+    public static int MAX_TOWN_EXIT = 3;
+    public static int MIN_PATH = 3;
+    public static int MAX_PATH = 10;
 
+    HashMap<String, HashMap<String, Integer>> mLocations = new HashMap<>();
     private ArrayList<Integer> mPossibleExitCell = new ArrayList<>();
     private HashMap<String, TownCellAdapter> mTowns = new HashMap<>();
     private String[] mTownNames = {"Dusk town", "Goodlight", "Village of Grass", "Serpent village", "Sunless",
@@ -20,6 +25,7 @@ public class Town {
 
     public void generateTowns(Context context) {
         setPossibleExitCells();
+        generateLocationConnections();
         Random random = new Random();
         Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
         Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
@@ -35,20 +41,55 @@ public class Town {
                     adapter.add(pos, new UnitEmpty());
                 }
             }
-            // add exit cell
-            int exitCell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
-            UnitFieldExit exit = new UnitFieldExit(context, lvl, exitCell);
-            exit.setTownName(mTownNames[random.nextInt(mTownNames.length)]);
-            adapter.changeItem(exitCell, exit);
+            // add exit cells
+            HashMap<String, Integer> connections = mLocations.get(name);
+            for (Object location : connections.keySet().toArray()) {
+                int exitCell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
+                UnitFieldExit exit = new UnitFieldExit(context, lvl, exitCell);
+                exit.setTownName(location.toString()).setCountPathLength(connections.get(location));
+                adapter.changeItem(exitCell, exit);
+            }
             // changing two random units to unitsOnePerField
             for (Class unit : unitsOnePerField) {
                 int pos;
-                do {
+                //do {
                     pos = random.nextInt(MainMap.TOTAL_CELLS);
-                } while (pos == exitCell);
+                //} while (pos == exitCell);
                 adapter.changeItem(pos, Unit.newInstance(unit, context, lvl, pos));
             }
             mTowns.put(name, adapter);
+        }
+    }
+
+    private void generateLocationConnections() {
+        Random random = new Random();
+        for (String name : mTownNames) {
+            HashMap<String, Integer> connections;
+            int exitCount = random.nextInt(MAX_TOWN_EXIT - MIN_TOWN_EXIT) + MIN_TOWN_EXIT;
+            if (mLocations.get(name) != null) {
+                connections = mLocations.get(name);
+                exitCount -= mLocations.get(name).size();
+            } else {
+                connections = new HashMap<>();
+            }
+            for (int i = 0; i < exitCount; i++) {
+                String town;
+                do {
+                    town = mTownNames[random.nextInt(mTownNames.length)];
+                } while (town == name);
+                int pathLen = random.nextInt(MAX_PATH - MIN_PATH) + MIN_PATH;
+                connections.put(town, pathLen);
+
+                HashMap<String, Integer> reverseConnections;
+                if (mLocations.get(town) != null) {
+                    reverseConnections = mLocations.get(town);
+                } else {
+                    reverseConnections = new HashMap<>();
+                }
+                reverseConnections.put(name, pathLen);
+                mLocations.put(town, reverseConnections);
+            }
+            mLocations.put(name, connections);
         }
     }
 
