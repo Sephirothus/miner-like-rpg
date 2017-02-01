@@ -45,6 +45,7 @@ public class Battle {
             mAdapter.disableAdapter();
             ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
             mPlayer.lvlStatIncrease();
+            mPlayer.addKilledEnemy();
             endBattle();
         } else enemyMove();
     }

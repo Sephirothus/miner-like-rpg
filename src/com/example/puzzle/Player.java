@@ -17,6 +17,7 @@ public class Player implements BattleUnitInterface {
 
     private Context mContext;
     private int mGold = 0;
+    private int mKilledEnemies = 0;
     private ArrayList<String> mInventory = new ArrayList<>();
     private HashMap<String, String> mEquipment = new HashMap<String, String>() {{
         put("Hat", "equip_head");
@@ -71,7 +72,6 @@ public class Player implements BattleUnitInterface {
     public void decreaseStat(String stat, int removeValue) {
         addStat(stat, -removeValue);
         addCurStat(stat, -removeValue);
-        //if (getCurStat(stat) < 1) mCurStats.put(stat, 1);
         changeStatsPanel(stat);
     }
 
@@ -167,6 +167,14 @@ public class Player implements BattleUnitInterface {
         return mGold;
     }
 
+    public void addKilledEnemy() {
+        mKilledEnemies++;
+    }
+
+    public int getKilledEnemies() {
+        return mKilledEnemies;
+    }
+
     public void increaseGold(int value) {
         mGold += value;
     }
@@ -186,7 +194,7 @@ public class Player implements BattleUnitInterface {
     }
 
     public void lvlStatIncrease() {
-        Object[] stats = mStats.keySet().toArray();
+        Object[] stats = getAllStats();
         String incrStat = stats[(new Random()).nextInt(stats.length)].toString();
         increaseStat(incrStat, LVL_STAT_INCREASE);
         ((ExtendActivity) mContext).mLogHistoryFragment.addStatIncreaseRec(incrStat, LVL_STAT_INCREASE);
@@ -200,14 +208,14 @@ public class Player implements BattleUnitInterface {
         SharedPreferences sharedPreferences = ((ExtendActivity) mContext).getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("lvl", ((ExtendActivity) mContext).getLvl());
+        editor.putInt("lvl", ((ExtendActivity) mContext).mLvl.getLvl());
         editor.putInt("gold", mGold);
     }
 
     public void loadObject() {
         ExtendActivity activity = ((ExtendActivity) mContext);
         SharedPreferences sharedPreferences = activity.getPreferences(MODE_PRIVATE);
-        activity.setLvl(sharedPreferences.getInt("lvl", ((ExtendActivity) mContext).getLvl()));
+        activity.mLvl.setLvl(sharedPreferences.getInt("lvl", ((ExtendActivity) mContext).mLvl.getLvl()));
         mGold = sharedPreferences.getInt("gold", mGold);
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by sephirothus on 12.01.17.
@@ -38,6 +39,17 @@ public class StatsPanelFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mPlayer = ((ExtendActivity) getActivity()).mPlayer;
         mStatsTable = (TableLayout) getActivity().findViewById(R.id.enemy_stats);
+        getActivity().findViewById(R.id.lvl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        getActivity(),
+                        "To get to the next level, you have to\n"
+                                + ((ExtendActivity) getActivity()).mLvl.getTargetText(),
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
 
         changeLvlStat();
         changeHpStat();
@@ -67,7 +79,7 @@ public class StatsPanelFragment extends Fragment {
     }
 
     public StatsPanelFragment changeLvlStat() {
-        changeStatText("lvl", ((ExtendActivity) getActivity()).getLvl(), Config.getShortStatName("lvl"));
+        changeStatText("lvl", ((ExtendActivity) getActivity()).mLvl.getLvl(), Config.getShortStatName("lvl"));
         return this;
     }
 

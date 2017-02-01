@@ -4,8 +4,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.Random;
-
 /**
  * Created by sephirothus on 25.01.17.
  */
@@ -15,6 +13,7 @@ public class AdventureActivity extends ExtendActivity {
     public Town mTown = new Town();
     public Integer mCountPathLength;
     public String mDestinationTown;
+    protected String[] mLvlTargets = {"killEnemies", "raiseStat", /*"completeQuests", */"useSteps"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,9 @@ public class AdventureActivity extends ExtendActivity {
         bundle.putString("town_name", Town.HOMETOWN_NAME);
         mFieldFragment.setArguments(bundle);
 
-        mTown.generateTowns(this);
         init();
+        mLvl = new Level(this, mLvlTargets);
+        mTown.generateTowns(this);
     }
 
     public void exitField() {

@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.GridView;
 
 /**
  * Created by sephirothus on 26.01.17.
@@ -14,7 +13,7 @@ import android.widget.GridView;
 public class ExtendActivity extends Activity {
 
     public Player mPlayer;
-    private int mLvl = 1;
+    public Level mLvl;
 
     protected FragmentManager mFragmentManager;
     public StatsPanelFragment mStatsPanelFragment = new StatsPanelFragment();
@@ -47,34 +46,8 @@ public class ExtendActivity extends Activity {
                 .commit();
     }
 
-    public int getLvl() {
-        return mLvl;
-    }
-
-    public void setLvl(int lvl) {
-        mLvl = lvl;
-    }
-
-    public void checkIsLvlEnd() {
-        if (mPlayer.getSteps() == 0) {
-            GridView gridView = (GridView) findViewById(R.id.gridView);
-            ((CellAdapter) gridView.getAdapter()).disableAdapter();
-            gridView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    nextLvl();
-                }
-            }, 1000);
-        }
-    }
-
     public void nextLvl() {
-        mLvl++;
-        mStatsPanelFragment.changeLvlStat();
-        mLogHistoryFragment.addNewLvlRec(mLvl);
-        mPlayer.lvlStatIncrease();
-        mPlayer.refreshSteps();
-        mFieldFragment.mMainMap.create().setUnits();
+        mLvl.nextLvl();
     }
 
     public void startBattle(UnitEnemy enemy) {

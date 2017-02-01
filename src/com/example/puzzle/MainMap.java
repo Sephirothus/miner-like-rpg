@@ -47,7 +47,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).mLvl.getLvl(), pos));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
@@ -87,7 +87,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).mLvl.getLvl(), pos));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
@@ -112,6 +112,7 @@ public class MainMap {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Unit unit = adapter.getItem(position);
                 unit.action();
+                ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
             }
         });
     }
@@ -125,7 +126,9 @@ public class MainMap {
                 Unit unit = adapter.getItem(position);
                 unit.addUnitToCell(mContext, view, true);
                 unit.action();
+                ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
                 if (mPlayer.getSteps() == 0) {
+                    adapter.disableAdapter();
                     mGridView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -139,6 +142,7 @@ public class MainMap {
 
     public void setMapClick() {
         final CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
+        final ArcadeActivity activity = ((ArcadeActivity) mContext);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,7 +151,18 @@ public class MainMap {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view, true);
                     unit.action();
-                    ((ExtendActivity) mContext).checkIsLvlEnd();
+                    activity.mLvl.checkIsLvlEnd();
+                    if (mPlayer.getSteps() <= 0) {
+                        adapter.disableAdapter();
+                        mGridView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mPlayer.refreshSteps();
+                                activity.mFieldFragment.mMainMap.create().setUnits();
+                                activity.mMerchantDialog.setShopItems();
+                            }
+                        }, 1000);
+                    }
                 }
             }
         });
@@ -172,6 +187,7 @@ public class MainMap {
                     view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
                         ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
+                        ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
                     }
                 }
             }

@@ -3,7 +3,6 @@ package com.example.puzzle;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.widget.GridView;
 
 /**
  * Created by sephirothus on 30.01.17.

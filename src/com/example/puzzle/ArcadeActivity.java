@@ -4,7 +4,8 @@ import android.os.Bundle;
 
 public class ArcadeActivity extends ExtendActivity {
 
-    private MerchantDialog mMerchantDialog;
+    public MerchantDialog mMerchantDialog;
+    protected String[] mLvlTargets = {"killEnemies", "raiseStat", "useSteps"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,14 +14,9 @@ public class ArcadeActivity extends ExtendActivity {
         setContentView(R.layout.arcade);
         init();
 
+        mLvl = new Level(this, mLvlTargets);
         mMerchantDialog = new MerchantDialog(this);
         mMerchantDialog.setShopItems().merchantClick();
-    }
-
-    @Override
-    public void nextLvl() {
-        super.nextLvl();
-        mMerchantDialog.setShopItems();
     }
 
     @Override

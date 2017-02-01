@@ -79,7 +79,10 @@ public class EquipmentDialog {
         Player player = ((ExtendActivity) mContext).mPlayer;
         LinearLayout eqStats = (LinearLayout) mView.findViewById(R.id.equipment_stats);
         eqStats.removeAllViews();
-        addTextViewToStats(eqStats, Config.getFullStatName("lvl"), String.valueOf(((ExtendActivity) mContext).getLvl()));
+        addTextViewToStats(eqStats,
+                Config.getFullStatName("lvl"),
+                String.valueOf(((ExtendActivity) mContext).mLvl.getLvl())
+        );
         for (Object stat : player.getAllStats()) {
             addTextViewToStats(
                     eqStats,
@@ -145,12 +148,6 @@ public class EquipmentDialog {
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                /*switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                }*/
                 return gesture.onTouchEvent(event);
             }
         });
