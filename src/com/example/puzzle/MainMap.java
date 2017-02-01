@@ -126,7 +126,12 @@ public class MainMap {
                 unit.addUnitToCell(mContext, view, true);
                 unit.action();
                 if (mPlayer.getSteps() == 0) {
-                    ((AdventureActivity) mContext).exitField();
+                    mGridView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((AdventureActivity) mContext).exitField();
+                        }
+                    }, 1000);
                 }
             }
         });

@@ -43,21 +43,34 @@ public class Town {
             }
             // add exit cells
             HashMap<String, Integer> connections = mLocations.get(name);
+            ArrayList<Integer> exitCells = new ArrayList<>();
             for (Object location : connections.keySet().toArray()) {
-                int exitCell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
-                UnitFieldExit exit = new UnitFieldExit(context, lvl, exitCell);
+                int cell;
+                do {
+                    cell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
+                } while (isValInList(exitCells, cell));
+                exitCells.add(cell);
+                UnitFieldExit exit = new UnitFieldExit(context, lvl, cell);
                 exit.setTownName(location.toString()).setCountPathLength(connections.get(location));
-                adapter.changeItem(exitCell, exit);
+                adapter.changeItem(cell, exit);
             }
-            // changing two random units to unitsOnePerField
+            // changing two random units (except exits) to unitsOnePerField
             for (Class unit : unitsOnePerField) {
                 int pos;
-                //do {
+                do {
                     pos = random.nextInt(MainMap.TOTAL_CELLS);
-                //} while (pos == exitCell);
+                } while (isValInList(exitCells, pos));
                 adapter.changeItem(pos, Unit.newInstance(unit, context, lvl, pos));
             }
             mTowns.put(name, adapter);
+        }
+    }
+
+    private boolean isValInList(ArrayList<Integer> list, int val) {
+        try {
+            return list.get(val) != null;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
         }
     }
 

@@ -31,6 +31,7 @@ public class AdventureActivity extends ExtendActivity {
     }
 
     public void exitField() {
+        mPlayer.refreshSteps();
         if (mCountPathLength == 0) {
             mFieldFragment = new TownFieldFragment();
             Bundle bundle = new Bundle();
