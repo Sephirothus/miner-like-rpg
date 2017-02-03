@@ -75,6 +75,7 @@ public class Town {
     }
 
     private void generateLocationConnections() {
+        // TODO add full path connection, that one can walk to every town
         Random random = new Random();
         for (String name : mTownNames) {
             HashMap<String, Integer> connections;

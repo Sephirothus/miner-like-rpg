@@ -12,8 +12,10 @@ import java.util.Random;
  */
 public class Level {
 
-    public static int ENEMIES_COUNT_PERCENT = 150;
-    public static int STAT_COUNT_PERCENT = 50;
+    public static int MAX_ENEMIES_COUNT = 10;
+    public static int MIN_ENEMIES_COUNT = 1;
+    public static int MAX_STAT_COUNT = 5;
+    public static int MIN_STAT_COUNT = 1;
 
     private Context mContext;
     private ExtendActivity mActivity;
@@ -100,7 +102,7 @@ public class Level {
 
     private boolean killEnemies() {
         if (mCurTarget.get("count") == null) {
-            mCurTarget.put("count", String.valueOf((new Random()).nextInt(mLvl * ENEMIES_COUNT_PERCENT / 100 + 1) + 1));
+            mCurTarget.put("count", String.valueOf((new Random()).nextInt(MAX_ENEMIES_COUNT) + MIN_ENEMIES_COUNT));
             mCurTarget.put("start_number", String.valueOf(mActivity.mPlayer.getKilledEnemies()));
         } else {
             int count = Integer.parseInt(mCurTarget.get("count"));
@@ -114,7 +116,7 @@ public class Level {
         if (mCurTarget.get("stat") == null) {
             Object[] stats = mActivity.mPlayer.getAllStats();
             mCurTarget.put("stat" , stats[(new Random()).nextInt(stats.length)].toString());
-            mCurTarget.put("count", String.valueOf((new Random()).nextInt(mLvl * STAT_COUNT_PERCENT / 100 + 1) + 1));
+            mCurTarget.put("count", String.valueOf((new Random()).nextInt(MAX_STAT_COUNT) + MIN_STAT_COUNT));
             mCurTarget.put("start_number", String.valueOf(mActivity.mPlayer.getStat(mCurTarget.get("stat"))));
         } else {
             int count = Integer.parseInt(mCurTarget.get("count"));
