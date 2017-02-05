@@ -106,14 +106,7 @@ public class MerchantDialog {
     }
 
     private void setPlayerHeadImg() {
-        Player player = ((ExtendActivity) mContext).mPlayer;
-        String head = player.getItemByEquipmentSlot("equip_head");
-        if (head != null) {
-            ImageView image = (ImageView) mView.findViewById(R.id.player_head);
-            mConf.treasureByName(head);
-            image.setImageResource(mConf.getCurItemImg());
-            image.setVisibility(View.VISIBLE);
-        }
+        (((ExtendActivity) mContext).mPlayer).setPlayerHeadImg(mView);
     }
 
     private void showInventory() {

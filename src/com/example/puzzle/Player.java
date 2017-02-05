@@ -2,6 +2,8 @@ package com.example.puzzle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -18,6 +20,7 @@ public class Player implements BattleUnitInterface {
     private Context mContext;
     private int mGold = 0;
     private int mKilledEnemies = 0;
+    private HashMap<String, HashMap<String, String>> mQuests = new HashMap<>();
     private ArrayList<String> mInventory = new ArrayList<>();
     private HashMap<String, String> mEquipment = new HashMap<String, String>() {{
         put("Hat", "equip_head");
@@ -202,6 +205,21 @@ public class Player implements BattleUnitInterface {
 
     public Object[] getAllStats() {
         return mStats.keySet().toArray();
+    }
+
+    public void setPlayerHeadImg(View view) {
+        String head = getItemByEquipmentSlot("equip_head");
+        if (head != null) {
+            ImageView image = (ImageView) view.findViewById(R.id.player_head);
+            Config conf = new Config(mContext);
+            conf.treasureByName(head);
+            image.setImageResource(conf.getCurItemImg());
+            image.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void addQuest() {
+        //mQuests.put("")
     }
 
     public void saveObject() {

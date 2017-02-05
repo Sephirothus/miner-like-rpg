@@ -12,7 +12,7 @@ public class AdventureActivity extends ExtendActivity {
     public DungeonFieldFragment mDungeonFieldFragment;
     public Town mTown = new Town();
     public Integer mCountPathLength;
-    public String mDestinationTown;
+    public String mDestinationTown = Town.HOMETOWN_NAME;
     protected String[] mLvlTargets = {"killEnemies", "raiseStat", /*"completeQuests", */"useSteps"};
 
     @Override

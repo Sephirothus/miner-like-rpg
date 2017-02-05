@@ -20,8 +20,6 @@ public class Town {
     HashMap<String, HashMap<String, Integer>> mLocations = new HashMap<>();
     private ArrayList<Integer> mPossibleExitCell = new ArrayList<>();
     private HashMap<String, TownCellAdapter> mTowns = new HashMap<>();
-    private String[] mTownNames = {"Dusk town", "Goodlight", "Village of Grass", "Serpent village", "Sunless",
-            "Home of Farmers", "Old Keep"};
 
     public void generateTowns(Context context) {
         setPossibleExitCells();
@@ -30,7 +28,7 @@ public class Town {
         Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
         Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
         int lvl = ((ExtendActivity) context).mLvl.getLvl();
-        for (String name : mTownNames) {
+        for (String name : Config.mTowns.keySet()) {
             int countUnits = random.nextInt(MainMap.MAX_UNITS - MainMap.MIN_UNITS) + MainMap.MIN_UNITS;
             TownCellAdapter adapter = new TownCellAdapter(context);
             for (int pos = 0; pos < MainMap.TOTAL_CELLS; pos++) {
@@ -77,7 +75,8 @@ public class Town {
     private void generateLocationConnections() {
         // TODO add full path connection, that one can walk to every town
         Random random = new Random();
-        for (String name : mTownNames) {
+        Object[] towns = Config.mTowns.keySet().toArray();
+        for (String name : Config.mTowns.keySet()) {
             HashMap<String, Integer> connections;
             int exitCount = random.nextInt(MAX_TOWN_EXIT - MIN_TOWN_EXIT) + MIN_TOWN_EXIT;
             if (mLocations.get(name) != null) {
@@ -89,7 +88,7 @@ public class Town {
             for (int i = 0; i < exitCount; i++) {
                 String town;
                 do {
-                    town = mTownNames[random.nextInt(mTownNames.length)];
+                    town = towns[random.nextInt(towns.length)].toString();
                 } while (town == name);
                 int pathLen = random.nextInt(MAX_PATH - MIN_PATH) + MIN_PATH;
                 connections.put(town, pathLen);

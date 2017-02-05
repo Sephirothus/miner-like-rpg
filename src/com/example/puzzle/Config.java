@@ -133,7 +133,7 @@ public class Config {
             put("drop_percent", "25");
         }});
         add(new HashMap<String, String>() {{
-            put("name", "Boxing Glove");
+            put("name", "Boxing Gloves");
             put("img", "armor_boxing_glove");
             put("stat", "hp");
             put("stat_points", "3");
@@ -232,7 +232,7 @@ public class Config {
             put("drop_percent", "65");
         }});
         add(new HashMap<String, String>() {{
-            put("name", "Leather Boot");
+            put("name", "Leather Boots");
             put("img", "armor_leather_boot");
             put("stat", "hp");
             put("stat_points", "5");
@@ -241,7 +241,7 @@ public class Config {
             put("drop_percent", "40");
         }});
         add(new HashMap<String, String>() {{
-            put("name", "Fur Boot");
+            put("name", "Fur Boots");
             put("img", "armor_fur_boot");
             put("stat", "hp");
             put("stat_points", "7");
@@ -434,6 +434,18 @@ public class Config {
             put("name", "Tree Guardian");
             put("img", "enemy_tree_guardian");
         }});
+    }};
+
+    public static HashMap<String, String> mTowns = new HashMap<String, String>() {{
+        put("Goodlight", "It's our capital.");
+        put("Dusk town", "It's just a town, nothing to say");
+        put("Village of Grass", "Here we all love grass, it's a symbol of life");
+        put("Serpent village", "It was given this name, 'cause this town infested with this vermins.");
+        put("Sunless", "In this town you'll never see the sun, that's why it's Sunless :)");
+        put("Home of Farmers", "It's more a big farm, than a town");
+        put("Old Keep", "We have here, one of the oldest sights in our homeland. It's an Old Keep, " +
+                "which once were one of the strongest fortresses in the east and which not survived the legendary " +
+                "War of the elves. Then it was brought here, all that's left, and rebuild stone by stone");
     }};
 
     private static HashMap mShortStatNames = new HashMap<String, String>() {{
