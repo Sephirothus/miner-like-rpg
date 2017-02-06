@@ -54,11 +54,11 @@ public class Quest {
 
     private HashMap<String, String> killEnemies() {
         mConf.randomEnemy();
-        String title = mKillEnemiesTitles.keySet()
+        final String title = mKillEnemiesTitles.keySet()
                 .toArray()[(new Random()).nextInt(mKillEnemiesTitles.size())].toString();
-        String count = String.valueOf((new Random()).nextInt(MAX_ENEMIES_COUNT) + MIN_ENEMIES_COUNT);
+        final String count = String.valueOf((new Random()).nextInt(MAX_ENEMIES_COUNT) + MIN_ENEMIES_COUNT);
         return new HashMap<String, String>() {{
-            put("title", "Quest: " + replacePlaceholders(title, ""));
+            put("title", replacePlaceholders(title, ""));
             put("description", replacePlaceholders(mKillEnemiesTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
@@ -67,11 +67,11 @@ public class Quest {
 
     private HashMap<String, String> foundItems() {
         mConf.randomTreasure();
-        String title = mFoundItemsTitles.keySet()
+        final String title = mFoundItemsTitles.keySet()
                 .toArray()[(new Random()).nextInt(mFoundItemsTitles.size())].toString();
-        String count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
+        final String count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
         return new HashMap<String, String>() {{
-            put("title", "Quest: " + replacePlaceholders(title, ""));
+            put("title", replacePlaceholders(title, ""));
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);

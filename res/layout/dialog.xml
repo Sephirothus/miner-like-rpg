@@ -27,7 +27,13 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:id="@+id/dialog_text"/>
     </ScrollView>
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept Quest"
+            android:visibility="gone"
+            android:id="@+id/accept_quest"
+            android:textSize="17dp"/>
 </LinearLayout>

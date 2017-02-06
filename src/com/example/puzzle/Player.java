@@ -170,8 +170,9 @@ public class Player implements BattleUnitInterface {
         return mGold;
     }
 
-    public void addKilledEnemy() {
+    public void addKilledEnemy(String name) {
         mKilledEnemies++;
+        // TODO check if got quest on this enemy and edit quest info
     }
 
     public int getKilledEnemies() {
@@ -218,8 +219,17 @@ public class Player implements BattleUnitInterface {
         }
     }
 
-    public void addQuest() {
-        //mQuests.put("")
+    public void addQuest(String questId, HashMap questInfo) {
+        mQuests.put(questId, questInfo);
+    }
+
+    public Boolean haveQuest(String questId) {
+        return mQuests.get(questId) != null ? true : false;
+    }
+
+    public Boolean isQuestComplete(String questId) {
+        // TODO check quest conditions
+        return false;
     }
 
     public void saveObject() {

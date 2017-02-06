@@ -10,10 +10,7 @@ import android.text.SpannableString;
 import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -51,6 +48,7 @@ public class Talk {
             @Override
             public void onClick(View v) {
                 try {
+                    showHideAcceptQuestButton(false);
                     curClass.getClass().getDeclaredMethod(v.getTag().toString()).invoke(curClass);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -70,7 +68,7 @@ public class Talk {
         for (Object talk : mTalks.keySet().toArray()) {
             TextView textView = new TextView(mContext);
             textView.setText("- " + mTalks.get(talk));
-            textView.setTextSize(18);
+            textView.setTextSize(15);
             textView.setTag(talk);
             textView.setOnClickListener(onClick);
             choose.addView(textView);
@@ -78,8 +76,8 @@ public class Talk {
         for (Object quest : mQuests.keySet().toArray()) {
             TextView textView = new TextView(mContext);
             HashMap<String, String> questInfo = mQuests.get(quest);
-            textView.setText(questInfo.get("title"));
-            textView.setTextSize(18);
+            textView.setText("* Quest: " + questInfo.get("title"));
+            textView.setTextSize(15);
             textView.setTag(quest);
             textView.setOnClickListener(onClickQuest);
             choose.addView(textView);
@@ -136,8 +134,33 @@ public class Talk {
 
     }
 
-    public void talkGetQuest(String questId) {
-        HashMap<String, String> questInfo = mQuests.get(questId);
-        addRecord(questInfo.get("description"), true);
+    public void talkGetQuest(final String questId) {
+        final Player player = ((ExtendActivity) mContext).mPlayer;
+        if (!player.haveQuest(questId)) {
+            final HashMap<String, String> questInfo = mQuests.get(questId);
+            addRecord(questInfo.get("description"), true);
+            showHideAcceptQuestButton(true);
+            (mView.findViewById(R.id.accept_quest)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    player.addQuest(questId, questInfo);
+                    showHideAcceptQuestButton(false);
+                    ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
+                            "You've got new quest - " + questInfo.get("title"), Color.MAGENTA
+                    );
+                }
+            });
+        } else {
+            if (player.isQuestComplete(questId)) {
+                addRecord("Thank you", true);
+                // TODO remove quest
+            } else {
+                addRecord("How's your progress on this quest?", true);
+            }
+        }
+    }
+
+    private void showHideAcceptQuestButton(Boolean show) {
+        (mView.findViewById(R.id.accept_quest)).setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
