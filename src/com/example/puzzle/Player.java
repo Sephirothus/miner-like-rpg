@@ -172,7 +172,12 @@ public class Player implements BattleUnitInterface {
 
     public void addKilledEnemy(String name) {
         mKilledEnemies++;
-        // TODO check if got quest on this enemy and edit quest info
+        for (Object questId : mQuests.keySet().toArray()) {
+            HashMap questInfo = mQuests.get(questId);
+            if (questInfo.get("type") == name && Integer.parseInt(questInfo.get("count").toString()) > 0) {
+                questInfo.put("count", Integer.parseInt(questInfo.get("count").toString()) - 1);
+            }
+        }
     }
 
     public int getKilledEnemies() {
@@ -228,8 +233,25 @@ public class Player implements BattleUnitInterface {
     }
 
     public Boolean isQuestComplete(String questId) {
-        // TODO check quest conditions
-        return false;
+        Boolean isComplete = false;
+        HashMap questInfo = mQuests.get(questId);
+        switch (Integer.parseInt(questInfo.get("action").toString())) {
+            case Quest.QUEST_TYPE_KILL:
+                isComplete = questInfo.get("count").toString() == "0";
+                break;
+            case Quest.QUEST_TYPE_GET_ITEM:
+                isComplete = Collections.frequency(mInventory, questInfo.get("type").toString()) >= Integer.parseInt(
+                        questInfo.get("count").toString());
+                break;
+        }
+        return isComplete;
+    }
+
+    public void completeQuestGetItem(String questId) {
+        HashMap questInfo = mQuests.get(questId);
+        for (int i = 0; i < Integer.parseInt(questInfo.get("count").toString()); i++) {
+            removeItemFromInventory(questInfo.get("type").toString());
+        }
     }
 
     public void saveObject() {

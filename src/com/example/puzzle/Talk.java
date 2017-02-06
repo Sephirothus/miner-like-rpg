@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -62,6 +63,7 @@ public class Talk {
         View.OnClickListener onClickQuest = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showHideAcceptQuestButton(false);
                 talkGetQuest(v.getTag().toString());
             }
         };
@@ -146,16 +148,24 @@ public class Talk {
                     player.addQuest(questId, questInfo);
                     showHideAcceptQuestButton(false);
                     ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
-                            "You've got new quest - " + questInfo.get("title"), Color.MAGENTA
+                            "You've got a new quest - " + questInfo.get("title"), Color.MAGENTA
                     );
                 }
             });
         } else {
             if (player.isQuestComplete(questId)) {
+                player.completeQuestGetItem(questId);
                 addRecord("Thank you", true);
-                // TODO remove quest
+                ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
+                        "You've completed quest - " + (mQuests.get(questId)).get("title"), Color.MAGENTA
+                );
+                // TODO add reward based on drop percent of item
+                mQuests.remove(questId);
+                View view = (mView.findViewById(R.id.dialog_choose)).findViewWithTag(questId);
+                ((ViewGroup) view.getParent()).removeView(view);
             } else {
                 addRecord("How's your progress on this quest?", true);
+                addRecord("I'm working on it", false);
             }
         }
     }

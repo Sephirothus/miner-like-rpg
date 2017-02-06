@@ -16,6 +16,10 @@ public class Quest {
     public static int MAX_ITEMS_COUNT = 5;
     public static int MIN_ITEMS_COUNT = 1;
 
+    public final static int QUEST_TYPE_KILL = 1;
+    public final static int QUEST_TYPE_GET_ITEM = 2;
+    public final static int QUEST_TYPE_WALK_TO_LOCATION = 3;
+
     private Context mContext;
     private Config mConf;
     private String[] mTypes = {"killEnemies", "foundItems"/*, "killBoss"*/};
@@ -58,6 +62,7 @@ public class Quest {
                 .toArray()[(new Random()).nextInt(mKillEnemiesTitles.size())].toString();
         final String count = String.valueOf((new Random()).nextInt(MAX_ENEMIES_COUNT) + MIN_ENEMIES_COUNT);
         return new HashMap<String, String>() {{
+            put("action", String.valueOf(QUEST_TYPE_KILL));
             put("title", replacePlaceholders(title, ""));
             put("description", replacePlaceholders(mKillEnemiesTitles.get(title), count));
             put("type", mConf.getCurItemName());
@@ -71,6 +76,7 @@ public class Quest {
                 .toArray()[(new Random()).nextInt(mFoundItemsTitles.size())].toString();
         final String count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
         return new HashMap<String, String>() {{
+            put("action", String.valueOf(QUEST_TYPE_GET_ITEM));
             put("title", replacePlaceholders(title, ""));
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
