@@ -15,16 +15,17 @@ import java.util.Random;
 public abstract class Unit {
 
     public static Class[] units;
+    protected String mLocation;
 
-    public static Unit getRandomUnit(Context context, int lvl, int position) {
-        return newInstance(units[(new Random()).nextInt(units.length)], context, lvl, position);
+    public static Unit getRandomUnit(Context context, int position, String location) {
+        return newInstance(units[(new Random()).nextInt(units.length)], context, position, location);
     }
 
-    public static Unit newInstance(Class unit, Context context, int lvl, int position) {
+    public static Unit newInstance(Class unit, Context context, int position, String location) {
         try {
             return (Unit) unit
-                    .getDeclaredConstructor(Context.class, Integer.class, Integer.class)
-                    .newInstance(context, lvl, position);
+                    .getDeclaredConstructor(Context.class, Integer.class, String.class)
+                    .newInstance(context, position, location);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -51,6 +52,10 @@ public abstract class Unit {
         }
         layout.addView(img);
         if (changeBackColor) view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
     }
 
     public abstract void action();

@@ -22,7 +22,7 @@ public class UnitDecor extends Unit {
     }};
     private Integer mCurImg;
 
-    UnitDecor(Context context, Integer lvl, Integer position) {
+    UnitDecor(Context context, Integer position, String location) {
         mContext = context;
         mCurImg = mContext.getResources().getIdentifier(
                 mImgs.get((new Random()).nextInt(mImgs.size())),

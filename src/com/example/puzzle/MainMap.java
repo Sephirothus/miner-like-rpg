@@ -47,7 +47,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).mLvl.getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, pos, null));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
@@ -87,7 +87,7 @@ public class MainMap {
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, ((ExtendActivity) mContext).mLvl.getLvl(), pos));
+                adapter.add(pos, Unit.getRandomUnit(mContext, pos, ((AdventureActivity) mContext).mDestinationTown));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
@@ -122,19 +122,21 @@ public class MainMap {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPlayer.removeStep();
-                Unit unit = adapter.getItem(position);
-                unit.addUnitToCell(mContext, view, true);
-                unit.action();
-                ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
-                if (mPlayer.getSteps() == 0) {
-                    adapter.disableAdapter();
-                    mGridView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((AdventureActivity) mContext).exitField();
-                        }
-                    }, 1000);
+                if (view.findViewById(R.id.cell_img) == null) {
+                    mPlayer.removeStep();
+                    Unit unit = adapter.getItem(position);
+                    unit.addUnitToCell(mContext, view, true);
+                    unit.action();
+                    ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
+                    if (mPlayer.getSteps() == 0) {
+                        adapter.disableAdapter();
+                        mGridView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((AdventureActivity) mContext).exitField();
+                            }
+                        }, 1000);
+                    }
                 }
             }
         });

@@ -38,6 +38,19 @@ public class Quest {
         mConf = new Config(mContext);
     }
 
+    public static String getQuestGiverString(Player player, String questId, HashMap questInfo) {
+        return (player.haveQuest(questId) ? "?" : "!") + " Quest: " + questInfo.get("title");
+    }
+
+    public static String getQuestLocation(String questId) {
+        String[] info = questId.split("_");
+        return "Return: " + info[0] + ", cell number " + info[1];
+    }
+
+    public static String generateQuestId(String townName, int position, int questNumber) {
+        return townName + "_" + position + "_" + questNumber;
+    }
+
     public HashMap<String, String> randomQuest() {
         try {
             return (HashMap<String, String>) getClass()
@@ -67,6 +80,7 @@ public class Quest {
             put("description", replacePlaceholders(mKillEnemiesTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
+            put("progress_count", "0");
         }};
     }
 

@@ -10,7 +10,7 @@ public class UnitMerchant extends Unit {
     private Context mContext;
     private MerchantDialog mMerchant;
 
-    UnitMerchant(Context context, Integer lvl, Integer position) {
+    UnitMerchant(Context context, Integer position, String location) {
         mContext = context;
         mMerchant = new MerchantDialog(mContext);
         mMerchant.setShopItems();

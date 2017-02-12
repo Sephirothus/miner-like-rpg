@@ -95,6 +95,10 @@ public class Player implements BattleUnitInterface {
         }
     }
 
+    public int itemCountInInventory(String itemName) {
+        return Collections.frequency(mInventory, itemName);
+    }
+
     public void addItemToInventory(String itemName) {
         mInventory.add(itemName);
     }
@@ -174,8 +178,10 @@ public class Player implements BattleUnitInterface {
         mKilledEnemies++;
         for (Object questId : mQuests.keySet().toArray()) {
             HashMap questInfo = mQuests.get(questId);
-            if (questInfo.get("type") == name && Integer.parseInt(questInfo.get("count").toString()) > 0) {
-                questInfo.put("count", Integer.parseInt(questInfo.get("count").toString()) - 1);
+            if (questInfo.get("type") == name
+                    && Integer.parseInt(questInfo.get("progress_count").toString()) < Integer.parseInt(
+                            questInfo.get("count").toString())) {
+                questInfo.put("progress_count", Integer.parseInt(questInfo.get("progress_count").toString()) + 1);
             }
         }
     }
@@ -228,8 +234,16 @@ public class Player implements BattleUnitInterface {
         mQuests.put(questId, questInfo);
     }
 
+    public Object[] getQuests() {
+        return mQuests.keySet().toArray();
+    }
+
+    public HashMap getQuestById(String questId) {
+        return mQuests.get(questId);
+    }
+
     public Boolean haveQuest(String questId) {
-        return mQuests.get(questId) != null ? true : false;
+        return mQuests.containsKey(questId);
     }
 
     public Boolean isQuestComplete(String questId) {
@@ -237,10 +251,11 @@ public class Player implements BattleUnitInterface {
         HashMap questInfo = mQuests.get(questId);
         switch (Integer.parseInt(questInfo.get("action").toString())) {
             case Quest.QUEST_TYPE_KILL:
-                isComplete = questInfo.get("count").toString() == "0";
+                isComplete = Integer.parseInt(questInfo.get("progress_count").toString()) >= Integer.parseInt(
+                        questInfo.get("count").toString());
                 break;
             case Quest.QUEST_TYPE_GET_ITEM:
-                isComplete = Collections.frequency(mInventory, questInfo.get("type").toString()) >= Integer.parseInt(
+                isComplete = itemCountInInventory(questInfo.get("type").toString()) >= Integer.parseInt(
                         questInfo.get("count").toString());
                 break;
         }
@@ -252,6 +267,10 @@ public class Player implements BattleUnitInterface {
         for (int i = 0; i < Integer.parseInt(questInfo.get("count").toString()); i++) {
             removeItemFromInventory(questInfo.get("type").toString());
         }
+    }
+
+    public void removeQuest(String questId) {
+        mQuests.remove(questId);
     }
 
     public void saveObject() {

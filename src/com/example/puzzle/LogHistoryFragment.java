@@ -50,6 +50,11 @@ public class LogHistoryFragment extends Fragment {
         });
     }
 
+    public void addDieAndReturnToTownRec() {
+        addRecord("You died, but the Gods gave you another chance and you were brought back to your home town",
+                Color.RED);
+    }
+
     public void addNewLvlRec(int lvl) {
         addRecord("You've reached " + lvl + " level", Color.GREEN);
     }

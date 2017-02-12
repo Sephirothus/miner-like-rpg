@@ -24,56 +24,11 @@ public class Town {
     public void generateTowns(Context context) {
         setPossibleExitCells();
         generateLocationConnections();
-        Random random = new Random();
-        Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
-        Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
-        int lvl = ((ExtendActivity) context).mLvl.getLvl();
-        for (String name : Config.mTowns.keySet()) {
-            int countUnits = random.nextInt(MainMap.MAX_UNITS - MainMap.MIN_UNITS) + MainMap.MIN_UNITS;
-            TownCellAdapter adapter = new TownCellAdapter(context);
-            for (int pos = 0; pos < MainMap.TOTAL_CELLS; pos++) {
-                if (random.nextInt(2) == 1 && countUnits > 0) {
-                    countUnits--;
-                    adapter.add(pos, Unit.getRandomUnit(context, lvl, pos));
-                } else {
-                    adapter.add(pos, new UnitEmpty());
-                }
-            }
-            // add exit cells
-            HashMap<String, Integer> connections = mLocations.get(name);
-            ArrayList<Integer> exitCells = new ArrayList<>();
-            for (Object location : connections.keySet().toArray()) {
-                int cell;
-                do {
-                    cell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
-                } while (isValInList(exitCells, cell));
-                exitCells.add(cell);
-                UnitFieldExit exit = new UnitFieldExit(context, lvl, cell);
-                exit.setTownName(location.toString()).setCountPathLength(connections.get(location));
-                adapter.changeItem(cell, exit);
-            }
-            // changing two random units (except exits) to unitsOnePerField
-            for (Class unit : unitsOnePerField) {
-                int pos;
-                do {
-                    pos = random.nextInt(MainMap.TOTAL_CELLS);
-                } while (isValInList(exitCells, pos));
-                adapter.changeItem(pos, Unit.newInstance(unit, context, lvl, pos));
-            }
-            mTowns.put(name, adapter);
-        }
-    }
-
-    private boolean isValInList(ArrayList<Integer> list, int val) {
-        try {
-            return list.get(val) != null;
-        } catch (IndexOutOfBoundsException e) {
-            return false;
-        }
+        createTownAdapters(context);
     }
 
     private void generateLocationConnections() {
-        // TODO add full path connection, that one can walk to every town
+        // TODO add full path connection, that one can walk to every adventure
         Random random = new Random();
         Object[] towns = Config.mTowns.keySet().toArray();
         for (String name : Config.mTowns.keySet()) {
@@ -103,6 +58,56 @@ public class Town {
                 mLocations.put(town, reverseConnections);
             }
             mLocations.put(name, connections);
+        }
+    }
+
+    private void createTownAdapters(Context context) {
+        Random random = new Random();
+        Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
+        Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
+        int lvl = ((ExtendActivity) context).mLvl.getLvl();
+        for (String name : Config.mTowns.keySet()) {
+            int countUnits = random.nextInt(MainMap.MAX_UNITS - MainMap.MIN_UNITS) + MainMap.MIN_UNITS;
+            TownCellAdapter adapter = new TownCellAdapter(context);
+            for (int pos = 0; pos < MainMap.TOTAL_CELLS; pos++) {
+                if (random.nextInt(2) == 1 && countUnits > 0) {
+                    countUnits--;
+                    adapter.add(pos, Unit.getRandomUnit(context, pos, name));
+                } else {
+                    adapter.add(pos, new UnitEmpty());
+                }
+            }
+            // add exit cells
+            HashMap<String, Integer> connections = mLocations.get(name);
+            ArrayList<Integer> exitCells = new ArrayList<>();
+            for (Object location : connections.keySet().toArray()) {
+                int cell;
+                do {
+                    cell = mPossibleExitCell.get(random.nextInt(mPossibleExitCell.size()));
+                } while (isValInList(exitCells, cell));
+                exitCells.add(cell);
+                UnitFieldExit exit = new UnitFieldExit(context, cell, name);
+                exit.setLocation(location.toString());
+                exit.setCountPathLength(connections.get(location));
+                adapter.changeItem(cell, exit);
+            }
+            // changing two random units (except exits) to unitsOnePerField
+            for (Class unit : unitsOnePerField) {
+                int pos;
+                do {
+                    pos = random.nextInt(MainMap.TOTAL_CELLS);
+                } while (isValInList(exitCells, pos));
+                adapter.changeItem(pos, Unit.newInstance(unit, context, pos, name));
+            }
+            mTowns.put(name, adapter);
+        }
+    }
+
+    private boolean isValInList(ArrayList<Integer> list, int val) {
+        try {
+            return list.get(val) != null;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
         }
     }
 

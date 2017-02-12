@@ -18,7 +18,7 @@ public class UnitHouse extends Unit {
     }};
     private Integer mCurImg;
 
-    UnitHouse(Context context, Integer lvl, Integer position) {
+    UnitHouse(Context context, Integer position, String location) {
         mContext = context;
         mCurImg = mContext.getResources().getIdentifier(
                 mImgs.get((new Random()).nextInt(mImgs.size())),

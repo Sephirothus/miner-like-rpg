@@ -11,7 +11,7 @@ public class UnitDungeon extends Unit {
 
     private Context mContext;
 
-    UnitDungeon(Context context, Integer lvl, Integer position) {
+    UnitDungeon(Context context, Integer position, String location) {
         mContext = context;
     }
 

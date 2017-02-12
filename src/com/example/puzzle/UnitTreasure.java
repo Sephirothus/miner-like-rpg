@@ -12,13 +12,11 @@ import android.widget.TextView;
  */
 public class UnitTreasure extends Unit {
 
-    private int mPosition;
     private Context mContext;
     private Config mConfig;
 
-    UnitTreasure(Context context, Integer lvl, Integer position) {
+    UnitTreasure(Context context, Integer position, String location) {
         mContext = context;
-        mPosition = position;
     }
 
     public void action() {

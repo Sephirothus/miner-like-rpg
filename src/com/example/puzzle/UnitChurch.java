@@ -9,7 +9,7 @@ public class UnitChurch extends Unit {
 
     private Context mContext;
 
-    UnitChurch(Context context, Integer lvl, Integer position) {
+    UnitChurch(Context context, Integer position, String location) {
         mContext = context;
     }
 

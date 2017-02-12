@@ -25,17 +25,12 @@ public class Talk {
     private View mView;
     private String mInterlocutorName;
     private int mInterlocutorColor = Color.GREEN;
-    private HashMap<String, String> mTalks;
-    private HashMap<String, HashMap<String, String>> mQuests;
+    private UnitTownsman mUnit;
 
-    Talk(Context context,
-         String name,
-         HashMap<String, String> talks,
-         HashMap<String, HashMap<String, String>> quests) {
+    Talk(Context context, String name, UnitTownsman unit) {
             mContext = context;
             mInterlocutorName = name;
-            mTalks = talks;
-            mQuests = quests;
+            mUnit = unit;
     }
 
     public void create() {
@@ -67,20 +62,20 @@ public class Talk {
                 talkGetQuest(v.getTag().toString());
             }
         };
-        for (Object talk : mTalks.keySet().toArray()) {
+        for (Object talk : mUnit.mTalks.keySet().toArray()) {
             TextView textView = new TextView(mContext);
-            textView.setText("- " + mTalks.get(talk));
+            textView.setText("- " + mUnit.mTalks.get(talk));
             textView.setTextSize(15);
             textView.setTag(talk);
             textView.setOnClickListener(onClick);
             choose.addView(textView);
         }
-        for (Object quest : mQuests.keySet().toArray()) {
+        Player player = ((ExtendActivity) mContext).mPlayer;
+        for (Object questId : mUnit.mQuests.keySet().toArray()) {
             TextView textView = new TextView(mContext);
-            HashMap<String, String> questInfo = mQuests.get(quest);
-            textView.setText("* Quest: " + questInfo.get("title"));
+            textView.setText(Quest.getQuestGiverString(player, questId.toString(), mUnit.mQuests.get(questId)));
             textView.setTextSize(15);
-            textView.setTag(quest);
+            textView.setTag(questId);
             textView.setOnClickListener(onClickQuest);
             choose.addView(textView);
         }
@@ -128,7 +123,7 @@ public class Talk {
     }
 
     public void talkAboutTown() {
-        addRecord(mTalks.get("talkAboutTown"), false);
+        addRecord(mUnit.mTalks.get("talkAboutTown"), false);
         addRecord(Config.mTowns.get(((AdventureActivity) mContext).mDestinationTown), true);
     }
 
@@ -139,7 +134,7 @@ public class Talk {
     public void talkGetQuest(final String questId) {
         final Player player = ((ExtendActivity) mContext).mPlayer;
         if (!player.haveQuest(questId)) {
-            final HashMap<String, String> questInfo = mQuests.get(questId);
+            final HashMap<String, String> questInfo = mUnit.mQuests.get(questId);
             addRecord(questInfo.get("description"), true);
             showHideAcceptQuestButton(true);
             (mView.findViewById(R.id.accept_quest)).setOnClickListener(new View.OnClickListener() {
@@ -157,10 +152,11 @@ public class Talk {
                 player.completeQuestGetItem(questId);
                 addRecord("Thank you", true);
                 ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
-                        "You've completed quest - " + (mQuests.get(questId)).get("title"), Color.MAGENTA
+                        "You've completed quest - " + (mUnit.mQuests.get(questId)).get("title"), Color.MAGENTA
                 );
                 // TODO add reward based on drop percent of item
-                mQuests.remove(questId);
+                mUnit.mQuests.remove(questId);
+                player.removeQuest(questId);
                 View view = (mView.findViewById(R.id.dialog_choose)).findViewWithTag(questId);
                 ((ViewGroup) view.getParent()).removeView(view);
             } else {

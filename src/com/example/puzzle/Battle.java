@@ -46,7 +46,7 @@ public class Battle {
             ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
             mPlayer.lvlStatIncrease();
             mPlayer.addKilledEnemy(mEnemy.getName());
-            endBattle();
+            endBattle(false);
         } else enemyMove();
     }
 
@@ -60,7 +60,7 @@ public class Battle {
         Boolean check = mPlayer.checkHp();
         if (!check) {
             ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
-            endBattle();
+            endBattle(true);
         } else {
             if (!checkEmptyCells()) return;
             mAdapter.setIsPlayerMove(true);
@@ -95,11 +95,15 @@ public class Battle {
         return textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null;
     }
 
-    public void endBattle() {
+    public void endBattle(final Boolean isGameOver) {
         mGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((ExtendActivity) mContext).endBattle();
+                if (isGameOver) {
+                    ((ExtendActivity) mContext).gameOver();
+                } else {
+                    ((ExtendActivity) mContext).endBattle();
+                }
             }
         }, 1000);
     }

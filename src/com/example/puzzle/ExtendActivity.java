@@ -71,4 +71,8 @@ public class ExtendActivity extends Activity {
         mStatsPanelFragment.removeEnemyStats();
         mBattleFieldFragment = null;
     }
+
+    public void gameOver() {
+        //finish();
+    }
 }

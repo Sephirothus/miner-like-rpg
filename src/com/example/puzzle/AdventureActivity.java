@@ -18,7 +18,7 @@ public class AdventureActivity extends ExtendActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.town);
+        setContentView(R.layout.adventure);
 
         mFieldFragment = new TownFieldFragment();
         Bundle bundle = new Bundle();
@@ -28,26 +28,39 @@ public class AdventureActivity extends ExtendActivity {
         init();
         mLvl = new Level(this, mLvlTargets);
         mTown.generateTowns(this);
+        (new QuestDialog(this)).questsClick();
     }
 
     public void exitField() {
         mPlayer.refreshSteps();
         if (mCountPathLength == 0) {
-            mFieldFragment = new TownFieldFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("town_name", mDestinationTown);
-            mFieldFragment.setArguments(bundle);
-
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.field, mFieldFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            moveToTown();
         } else {
             TextView textView = (TextView) findViewById(R.id.town_name);
             textView.setText("Forest");
             mCountPathLength--;
             mFieldFragment.mMainMap.create().setForestUnits();
         }
+    }
+
+    public void moveToTown() {
+        mFieldFragment = new TownFieldFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("town_name", mDestinationTown);
+        mFieldFragment.setArguments(bundle);
+
+        mFragmentManager.beginTransaction()
+                .replace(R.id.field, mFieldFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    public void gameOver() {
+        mDestinationTown = Town.HOMETOWN_NAME;
+        mPlayer.refreshCurStat("hp");
+        mLogHistoryFragment.addDieAndReturnToTownRec();
+        mStatsPanelFragment.changeHpStat();
+        moveToTown();
     }
 
     public void startDungeon() {

@@ -10,16 +10,10 @@ import android.content.DialogInterface;
 public class UnitFieldExit extends Unit {
 
     private Context mContext;
-    private String mTownName;
     private Integer mCountPathLength;
 
-    UnitFieldExit(Context context, Integer lvl, Integer position) {
+    UnitFieldExit(Context context, Integer position, String location) {
         mContext = context;
-    }
-
-    public UnitFieldExit setTownName(String townName) {
-        mTownName = townName;
-        return this;
     }
 
     public UnitFieldExit setCountPathLength(int pathLen) {
@@ -30,7 +24,7 @@ public class UnitFieldExit extends Unit {
     @Override
     public void action() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Sign says: to " + mTownName)
+        builder.setTitle("Sign says: to " + mLocation)
                 .setMessage("Will you travel there?")
                 .setCancelable(false)
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -42,7 +36,7 @@ public class UnitFieldExit extends Unit {
                     public void onClick(DialogInterface dialog, int id) {
                         AdventureActivity activity = (AdventureActivity) mContext;
                         activity.mCountPathLength = mCountPathLength;
-                        activity.mDestinationTown = mTownName;
+                        activity.mDestinationTown = mLocation;
                         activity.exitField();
                         dialog.cancel();
                     }

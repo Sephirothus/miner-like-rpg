@@ -492,6 +492,15 @@ public class Config {
         return (new Random()).nextFloat() * 100;
     }
 
+    public void enemyByname(String name) {
+        for (HashMap<String, String> item : mEnemies) {
+            if (item.get("name") == name) {
+                mCurItem = item;
+                break;
+            }
+        }
+    }
+
     public void randomEnemy() {
         mCurItem = mEnemies.get((new Random()).nextInt(mEnemies.size()));
     }
