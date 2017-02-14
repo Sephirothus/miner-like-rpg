@@ -105,6 +105,20 @@ public class MainMap {
         return this;
     }
 
+    public static boolean isCellEmpty(View view) {
+        TextView textView = (TextView) view.findViewById(R.id.text);
+        return textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null;
+    }
+
+    public Boolean checkEmptyCells() {
+        for (int i = 0; i < MainMap.TOTAL_CELLS; i++) {
+            if (isCellEmpty(mGridView.getChildAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setTownMapClick() {
         final TownCellAdapter adapter = (TownCellAdapter) mGridView.getAdapter();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,7 +142,7 @@ public class MainMap {
                     unit.addUnitToCell(mContext, view, true);
                     unit.action();
                     ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
-                    if (mPlayer.getSteps() == 0) {
+                    if (mPlayer.getSteps() == 0 || !checkEmptyCells()) {
                         adapter.disableAdapter();
                         mGridView.postDelayed(new Runnable() {
                             @Override
@@ -154,7 +168,7 @@ public class MainMap {
                     unit.addUnitToCell(mContext, view, true);
                     unit.action();
                     activity.mLvl.checkIsLvlEnd();
-                    if (mPlayer.getSteps() <= 0) {
+                    if (mPlayer.getSteps() <= 0 || !checkEmptyCells()) {
                         adapter.disableAdapter();
                         mGridView.postDelayed(new Runnable() {
                             @Override
@@ -176,7 +190,7 @@ public class MainMap {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView textView = (TextView) view.findViewById(R.id.text);
-                if (Battle.isCellEmpty(view)) {
+                if (isCellEmpty(view)) {
                     Integer dmg = adapter.getItem(position);
                     textView.setText(dmg.toString());
                     textView.setTextColor(Color.RED);

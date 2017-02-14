@@ -72,7 +72,7 @@ public class Battle {
         Random r = new Random();
         int pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
         View view = mGridView.getChildAt(pos);
-        while (!isCellEmpty(view)) {
+        while (!MainMap.isCellEmpty(view)) {
             pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
             view = mGridView.getChildAt(pos);
         }
@@ -82,17 +82,12 @@ public class Battle {
 
     private boolean checkEmptyCells() {
         for (int i = 0; i < MainMap.BATTLE_TOTAL_CELLS; i++) {
-            if (isCellEmpty(mGridView.getChildAt(i))) {
+            if (MainMap.isCellEmpty(mGridView.getChildAt(i))) {
                 return true;
             }
         }
         continueBattle();
         return false;
-    }
-
-    public static boolean isCellEmpty(View view) {
-        TextView textView = (TextView) view.findViewById(R.id.text);
-        return textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null;
     }
 
     public void endBattle(final Boolean isGameOver) {

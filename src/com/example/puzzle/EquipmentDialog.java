@@ -136,7 +136,7 @@ public class EquipmentDialog {
 
             @Override
             public void onLongPress(MotionEvent e) {
-
+                if (fromInventory) dropItem(name);
             }
 
             @Override
@@ -151,6 +151,27 @@ public class EquipmentDialog {
                 return gesture.onTouchEvent(event);
             }
         });
+    }
+
+    private void dropItem(final String name) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Drop item")
+                .setMessage("Are you sure you want to drop " + name + "?")
+                .setCancelable(false)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((ExtendActivity) mContext).mPlayer.removeItemFromInventory(name);
+                        showInventory();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void useItem(ImageView selectedImage, String name, Boolean fromInventory) {

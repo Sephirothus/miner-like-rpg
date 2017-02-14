@@ -36,9 +36,25 @@ public class Talk {
     public void create() {
         mView = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        (((ExtendActivity) mContext).mPlayer).setPlayerHeadImg(mView);
+        ((ExtendActivity) mContext).mPlayer.setPlayerHeadImg(mView);
         ((ImageView) mView.findViewById(R.id.npc_head)).setImageResource(R.drawable.npc_head);
+        setTalks();
+        builder.setTitle("Hi there stranger, what you want?")
+                .setView(mView)
+                .setCancelable(false)
+                .setNegativeButton("Bye",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void setTalks() {
         LinearLayout choose = (LinearLayout) mView.findViewById(R.id.dialog_choose);
+        choose.removeAllViews();
         final Talk curClass = this;
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override
@@ -79,18 +95,6 @@ public class Talk {
             textView.setOnClickListener(onClickQuest);
             choose.addView(textView);
         }
-
-        builder.setTitle("Hi there stranger, what you want?")
-                .setView(mView)
-                .setCancelable(false)
-                .setNegativeButton("Bye",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     public void addRecord(String record, Boolean isInterlocutor) {
@@ -142,6 +146,7 @@ public class Talk {
                 public void onClick(View v) {
                     player.addQuest(questId, questInfo);
                     showHideAcceptQuestButton(false);
+                    setTalks();
                     ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
                             "You've got a new quest - " + questInfo.get("title"), Color.MAGENTA
                     );

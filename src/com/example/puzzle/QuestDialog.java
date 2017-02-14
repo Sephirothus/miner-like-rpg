@@ -38,7 +38,7 @@ public class QuestDialog {
     public void createDialog() {
         mView = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.quest_log, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        addQuests();
+        setQuests();
         builder.setView(mView)
                 .setTitle("Quest Log")
                 .setCancelable(false)
@@ -52,8 +52,9 @@ public class QuestDialog {
         alert.show();
     }
 
-    private void addQuests() {
+    private void setQuests() {
         TableLayout table = (TableLayout) mView.findViewById(R.id.quests_list);
+        table.removeAllViews();
         Player player = ((ExtendActivity) mContext).mPlayer;
         for (Object questId : player.getQuests()) {
             final String id = questId.toString();
@@ -77,7 +78,7 @@ public class QuestDialog {
         }
     }
 
-    private void addQuestInfo(String questId, HashMap questInfo) {
+    private void addQuestInfo(final String questId, final HashMap questInfo) {
         LinearLayout layout = (LinearLayout) mView.findViewById(R.id.quest_info);
         layout.removeAllViews();
         // title row
@@ -122,5 +123,38 @@ public class QuestDialog {
         TextView returnLocation = new TextView(mContext);
         returnLocation.setText(Quest.getQuestLocation(questId));
         layout.addView(returnLocation);
+        // cancel button
+        Button button = new Button(mContext);
+        button.setText("Cancel quest");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelQuest(questId, questInfo);
+            }
+        });
+        layout.addView(button);
+    }
+
+    private void cancelQuest(final String questId, HashMap questInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Cancel quest")
+                .setMessage("Are you sure you want to cancel quest - " + questInfo.get("title").toString() + "?")
+                .setCancelable(false)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((ExtendActivity) mContext).mPlayer.removeQuest(questId);
+                        LinearLayout layout = (LinearLayout) mView.findViewById(R.id.quest_info);
+                        layout.removeAllViews();
+                        setQuests();
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
