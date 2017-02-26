@@ -3,6 +3,7 @@ package com.example.puzzle;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,7 +18,7 @@ public class Town {
     public static int MIN_PATH = 3;
     public static int MAX_PATH = 10;
 
-    HashMap<String, HashMap<String, Integer>> mLocations = new HashMap<>();
+    HashMap<String, HashMap<String, String[]>> mLocations = new HashMap<>();
     private ArrayList<Integer> mPossibleExitCell = new ArrayList<>();
     private HashMap<String, TownCellAdapter> mTowns = new HashMap<>();
 
@@ -32,7 +33,7 @@ public class Town {
         Random random = new Random();
         Object[] towns = Config.mTowns.keySet().toArray();
         for (String name : Config.mTowns.keySet()) {
-            HashMap<String, Integer> connections;
+            HashMap connections;
             int exitCount = random.nextInt(MAX_TOWN_EXIT - MIN_TOWN_EXIT) + MIN_TOWN_EXIT;
             if (mLocations.get(name) != null) {
                 connections = mLocations.get(name);
@@ -46,19 +47,30 @@ public class Town {
                     town = towns[random.nextInt(towns.length)].toString();
                 } while (town == name);
                 int pathLen = random.nextInt(MAX_PATH - MIN_PATH) + MIN_PATH;
-                connections.put(town, pathLen);
+                ArrayList<String> pathLocations = new ArrayList<>(pathLen);
+                for (int count = 0; count < pathLen; count++) {
+                    pathLocations.add(getRandomPathLocation());
+                }
+                connections.put(town, pathLocations);
 
-                HashMap<String, Integer> reverseConnections;
+                HashMap reverseConnections;
                 if (mLocations.get(town) != null) {
                     reverseConnections = mLocations.get(town);
                 } else {
                     reverseConnections = new HashMap<>();
                 }
-                reverseConnections.put(name, pathLen);
+                ArrayList<String> reversePathLocations = new ArrayList<>(pathLocations);
+                Collections.reverse(reversePathLocations);
+                reverseConnections.put(name, reversePathLocations);
                 mLocations.put(town, reverseConnections);
             }
             mLocations.put(name, connections);
         }
+    }
+
+    public static String getRandomPathLocation() {
+        Object[] locations = Config.mPathLocations.keySet().toArray();
+        return locations[(new Random()).nextInt(locations.length)].toString();
     }
 
     private void createTownAdapters(Context context) {
@@ -78,7 +90,7 @@ public class Town {
                 }
             }
             // add exit cells
-            HashMap<String, Integer> connections = mLocations.get(name);
+            HashMap connections = mLocations.get(name);
             ArrayList<Integer> exitCells = new ArrayList<>();
             for (Object location : connections.keySet().toArray()) {
                 int cell;
@@ -88,7 +100,7 @@ public class Town {
                 exitCells.add(cell);
                 UnitFieldExit exit = new UnitFieldExit(context, cell, name);
                 exit.setLocation(location.toString());
-                exit.setCountPathLength(connections.get(location));
+                exit.setPathLocations((ArrayList<String>) connections.get(location));
                 adapter.changeItem(cell, exit);
             }
             // changing two random units (except exits) to unitsOnePerField

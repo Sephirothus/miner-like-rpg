@@ -38,7 +38,7 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
         setStat("hp", r.nextInt(lvl * (MAX_HP_LVL_PERCENT - MIN_HP_LVL_PERCENT) / 100 + 1) + lvl * MIN_HP_LVL_PERCENT / 100);
         setStat("str", r.nextInt(lvl * (MAX_STR_LVL_PERCENT - MIN_STR_LVL_PERCENT) / 100 + 1) + lvl * MIN_STR_LVL_PERCENT / 100);
         mConfig = new Config(mContext);
-        mConfig.randomEnemy();
+        mConfig.randomEnemy(location);
     }
 
     public void setStat(String stat, int value) {

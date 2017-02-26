@@ -26,6 +26,8 @@ public class Config {
            put("price", "100");
            put("drop_percent", "20");
            put("description", "This mighty Battle Axe");
+           put("type", "weapon");
+           put("location", "");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Flail");
@@ -35,6 +37,7 @@ public class Config {
             put("equip_slot", "equip_weapon");
             put("price", "50");
             put("drop_percent", "50");
+            put("type", "weapon");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Shard Sword");
@@ -44,6 +47,7 @@ public class Config {
             put("equip_slot", "equip_weapon");
             put("price", "70");
             put("drop_percent", "30");
+            put("type", "weapon");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Broadsword");
@@ -53,6 +57,7 @@ public class Config {
             put("equip_slot", "equip_weapon");
             put("price", "35");
             put("drop_percent", "70");
+            put("type", "weapon");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Bone Knife");
@@ -62,6 +67,7 @@ public class Config {
             put("equip_slot", "equip_weapon_or_shield");
             put("price", "25");
             put("drop_percent", "50");
+            put("type", "weapon");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Spider Shield");
@@ -71,6 +77,7 @@ public class Config {
             put("equip_slot", "equip_weapon_or_shield");
             put("price", "250");
             put("drop_percent", "10");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Round Wooden Shield");
@@ -80,6 +87,7 @@ public class Config {
             put("equip_slot", "equip_weapon_or_shield");
             put("price", "70");
             put("drop_percent", "57");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Templar Shield");
@@ -89,6 +97,7 @@ public class Config {
             put("equip_slot", "equip_weapon_or_shield");
             put("price", "150");
             put("drop_percent", "35");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Breastplate");
@@ -98,6 +107,7 @@ public class Config {
             put("equip_slot", "equip_chest");
             put("price", "100");
             put("drop_percent", "33");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wizard's Shirt");
@@ -107,6 +117,7 @@ public class Config {
             put("equip_slot", "equip_chest");
             put("price", "60");
             put("drop_percent", "63");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Steel Vest");
@@ -116,12 +127,14 @@ public class Config {
             put("equip_slot", "equip_chest");
             put("price", "200");
             put("drop_percent", "13");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "White Shirt");
             put("img", "armor_shirt");
             put("equip_slot", "equip_chest");
             put("price", "3");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Gauntlet");
@@ -131,6 +144,7 @@ public class Config {
             put("equip_slot", "equip_gauntlets");
             put("price", "100");
             put("drop_percent", "25");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Boxing Gloves");
@@ -140,6 +154,7 @@ public class Config {
             put("equip_slot", "equip_gauntlets");
             put("price", "30");
             put("drop_percent", "70");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Leather Gloves");
@@ -149,12 +164,14 @@ public class Config {
             put("equip_slot", "equip_gauntlets");
             put("price", "50");
             put("drop_percent", "53");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Hat");
             put("img", "armor_hat");
             put("equip_slot", "equip_head");
             put("price", "1");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Helmet");
@@ -164,6 +181,7 @@ public class Config {
             put("equip_slot", "equip_head");
             put("price", "70");
             put("drop_percent", "40");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wizard's Hat");
@@ -173,6 +191,7 @@ public class Config {
             put("equip_slot", "equip_head");
             put("price", "50");
             put("drop_percent", "60");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Elf Helmet");
@@ -182,6 +201,7 @@ public class Config {
             put("equip_slot", "equip_head");
             put("price", "120");
             put("drop_percent", "23");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Greaves");
@@ -191,6 +211,7 @@ public class Config {
             put("equip_slot", "equip_legs");
             put("price", "80");
             put("drop_percent", "45");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Armored Pants");
@@ -200,6 +221,7 @@ public class Config {
             put("equip_slot", "equip_legs");
             put("price", "50");
             put("drop_percent", "67");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Pteruges");
@@ -209,18 +231,21 @@ public class Config {
             put("equip_slot", "equip_legs");
             put("price", "35");
             put("drop_percent", "80");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Trousers");
             put("img", "armor_trousers");
             put("equip_slot", "equip_legs");
             put("price", "2");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wooden Clogs");
             put("img", "armor_wooden_clogs");
             put("equip_slot", "equip_boots");
             put("price", "3");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Boots");
@@ -230,6 +255,7 @@ public class Config {
             put("equip_slot", "equip_boots");
             put("price", "30");
             put("drop_percent", "65");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Leather Boots");
@@ -239,6 +265,7 @@ public class Config {
             put("equip_slot", "equip_boots");
             put("price", "40");
             put("drop_percent", "40");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Fur Boots");
@@ -248,6 +275,7 @@ public class Config {
             put("equip_slot", "equip_boots");
             put("price", "80");
             put("drop_percent", "35");
+            put("type", "armor");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Diamond Ring");
@@ -257,6 +285,7 @@ public class Config {
             put("equip_slot", "equip_ring");
             put("price", "15");
             put("drop_percent", "60");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Simple Ring");
@@ -266,6 +295,7 @@ public class Config {
             put("equip_slot", "equip_ring");
             put("price", "10");
             put("drop_percent", "80");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Skull Signet");
@@ -275,6 +305,7 @@ public class Config {
             put("equip_slot", "equip_ring");
             put("price", "40");
             put("drop_percent", "40");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Skull Ring");
@@ -284,12 +315,14 @@ public class Config {
             put("equip_slot", "equip_ring");
             put("price", "40");
             put("drop_percent", "40");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Bow Tie");
             put("img", "armor_bow_tie");
             put("equip_slot", "equip_necklace");
             put("price", "1");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Pendant of Life");
@@ -299,6 +332,7 @@ public class Config {
             put("equip_slot", "equip_necklace");
             put("price", "35");
             put("drop_percent", "50");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Necklace Star");
@@ -308,6 +342,7 @@ public class Config {
             put("equip_slot", "equip_necklace");
             put("price", "30");
             put("drop_percent", "50");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Tribal Pendant");
@@ -317,6 +352,7 @@ public class Config {
             put("equip_slot", "equip_necklace");
             put("price", "35");
             put("drop_percent", "50");
+            put("type", "accessory");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Strength Potion");
@@ -325,6 +361,7 @@ public class Config {
             put("stat_points", "3");
             put("price", "20");
             put("drop_percent", "45");
+            put("type", "potion");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Health Potion");
@@ -333,6 +370,7 @@ public class Config {
             put("stat_points", "3");
             put("price", "20");
             put("drop_percent", "45");
+            put("type", "potion");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Potion of Health Restoration");
@@ -341,18 +379,75 @@ public class Config {
             put("stat_points", "0");
             put("price", "50");
             put("drop_percent", "35");
+            put("type", "potion");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Dice");
+            put("img", "item_dice");
+            //put("description", "");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Quill and Ink");
+            put("img", "item_quill_ink");
+            put("price", "1");
+            //put("description", "");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Old Book");
+            put("img", "item_old_book");
+            put("price", "2");
+            //put("description", "");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Screw-nut");
+            put("img", "item_oily_nut");
+            //put("description", "");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Old Stone Tablet");
-            put("img", "junk_old_stone_tablet");
+            put("img", "item_old_stone_tablet");
             put("price", "5");
-            put("description", "It's a useless junk");
+            //put("description", "");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wine Jug");
-            put("img", "junk_wine_jug");
+            put("img", "item_wine_jug");
             put("price", "1");
-            put("description", "It's a useless junk");
+            //put("description", "");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Crystal eye");
+            put("img", "item_crystal_eye");
+            //put("description", "");
+            put("price", "10");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Paddles");
+            put("img", "item_paddles");
+            //put("description", "");
+            put("price", "3");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Rope");
+            put("img", "item_rope");
+            //put("description", "");
+            put("price", "2");
+            put("type", "item");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Ruby");
+            put("img", "item_ruby");
+            //put("description", "");
+            put("price", "20");
+            put("type", "item");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Fish-bone");
@@ -369,70 +464,83 @@ public class Config {
             put("img", "junk_tooth");
             put("description", "It's a useless junk");
         }});
-        add(new HashMap<String, String>() {{
-            put("name", "Dice");
-            put("img", "junk_dice");
-            put("description", "It's a useless junk");
-        }});
-        add(new HashMap<String, String>() {{
-            put("name", "Quill and Ink");
-            put("img", "junk_quill_ink");
-            put("price", "1");
-            put("description", "It's a useless junk");
-        }});
-        add(new HashMap<String, String>() {{
-            put("name", "Old Book");
-            put("img", "junk_old_book");
-            put("price", "2");
-            put("description", "It's a useless junk");
-        }});
-        add(new HashMap<String, String>() {{
-            put("name", "Oily Nut");
-            put("img", "junk_oily_nut");
-            put("description", "It's a useless junk");
-        }});
     }};
 
     public static ArrayList<HashMap<String, String>> mEnemies = new ArrayList<HashMap<String, String>>() {{
         add(new HashMap<String, String>() {{
             put("name", "Barbarian");
             put("img", "enemy_barbarian");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Dead Warrior");
             put("img", "enemy_dead_warrior");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Forest Troll");
             put("img", "enemy_forest_troll");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Orc Archer");
             put("img", "enemy_orc_archer");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wizard Gnome");
             put("img", "enemy_wizard_gnome");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Ice Golem");
             put("img", "enemy_ice_golem");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Water Monk");
             put("img", "enemy_water_monk");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Elf Huntress");
             put("img", "enemy_elf_huntress");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Vampire");
             put("img", "enemy_vampire");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Tree Guardian");
             put("img", "enemy_tree_guardian");
+            put("location", "forest");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Haunting");
+            put("img", "enemy_haunting");
+            put("location", "ruins");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Evil Book");
+            put("img", "enemy_evil_book");
+            put("location", "ruins");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Slime");
+            put("img", "enemy_slime");
+            put("location", "swamp");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Fish Monster");
+            put("img", "enemy_fish_monster");
+            put("location", "wasteland");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Pirate Skeleton");
+            put("img", "enemy_pirate_skeleton");
+            put("location", "desert");
         }});
     }};
 
@@ -446,6 +554,16 @@ public class Config {
         put("Old Keep", "We have here, one of the oldest sights in our homeland. It's an Old Keep, " +
                 "which once were one of the strongest fortresses in the east and which not survived the legendary " +
                 "War of the elves. Then it was brought here, all that's left, and rebuild stone by stone");
+    }};
+
+    public static HashMap<String, String> mPathLocations = new HashMap<String, String>() {{
+        put("forest", "Forest");
+        put("mountains", "Mountains");
+        put("desert", "Desert");
+        put("dead_forest", "Dead Forest");
+        put("swamp", "Swamp");
+        put("wasteland", "Wasteland");
+        put("ruins", "Old Ruins");
     }};
 
     private static HashMap mShortStatNames = new HashMap<String, String>() {{
@@ -477,11 +595,17 @@ public class Config {
     }
 
     public void randomTreasure() {
+        randomTreasure(null);
+    }
+
+    public void randomTreasure(String type) {
         ArrayList<HashMap<String, String>> foundItems = new ArrayList<>();
         float dropPerc = getDropPercent();
         for (HashMap<String, String> item: mTreasures) {
             String curItemDropPerc = item.get("drop_percent") != null ? item.get("drop_percent") : "100";
-            if (Float.parseFloat(curItemDropPerc) >= dropPerc) {
+            if (Float.parseFloat(curItemDropPerc) >= dropPerc && (
+                    type == null || (item.containsKey("type") && type == item.get("type"))
+            )) {
                 foundItems.add(item);
             }
         }
@@ -502,7 +626,19 @@ public class Config {
     }
 
     public void randomEnemy() {
-        mCurItem = mEnemies.get((new Random()).nextInt(mEnemies.size()));
+        randomEnemy(null);
+    }
+
+    public void randomEnemy(String location) {
+        HashMap enemy;
+        if (location == null) {
+            enemy = mEnemies.get((new Random()).nextInt(mEnemies.size()));
+        } else {
+            do {
+                enemy = mEnemies.get((new Random()).nextInt(mEnemies.size()));
+            } while (enemy.get("location") != location);
+        }
+        mCurItem = enemy;
     }
 
     public int getCurItemImg() {
@@ -515,6 +651,10 @@ public class Config {
 
     public String getCurItemDescription() {
         return mCurItem.get("description");
+    }
+
+    public String getCurEnemyLocation() {
+        return mCurItem.get("location");
     }
 
     public String getCurTreasureStat() {

@@ -4,6 +4,8 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by sephirothus on 25.01.17.
  */
@@ -11,7 +13,7 @@ public class AdventureActivity extends ExtendActivity {
 
     public DungeonFieldFragment mDungeonFieldFragment;
     public Town mTown = new Town();
-    public Integer mCountPathLength;
+    public ArrayList<String> mPathLocations;
     public String mDestinationTown = Town.HOMETOWN_NAME;
     protected String[] mLvlTargets = {"killEnemies", "raiseStat", /*"completeQuests", */"useSteps"};
 
@@ -31,19 +33,21 @@ public class AdventureActivity extends ExtendActivity {
         (new QuestDialog(this)).questsClick();
     }
 
+    @Override
     public void exitField() {
-        mPlayer.refreshSteps();
-        if (mCountPathLength == 0) {
+        super.exitField();
+        mFieldFragment.mMainMap.disableNextLocButton();
+        if (mPathLocations.isEmpty()) {
             moveToTown();
         } else {
-            TextView textView = (TextView) findViewById(R.id.town_name);
-            textView.setText("Forest");
-            mCountPathLength--;
-            mFieldFragment.mMainMap.create().setForestUnits();
+            String location = mPathLocations.get(0);
+            mFieldFragment.mMainMap.setLocationNameAndImage(location).create().setOutsideUnits();
+            mPathLocations.remove(0);
         }
     }
 
     public void moveToTown() {
+        findViewById(R.id.main_layout).setBackgroundResource(Location.getImgByLocation(this, "town"));
         mFieldFragment = new TownFieldFragment();
         Bundle bundle = new Bundle();
         bundle.putString("town_name", mDestinationTown);
@@ -61,6 +65,12 @@ public class AdventureActivity extends ExtendActivity {
         mLogHistoryFragment.addDieAndReturnToTownRec();
         mStatsPanelFragment.changeHpStat();
         moveToTown();
+    }
+
+    @Override
+    public void endBattle() {
+        super.endBattle();
+        mFieldFragment.mMainMap.differentChecks(this);
     }
 
     public void startDungeon() {

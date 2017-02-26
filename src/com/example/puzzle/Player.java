@@ -269,6 +269,11 @@ public class Player implements BattleUnitInterface {
         }
     }
 
+    public void getQuestReward(String questId) {
+        HashMap questInfo = mQuests.get(questId);
+        questInfo.get("reward");
+    }
+
     public void removeQuest(String questId) {
         mQuests.remove(questId);
     }

@@ -4,20 +4,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import java.util.ArrayList;
+
 /**
  * Created by sephirothus on 30.01.17.
  */
 public class UnitFieldExit extends Unit {
 
     private Context mContext;
-    private Integer mCountPathLength;
+    private ArrayList<String> mPathLocations;
 
     UnitFieldExit(Context context, Integer position, String location) {
         mContext = context;
     }
 
-    public UnitFieldExit setCountPathLength(int pathLen) {
-        mCountPathLength = pathLen;
+    public UnitFieldExit setPathLocations(ArrayList<String> path) {
+        mPathLocations = path;
         return this;
     }
 
@@ -35,7 +37,7 @@ public class UnitFieldExit extends Unit {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         AdventureActivity activity = (AdventureActivity) mContext;
-                        activity.mCountPathLength = mCountPathLength;
+                        activity.mPathLocations = new ArrayList<>(mPathLocations);
                         activity.mDestinationTown = mLocation;
                         activity.exitField();
                         dialog.cancel();

@@ -159,7 +159,7 @@ public class Talk {
                 ((ExtendActivity) mContext).mLogHistoryFragment.addRecord(
                         "You've completed quest - " + (mUnit.mQuests.get(questId)).get("title"), Color.MAGENTA
                 );
-                // TODO add reward based on drop percent of item
+                player.getQuestReward(questId);
                 mUnit.mQuests.remove(questId);
                 player.removeQuest(questId);
                 View view = (mView.findViewById(R.id.dialog_choose)).findViewWithTag(questId);

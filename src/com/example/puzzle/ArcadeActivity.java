@@ -20,6 +20,13 @@ public class ArcadeActivity extends ExtendActivity {
     }
 
     @Override
+    public void exitField() {
+        super.exitField();
+        mFieldFragment.mMainMap.create().setUnits();
+        mMerchantDialog.setShopItems();
+    }
+
+    @Override
     public void startBattle(UnitEnemy enemy) {
         mMerchantDialog.disableShop();
         super.startBattle(enemy);
@@ -29,5 +36,6 @@ public class ArcadeActivity extends ExtendActivity {
     public void endBattle() {
         super.endBattle();
         mMerchantDialog.enableShop();
+        mFieldFragment.mMainMap.differentChecks(this);
     }
 }

@@ -50,6 +50,10 @@ public class ExtendActivity extends Activity {
         mLvl.nextLvl();
     }
 
+    public void exitField() {
+        mPlayer.refreshSteps();
+    }
+
     public void startBattle(UnitEnemy enemy) {
         mBattleFieldFragment = new BattleFieldFragment();
         Bundle bundle = new Bundle();
@@ -73,6 +77,6 @@ public class ExtendActivity extends Activity {
     }
 
     public void gameOver() {
-        //finish();
+        finish();
     }
 }

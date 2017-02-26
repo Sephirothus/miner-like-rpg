@@ -118,7 +118,12 @@ public class QuestDialog {
         table.addView(count);
         layout.addView(table);
         // location of unit
-        // TODO add unit location
+        String location = conf.getCurEnemyLocation();
+        if (location != null) {
+            TextView getLocation = new TextView(mContext);
+            getLocation.setText("Location: " + Config.mPathLocations.get(location));
+            layout.addView(getLocation);
+        }
         // return row
         TextView returnLocation = new TextView(mContext);
         returnLocation.setText(Quest.getQuestLocation(questId));

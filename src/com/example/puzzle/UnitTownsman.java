@@ -46,8 +46,9 @@ public class UnitTownsman extends Unit {
         Random random = new Random();
         if (random.nextInt(2) == 1) {
             int questCount = random.nextInt(MAX_QUESTS_COUNT) + MIN_QUESTS_COUNT;
+            Quest quest = new Quest(mContext);
             for (int i = 0; i < questCount; i++) {
-                mQuests.put(Quest.generateQuestId(mLocation, mPosition + 1, i), (new Quest(mContext)).randomQuest());
+                mQuests.put(Quest.generateQuestId(mLocation, mPosition + 1, i), quest.randomQuest());
             }
         }
     }

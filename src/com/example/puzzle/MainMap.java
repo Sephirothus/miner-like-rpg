@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -22,11 +24,16 @@ public class MainMap {
     final static int CELLS_PER_LINE = 6;
     final static int OPENED_CELL_COLOR = Color.BLACK;
     final static int MAX_DMG_POINT = 9;
+    final static int STEPS_TILL_NEXT_SCREEN = 5;
 
     private Player mPlayer;
     private GridView mGridView;
     private Context mContext;
     private Random mRandom;
+    private ArrayList<Class> mDelayedCheckClasses = new ArrayList<Class>() {{
+        add(UnitEnemy.class);
+        //add(UnitDungeon.class);
+    }};
 
     MainMap(Context context) {
         mRandom = new Random();
@@ -40,14 +47,24 @@ public class MainMap {
         return this;
     }
 
+    public MainMap setLocationNameAndImage(String location) {
+        ((ExtendActivity) mContext).findViewById(R.id.main_layout)
+                .setBackgroundResource(Location.getImgByLocation(mContext, location));
+        TextView textView = (TextView) ((ExtendActivity) mContext).findViewById(R.id.location_name);
+        textView.setText(Config.mPathLocations.get(location));
+        return this;
+    }
+
     public MainMap setUnits() {
+        String location = Town.getRandomPathLocation();
+        setLocationNameAndImage(location);
         int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
         Unit.units = new Class[] {UnitEnemy.class, UnitTreasure.class};
         CellAdapter adapter = new CellAdapter(mContext);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, pos, null));
+                adapter.add(pos, Unit.getRandomUnit(mContext, pos, location));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
@@ -74,26 +91,26 @@ public class MainMap {
     public MainMap setTownUnits(String townName) {
         TownCellAdapter adapter = ((AdventureActivity) mContext).mTown.getTownAdapter(townName);
         mGridView.setAdapter(adapter);
-        TextView textView = (TextView) ((ExtendActivity) mContext).findViewById(R.id.town_name);
+        TextView textView = (TextView) ((ExtendActivity) mContext).findViewById(R.id.location_name);
         textView.setText(townName);
         setTownMapClick();
         return this;
     }
 
-    public MainMap setForestUnits() {
+    public MainMap setOutsideUnits() {
         int countUnits = mRandom.nextInt(MAX_UNITS - MIN_UNITS) + MIN_UNITS;
         Unit.units = new Class[] {UnitEnemy.class, UnitTreasure.class, UnitDungeon.class};
         CellAdapter adapter = new CellAdapter(mContext);
         for (int pos = 0; pos < TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1 && countUnits > 0) {
                 countUnits--;
-                adapter.add(pos, Unit.getRandomUnit(mContext, pos, ((AdventureActivity) mContext).mDestinationTown));
+                adapter.add(pos, Unit.getRandomUnit(mContext, pos, ((AdventureActivity) mContext).mPathLocations.get(0)));
             } else {
                 adapter.add(pos, new UnitEmpty());
             }
         }
         mGridView.setAdapter(adapter);
-        setForestMapClick();
+        setOutsideMapClick();
         return this;
     }
 
@@ -119,6 +136,16 @@ public class MainMap {
         return false;
     }
 
+    public int countOpenCells() {
+        int count = 0;
+        for (int i = 0; i < MainMap.TOTAL_CELLS; i++) {
+            if (!isCellEmpty(mGridView.getChildAt(i))) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public void setTownMapClick() {
         final TownCellAdapter adapter = (TownCellAdapter) mGridView.getAdapter();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,7 +158,7 @@ public class MainMap {
         });
     }
 
-    public void setForestMapClick() {
+    public void setOutsideMapClick() {
         final CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -141,24 +168,58 @@ public class MainMap {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view, true);
                     unit.action();
-                    ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
-                    if (mPlayer.getSteps() == 0 || !checkEmptyCells()) {
-                        adapter.disableAdapter();
-                        mGridView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((AdventureActivity) mContext).exitField();
-                            }
-                        }, 1000);
+                    if (!mDelayedCheckClasses.contains(unit.getClass())) {
+                        differentChecks(((AdventureActivity) mContext));
+                    } else {
+                        disableNextLocButton();
                     }
                 }
             }
         });
+        Button button = (Button) ((ExtendActivity) mContext).findViewById(R.id.next_location);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((AdventureActivity) mContext).exitField();
+            }
+        });
+    }
+
+    public void differentChecks(final ExtendActivity activity) {
+        ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
+        enableDisableNextLocButton();
+        if (mPlayer.getSteps() == 0 || !checkEmptyCells()) {
+            ((CellAdapter) mGridView.getAdapter()).disableAdapter();
+            disableNextLocButton();
+            mGridView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    activity.exitField();
+                }
+            }, 1000);
+        }
+    }
+
+    public void enableDisableNextLocButton() {
+        if (countOpenCells() >= STEPS_TILL_NEXT_SCREEN) {
+            enableNextLocButton();
+        } else {
+            disableNextLocButton();
+        }
+    }
+
+    public void disableNextLocButton() {
+        Button button = (Button) ((ExtendActivity) mContext).findViewById(R.id.next_location);
+        if (button != null) button.setVisibility(View.GONE);
+    }
+
+    public void enableNextLocButton() {
+        Button button = (Button) ((ExtendActivity) mContext).findViewById(R.id.next_location);
+        if (button != null) button.setVisibility(View.VISIBLE);
     }
 
     public void setMapClick() {
         final CellAdapter adapter = (CellAdapter) mGridView.getAdapter();
-        final ArcadeActivity activity = ((ArcadeActivity) mContext);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,17 +228,8 @@ public class MainMap {
                     Unit unit = adapter.getItem(position);
                     unit.addUnitToCell(mContext, view, true);
                     unit.action();
-                    activity.mLvl.checkIsLvlEnd();
-                    if (mPlayer.getSteps() <= 0 || !checkEmptyCells()) {
-                        adapter.disableAdapter();
-                        mGridView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mPlayer.refreshSteps();
-                                activity.mFieldFragment.mMainMap.create().setUnits();
-                                activity.mMerchantDialog.setShopItems();
-                            }
-                        }, 1000);
+                    if (!mDelayedCheckClasses.contains(unit.getClass())) {
+                        differentChecks(((ArcadeActivity) mContext));
                     }
                 }
             }
@@ -203,7 +255,6 @@ public class MainMap {
                     view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
                         ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
-                        ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
                     }
                 }
             }

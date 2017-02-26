@@ -3,6 +3,7 @@ package com.example.puzzle;
 import android.content.Context;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -19,18 +20,36 @@ public class Quest {
     public final static int QUEST_TYPE_KILL = 1;
     public final static int QUEST_TYPE_GET_ITEM = 2;
     public final static int QUEST_TYPE_WALK_TO_LOCATION = 3;
+    public final static int QUEST_TYPE_TALK = 4;
 
     private Context mContext;
     private Config mConf;
+    private ArrayList<String> mPresentTypes = new ArrayList<>();
     private String[] mTypes = {"killEnemies", "foundItems"/*, "killBoss"*/};
+
+    public ArrayList<String> mItemTypesSingle = new ArrayList<String>() {{
+        add("armor");
+        add("weapon");
+        add("accessory");
+        add("potion");
+    }};
+    public ArrayList<String> mItemTypesMultiple = new ArrayList<String>() {{
+        add("item");
+    }};
     private HashMap<String, String> mKillEnemiesTitles = new HashMap<String, String>(){{
         put("Trouble with $type", "Please help me, I owed a lot of money to $type and they want to kill me. Kill at least $count" +
                 " of them and they will leave me alone.");
-        //put("$type raid our town", "");
-        //put("Revenge on $type", "");
+        put("$type raid our town", "$type is raiding our town, they take all our stuff every time they come. You must kill " +
+                "$count $type and they will stop terrorizing us.");
+        put("Revenge on $type", "$type killed all my family. I want revenge and if $count will be slain, you will get " +
+                "a descent reward.");
     }};
     private HashMap<String, String> mFoundItemsTitles = new HashMap<String, String>(){{
-       put("Lost $type", "I lost $count $type, when I was in the forest, can you find it?");
+        put("Lost $type", "I lost $count $type, when I was outside town, can you find it?");
+        put("Need for $type", "I'm a scientist and my work is very important to our town. I need $count $type for " +
+                "my experiment, will you get me it?");
+        put("Birthday present", "In a couple of days my brother will have a birthday and I want to make a gift for him. " +
+                "Can you bring me $count $type?");
     }};
 
     Quest(Context context) {
@@ -70,7 +89,11 @@ public class Quest {
     }
 
     private HashMap<String, String> killEnemies() {
-        mConf.randomEnemy();
+        do {
+            mConf.randomEnemy();
+        } while (mPresentTypes.contains(mConf.getCurItemName()));
+        mPresentTypes.add(mConf.getCurItemName());
+
         final String title = mKillEnemiesTitles.keySet()
                 .toArray()[(new Random()).nextInt(mKillEnemiesTitles.size())].toString();
         final String count = String.valueOf((new Random()).nextInt(MAX_ENEMIES_COUNT) + MIN_ENEMIES_COUNT);
@@ -81,20 +104,34 @@ public class Quest {
             put("type", mConf.getCurItemName());
             put("count", count);
             put("progress_count", "0");
+            put("reward", "");
         }};
     }
 
     private HashMap<String, String> foundItems() {
-        mConf.randomTreasure();
+        String type;
+        final String count;
         final String title = mFoundItemsTitles.keySet()
                 .toArray()[(new Random()).nextInt(mFoundItemsTitles.size())].toString();
-        final String count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
+        if ((new Random()).nextInt(3) == 2) {
+            type = mItemTypesSingle.get((new Random()).nextInt(mItemTypesSingle.size()));
+            count = "1";
+        } else {
+            type = mItemTypesMultiple.get((new Random()).nextInt(mItemTypesMultiple.size()));
+            count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
+        }
+        do {
+            mConf.randomTreasure(type);
+        } while (mPresentTypes.contains(mConf.getCurItemName()));
+        mPresentTypes.add(mConf.getCurItemName());
+
         return new HashMap<String, String>() {{
             put("action", String.valueOf(QUEST_TYPE_GET_ITEM));
             put("title", replacePlaceholders(title, ""));
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
+            put("reward", "");
         }};
     }
 
