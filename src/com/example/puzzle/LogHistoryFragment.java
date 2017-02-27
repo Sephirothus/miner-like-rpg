@@ -81,6 +81,10 @@ public class LogHistoryFragment extends Fragment {
         addRecord(text, Color.RED);
     }
 
+    public void addGetGoldRewardRec(int count) {
+        addRecord("Your reward is " + count + " gold", Color.YELLOW);
+    }
+
     public void addTreasureFoundRec(String name) {
         addRecord("You open treasure chest and get " + name, Color.YELLOW);
     }

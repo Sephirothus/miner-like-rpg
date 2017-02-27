@@ -17,6 +17,7 @@ public class UnitTreasure extends Unit {
 
     UnitTreasure(Context context, Integer position, String location) {
         mContext = context;
+        setLocation(location);
     }
 
     public void action() {
@@ -25,9 +26,9 @@ public class UnitTreasure extends Unit {
 
     private void getTreasure() {
         mConfig = new Config(mContext);
-        mConfig.randomTreasure();
+        mConfig.randomTreasure(mLocation);
         ((ExtendActivity) mContext).mLogHistoryFragment.addTreasureFoundRec(mConfig.getCurItemName());
-        ((ExtendActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName());
+        ((ExtendActivity) mContext).mPlayer.addItemToInventory(mConfig.getCurItemName(), mConfig.getCurTreasureGoldAmount());
     }
 
     public void showTreasure() {

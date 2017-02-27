@@ -48,7 +48,7 @@ public class Quest {
         put("Lost $type", "I lost $count $type, when I was outside town, can you find it?");
         put("Need for $type", "I'm a scientist and my work is very important to our town. I need $count $type for " +
                 "my experiment, will you get me it?");
-        put("Birthday present", "In a couple of days my brother will have a birthday and I want to make a gift for him. " +
+        put("Birthday present - $type", "In a couple of days my brother will have a birthday and I want to make a gift for him. " +
                 "Can you bring me $count $type?");
     }};
 
@@ -104,7 +104,7 @@ public class Quest {
             put("type", mConf.getCurItemName());
             put("count", count);
             put("progress_count", "0");
-            put("reward", "");
+            put("reward", mConf.getGoldAmountForQuest(QUEST_TYPE_KILL, count));
         }};
     }
 
@@ -121,7 +121,7 @@ public class Quest {
             count = String.valueOf((new Random()).nextInt(MAX_ITEMS_COUNT) + MIN_ITEMS_COUNT);
         }
         do {
-            mConf.randomTreasure(type);
+            mConf.randomTreasureForQuest(type);
         } while (mPresentTypes.contains(mConf.getCurItemName()));
         mPresentTypes.add(mConf.getCurItemName());
 
@@ -131,7 +131,7 @@ public class Quest {
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
-            put("reward", "");
+            put("reward", mConf.getGoldAmountForQuest(QUEST_TYPE_GET_ITEM, count));
         }};
     }
 

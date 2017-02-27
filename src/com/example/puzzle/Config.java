@@ -13,6 +13,10 @@ import java.util.Random;
  */
 public class Config {
 
+    final static int MIN_GOLD_AMOUNT = 1;
+    final static int MAX_GOLD_AMOUNT = 5;
+    final static int QUEST_GOLD_MULTIPLIER = 5;
+
     public HashMap<String, String> mCurItem;
     public Context mContext;
 
@@ -27,7 +31,6 @@ public class Config {
            put("drop_percent", "20");
            put("description", "This mighty Battle Axe");
            put("type", "weapon");
-           put("location", "");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Flail");
@@ -135,6 +138,7 @@ public class Config {
             put("equip_slot", "equip_chest");
             put("price", "3");
             put("type", "item");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Gauntlet");
@@ -172,6 +176,7 @@ public class Config {
             put("equip_slot", "equip_head");
             put("price", "1");
             put("type", "item");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Helmet");
@@ -239,6 +244,7 @@ public class Config {
             put("equip_slot", "equip_legs");
             put("price", "2");
             put("type", "item");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wooden Clogs");
@@ -246,6 +252,7 @@ public class Config {
             put("equip_slot", "equip_boots");
             put("price", "3");
             put("type", "item");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Boots");
@@ -323,6 +330,7 @@ public class Config {
             put("equip_slot", "equip_necklace");
             put("price", "1");
             put("type", "item");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Pendant of Life");
@@ -386,6 +394,7 @@ public class Config {
             put("img", "item_dice");
             //put("description", "");
             put("type", "item");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Quill and Ink");
@@ -393,6 +402,7 @@ public class Config {
             put("price", "1");
             //put("description", "");
             put("type", "item");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Old Book");
@@ -400,12 +410,14 @@ public class Config {
             put("price", "2");
             //put("description", "");
             put("type", "item");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Screw-nut");
             put("img", "item_oily_nut");
             //put("description", "");
             put("type", "item");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Old Stone Tablet");
@@ -413,6 +425,7 @@ public class Config {
             put("price", "5");
             //put("description", "");
             put("type", "item");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wine Jug");
@@ -420,6 +433,7 @@ public class Config {
             put("price", "1");
             //put("description", "");
             put("type", "item");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Crystal eye");
@@ -427,6 +441,7 @@ public class Config {
             //put("description", "");
             put("price", "10");
             put("type", "item");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Paddles");
@@ -434,6 +449,7 @@ public class Config {
             //put("description", "");
             put("price", "3");
             put("type", "item");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Rope");
@@ -441,6 +457,7 @@ public class Config {
             //put("description", "");
             put("price", "2");
             put("type", "item");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Ruby");
@@ -448,6 +465,7 @@ public class Config {
             //put("description", "");
             put("price", "20");
             put("type", "item");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Fish-bone");
@@ -463,6 +481,10 @@ public class Config {
             put("name", "Tooth");
             put("img", "junk_tooth");
             put("description", "It's a useless junk");
+        }});
+        add(new HashMap<String, String>() {{
+            put("name", "Gold");
+            put("img", "treasure_coins");
         }});
     }};
 
@@ -598,14 +620,51 @@ public class Config {
         randomTreasure(null);
     }
 
-    public void randomTreasure(String type) {
+    public void randomTreasure(String location) {
         ArrayList<HashMap<String, String>> foundItems = new ArrayList<>();
-        float dropPerc = getDropPercent();
+        Random random = new Random();
+        if (random.nextInt(2) == 1) {
+            float dropPerc = getDropPercent();
+            for (HashMap<String, String> item : mTreasures) {
+                String curItemDropPerc = item.get("drop_percent") != null ? item.get("drop_percent") : "100";
+                if (Float.parseFloat(curItemDropPerc) >= dropPerc && (
+                        location == null || (item.containsKey("location") && location == item.get("location"))
+                )) {
+                    foundItems.add(item);
+                }
+            }
+        }
+        if (foundItems.size() == 0) {
+            treasureByName("Gold");
+            String count = String.valueOf(random.nextInt(MAX_GOLD_AMOUNT) + MIN_GOLD_AMOUNT);
+            mCurItem.put("description", "This is a pile of " + count + " gold");
+            mCurItem.put("gold_amount", count);
+        } else {
+            mCurItem = foundItems.get(random.nextInt(foundItems.size()));
+        }
+    }
+
+    public String getGoldAmountForQuest(int action, String count) {
+        String amount = "0";
+        switch (action) {
+            case Quest.QUEST_TYPE_KILL:
+                amount = String.valueOf(Integer.parseInt(count) * QUEST_GOLD_MULTIPLIER);
+                break;
+            case Quest.QUEST_TYPE_GET_ITEM:
+                if (mCurItem.get("drop_percent") != null) {
+                    amount = String.valueOf(100 - Integer.parseInt(mCurItem.get("drop_percent")));
+                } else {
+                    amount = String.valueOf(Integer.parseInt(count) * QUEST_GOLD_MULTIPLIER);
+                }
+                break;
+        }
+        return amount;
+    }
+
+    public void randomTreasureForQuest(String type) {
+        ArrayList<HashMap<String, String>> foundItems = new ArrayList<>();
         for (HashMap<String, String> item: mTreasures) {
-            String curItemDropPerc = item.get("drop_percent") != null ? item.get("drop_percent") : "100";
-            if (Float.parseFloat(curItemDropPerc) >= dropPerc && (
-                    type == null || (item.containsKey("type") && type == item.get("type"))
-            )) {
+            if (item.containsKey("type") && type == item.get("type")) {
                 foundItems.add(item);
             }
         }
@@ -616,7 +675,7 @@ public class Config {
         return (new Random()).nextFloat() * 100;
     }
 
-    public void enemyByname(String name) {
+    public void enemyByName(String name) {
         for (HashMap<String, String> item : mEnemies) {
             if (item.get("name") == name) {
                 mCurItem = item;
@@ -653,12 +712,16 @@ public class Config {
         return mCurItem.get("description");
     }
 
-    public String getCurEnemyLocation() {
+    public String getCurItemLocation() {
         return mCurItem.get("location");
     }
 
     public String getCurTreasureStat() {
         return mCurItem.get("stat");
+    }
+
+    public String getCurTreasureGoldAmount() {
+        return mCurItem.get("gold_amount");
     }
 
     public int getCurTreasureStatPoints() {

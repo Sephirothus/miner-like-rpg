@@ -188,7 +188,7 @@ public class MainMap {
     public void differentChecks(final ExtendActivity activity) {
         ((ExtendActivity) mContext).mLvl.checkIsLvlEnd();
         enableDisableNextLocButton();
-        if (mPlayer.getSteps() == 0 || !checkEmptyCells()) {
+        if (mPlayer.getSteps() <= 0 || !checkEmptyCells()) {
             ((CellAdapter) mGridView.getAdapter()).disableAdapter();
             disableNextLocButton();
             mGridView.postDelayed(new Runnable() {

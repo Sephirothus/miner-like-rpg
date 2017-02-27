@@ -99,7 +99,7 @@ public class QuestDialog {
         String progress = "0";
         switch (Integer.parseInt(questInfo.get("action").toString())) {
             case Quest.QUEST_TYPE_KILL:
-                conf.enemyByname(questInfo.get("type").toString());
+                conf.enemyByName(questInfo.get("type").toString());
                 img.setImageResource(conf.getCurItemImg());
                 progress = questInfo.get("progress_count").toString();
                 break;
@@ -118,7 +118,7 @@ public class QuestDialog {
         table.addView(count);
         layout.addView(table);
         // location of unit
-        String location = conf.getCurEnemyLocation();
+        String location = conf.getCurItemLocation();
         if (location != null) {
             TextView getLocation = new TextView(mContext);
             getLocation.setText("Location: " + Config.mPathLocations.get(location));

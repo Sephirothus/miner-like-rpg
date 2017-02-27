@@ -103,6 +103,14 @@ public class Player implements BattleUnitInterface {
         mInventory.add(itemName);
     }
 
+    public void addItemToInventory(String itemName, String count) {
+        if (count != null) {
+            increaseGold(Integer.parseInt(count));
+        } else {
+            addItemToInventory(itemName);
+        }
+    }
+
     public void removeItemFromInventory(String itemName) {
         mInventory.remove(itemName);
     }
@@ -271,7 +279,10 @@ public class Player implements BattleUnitInterface {
 
     public void getQuestReward(String questId) {
         HashMap questInfo = mQuests.get(questId);
-        questInfo.get("reward");
+        int count = Integer.parseInt(questInfo.get("reward").toString());
+        increaseGold(count);
+        ((ExtendActivity) mContext).mLogHistoryFragment.addGetGoldRewardRec(count);
+        ((ExtendActivity) mContext).mLvl.nextLvl();
     }
 
     public void removeQuest(String questId) {
