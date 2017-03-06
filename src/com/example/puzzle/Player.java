@@ -184,7 +184,7 @@ public class Player implements BattleUnitInterface {
 
     public void addKilledEnemy(String name) {
         mKilledEnemies++;
-        for (Object questId : mQuests.keySet().toArray()) {
+        for (Object questId : getQuests()) {
             HashMap questInfo = mQuests.get(questId);
             if (questInfo.get("type") == name
                     && Integer.parseInt(questInfo.get("progress_count").toString()) < Integer.parseInt(
@@ -268,6 +268,24 @@ public class Player implements BattleUnitInterface {
                 break;
         }
         return isComplete;
+    }
+
+    public ArrayList<HashMap<String, String>> getQuestItemsByLocation(String location) {
+        ArrayList<HashMap<String, String>> items = new ArrayList<>();
+        if (location == null) return items;
+
+        Config conf = new Config(mContext);
+        for (Object questId : getQuests()) {
+            HashMap questInfo = mQuests.get(questId);
+            if (Integer.parseInt(questInfo.get("action").toString()) == Quest.QUEST_TYPE_GET_ITEM) {
+                conf.treasureByName(questInfo.get("type").toString());
+                if (Quest.mItemTypesMultiple.contains(conf.mCurItem.get("type"))
+                        && conf.getCurItemLocation() == location) {
+                            items.add(conf.mCurItem);
+                }
+            }
+        }
+        return items;
     }
 
     public void completeQuestGetItem(String questId) {

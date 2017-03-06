@@ -31,6 +31,7 @@ public class Config {
            put("drop_percent", "20");
            put("description", "This mighty Battle Axe");
            put("type", "weapon");
+           put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Flail");
@@ -41,6 +42,7 @@ public class Config {
             put("price", "50");
             put("drop_percent", "50");
             put("type", "weapon");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Shard Sword");
@@ -51,6 +53,7 @@ public class Config {
             put("price", "70");
             put("drop_percent", "30");
             put("type", "weapon");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Broadsword");
@@ -61,6 +64,7 @@ public class Config {
             put("price", "35");
             put("drop_percent", "70");
             put("type", "weapon");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Bone Knife");
@@ -71,6 +75,7 @@ public class Config {
             put("price", "25");
             put("drop_percent", "50");
             put("type", "weapon");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Spider Shield");
@@ -81,6 +86,7 @@ public class Config {
             put("price", "250");
             put("drop_percent", "10");
             put("type", "armor");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Round Wooden Shield");
@@ -91,6 +97,7 @@ public class Config {
             put("price", "70");
             put("drop_percent", "57");
             put("type", "armor");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Templar Shield");
@@ -101,6 +108,7 @@ public class Config {
             put("price", "150");
             put("drop_percent", "35");
             put("type", "armor");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Breastplate");
@@ -111,6 +119,7 @@ public class Config {
             put("price", "100");
             put("drop_percent", "33");
             put("type", "armor");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wizard's Shirt");
@@ -121,6 +130,7 @@ public class Config {
             put("price", "60");
             put("drop_percent", "63");
             put("type", "armor");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Steel Vest");
@@ -131,6 +141,7 @@ public class Config {
             put("price", "200");
             put("drop_percent", "13");
             put("type", "armor");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "White Shirt");
@@ -149,6 +160,7 @@ public class Config {
             put("price", "100");
             put("drop_percent", "25");
             put("type", "armor");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Boxing Gloves");
@@ -159,6 +171,7 @@ public class Config {
             put("price", "30");
             put("drop_percent", "70");
             put("type", "armor");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Leather Gloves");
@@ -169,6 +182,7 @@ public class Config {
             put("price", "50");
             put("drop_percent", "53");
             put("type", "armor");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Hat");
@@ -187,6 +201,7 @@ public class Config {
             put("price", "70");
             put("drop_percent", "40");
             put("type", "armor");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Wizard's Hat");
@@ -197,6 +212,7 @@ public class Config {
             put("price", "50");
             put("drop_percent", "60");
             put("type", "armor");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Elf Helmet");
@@ -207,6 +223,7 @@ public class Config {
             put("price", "120");
             put("drop_percent", "23");
             put("type", "armor");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Iron Greaves");
@@ -217,6 +234,7 @@ public class Config {
             put("price", "80");
             put("drop_percent", "45");
             put("type", "armor");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Armored Pants");
@@ -227,6 +245,7 @@ public class Config {
             put("price", "50");
             put("drop_percent", "67");
             put("type", "armor");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Pteruges");
@@ -237,6 +256,7 @@ public class Config {
             put("price", "35");
             put("drop_percent", "80");
             put("type", "armor");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Trousers");
@@ -263,6 +283,7 @@ public class Config {
             put("price", "30");
             put("drop_percent", "65");
             put("type", "armor");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Leather Boots");
@@ -273,6 +294,7 @@ public class Config {
             put("price", "40");
             put("drop_percent", "40");
             put("type", "armor");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Fur Boots");
@@ -283,6 +305,7 @@ public class Config {
             put("price", "80");
             put("drop_percent", "35");
             put("type", "armor");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Diamond Ring");
@@ -293,6 +316,7 @@ public class Config {
             put("price", "15");
             put("drop_percent", "60");
             put("type", "accessory");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Simple Ring");
@@ -303,6 +327,7 @@ public class Config {
             put("price", "10");
             put("drop_percent", "80");
             put("type", "accessory");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Skull Signet");
@@ -313,6 +338,7 @@ public class Config {
             put("price", "40");
             put("drop_percent", "40");
             put("type", "accessory");
+            put("location", "dead_forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Skull Ring");
@@ -323,6 +349,7 @@ public class Config {
             put("price", "40");
             put("drop_percent", "40");
             put("type", "accessory");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Bow Tie");
@@ -341,6 +368,7 @@ public class Config {
             put("price", "35");
             put("drop_percent", "50");
             put("type", "accessory");
+            put("location", "forest");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Necklace Star");
@@ -351,6 +379,7 @@ public class Config {
             put("price", "30");
             put("drop_percent", "50");
             put("type", "accessory");
+            put("location", "ruins");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Tribal Pendant");
@@ -361,6 +390,7 @@ public class Config {
             put("price", "35");
             put("drop_percent", "50");
             put("type", "accessory");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Strength Potion");
@@ -370,6 +400,7 @@ public class Config {
             put("price", "20");
             put("drop_percent", "45");
             put("type", "potion");
+            put("location", "mountains");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Health Potion");
@@ -379,6 +410,7 @@ public class Config {
             put("price", "20");
             put("drop_percent", "45");
             put("type", "potion");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Potion of Health Restoration");
@@ -388,6 +420,7 @@ public class Config {
             put("price", "50");
             put("drop_percent", "35");
             put("type", "potion");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Dice");
@@ -471,16 +504,19 @@ public class Config {
             put("name", "Fish-bone");
             put("img", "junk_fishbone");
             put("description", "It's a useless junk");
+            put("location", "desert");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Unknown Nasty Spill");
             put("img", "junk_nasty_spill");
             put("description", "It's a useless junk");
+            put("location", "swamp");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Tooth");
             put("img", "junk_tooth");
             put("description", "It's a useless junk");
+            put("location", "wasteland");
         }});
         add(new HashMap<String, String>() {{
             put("name", "Gold");
@@ -624,13 +660,16 @@ public class Config {
         ArrayList<HashMap<String, String>> foundItems = new ArrayList<>();
         Random random = new Random();
         if (random.nextInt(2) == 1) {
-            float dropPerc = getDropPercent();
-            for (HashMap<String, String> item : mTreasures) {
-                String curItemDropPerc = item.get("drop_percent") != null ? item.get("drop_percent") : "100";
-                if (Float.parseFloat(curItemDropPerc) >= dropPerc && (
-                        location == null || (item.containsKey("location") && location == item.get("location"))
-                )) {
-                    foundItems.add(item);
+            foundItems = ((AdventureActivity) mContext).mPlayer.getQuestItemsByLocation(location);
+            if (foundItems.isEmpty()) {
+                float dropPerc = getDropPercent();
+                for (HashMap<String, String> item : mTreasures) {
+                    String curItemDropPerc = item.get("drop_percent") != null ? item.get("drop_percent") : "100";
+                    if (Float.parseFloat(curItemDropPerc) >= dropPerc && (
+                            location == null || (item.containsKey("location") && location == item.get("location"))
+                    )) {
+                        foundItems.add(item);
+                    }
                 }
             }
         }

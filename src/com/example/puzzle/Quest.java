@@ -27,13 +27,13 @@ public class Quest {
     private ArrayList<String> mPresentTypes = new ArrayList<>();
     private String[] mTypes = {"killEnemies", "foundItems"/*, "killBoss"*/};
 
-    public ArrayList<String> mItemTypesSingle = new ArrayList<String>() {{
+    public static ArrayList<String> mItemTypesSingle = new ArrayList<String>() {{
         add("armor");
         add("weapon");
         add("accessory");
         add("potion");
     }};
-    public ArrayList<String> mItemTypesMultiple = new ArrayList<String>() {{
+    public static ArrayList<String> mItemTypesMultiple = new ArrayList<String>() {{
         add("item");
     }};
     private HashMap<String, String> mKillEnemiesTitles = new HashMap<String, String>(){{
@@ -113,7 +113,7 @@ public class Quest {
         final String count;
         final String title = mFoundItemsTitles.keySet()
                 .toArray()[(new Random()).nextInt(mFoundItemsTitles.size())].toString();
-        if ((new Random()).nextInt(3) == 2) {
+        if ((new Random()).nextInt(5) == 4) {
             type = mItemTypesSingle.get((new Random()).nextInt(mItemTypesSingle.size()));
             count = "1";
         } else {
