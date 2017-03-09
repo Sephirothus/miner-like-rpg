@@ -16,6 +16,7 @@ public class Level {
     public static int MIN_ENEMIES_COUNT = 1;
     public static int MAX_STAT_COUNT = 5;
     public static int MIN_STAT_COUNT = 1;
+    public static int DROP_PERCENT_LVL_MULTIPLIER = 50;
 
     private Context mContext;
     private ExtendActivity mActivity;
@@ -51,10 +52,16 @@ public class Level {
     }
 
     public void nextLvl() {
-        mLvl++;
+        nextLvl(1);
+    }
+
+    public void nextLvl(int lvlAmount) {
+        mLvl += lvlAmount;
         mActivity.mStatsPanelFragment.changeLvlStat();
         mActivity.mLogHistoryFragment.addNewLvlRec(mLvl);
-        mActivity.mPlayer.lvlStatIncrease();
+        for (int i = 0; i < lvlAmount; i++) {
+            mActivity.mPlayer.lvlStatIncrease();
+        }
         setLvlTarget();
     }
 

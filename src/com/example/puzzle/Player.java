@@ -297,10 +297,30 @@ public class Player implements BattleUnitInterface {
 
     public void getQuestReward(String questId) {
         HashMap questInfo = mQuests.get(questId);
-        int count = Integer.parseInt(questInfo.get("reward").toString());
+        int count = Integer.parseInt(questInfo.get("count").toString());
+        int lvl = 1;
+        switch (Integer.parseInt(questInfo.get("action").toString())) {
+            case Quest.QUEST_TYPE_KILL:
+                count = count * Quest.QUEST_GOLD_MULTIPLIER;
+                break;
+            case Quest.QUEST_TYPE_GET_ITEM:
+                Config conf = new Config(mContext);
+                conf.treasureByName(questInfo.get("type").toString());
+                int multiplier = Quest.QUEST_GOLD_MULTIPLIER;
+                if (conf.mCurItem.get("price") != null) {
+                    multiplier = Integer.parseInt(conf.mCurItem.get("price"));
+                }
+                count = count * multiplier;
+
+                if (conf.mCurItem.get("drop_percent") != null) {
+                    lvl = (int) Math.ceil((100 - Integer.parseInt(conf.mCurItem.get("drop_percent")))
+                            / Level.DROP_PERCENT_LVL_MULTIPLIER);
+                }
+                break;
+        }
         increaseGold(count);
         ((ExtendActivity) mContext).mLogHistoryFragment.addGetGoldRewardRec(count);
-        ((ExtendActivity) mContext).mLvl.nextLvl();
+        ((ExtendActivity) mContext).mLvl.nextLvl(lvl);
     }
 
     public void removeQuest(String questId) {

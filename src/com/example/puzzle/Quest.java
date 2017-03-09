@@ -12,10 +12,11 @@ import java.util.Random;
  */
 public class Quest {
 
-    public static int MAX_ENEMIES_COUNT = 10;
-    public static int MIN_ENEMIES_COUNT = 1;
-    public static int MAX_ITEMS_COUNT = 5;
-    public static int MIN_ITEMS_COUNT = 1;
+    public final static int MAX_ENEMIES_COUNT = 10;
+    public final static int MIN_ENEMIES_COUNT = 1;
+    public final static int MAX_ITEMS_COUNT = 5;
+    public final static int MIN_ITEMS_COUNT = 1;
+    public final static int QUEST_GOLD_MULTIPLIER = 5;
 
     public final static int QUEST_TYPE_KILL = 1;
     public final static int QUEST_TYPE_GET_ITEM = 2;
@@ -104,7 +105,6 @@ public class Quest {
             put("type", mConf.getCurItemName());
             put("count", count);
             put("progress_count", "0");
-            put("reward", mConf.getGoldAmountForQuest(QUEST_TYPE_KILL, count));
         }};
     }
 
@@ -131,7 +131,6 @@ public class Quest {
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
-            put("reward", mConf.getGoldAmountForQuest(QUEST_TYPE_GET_ITEM, count));
         }};
     }
 

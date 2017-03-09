@@ -3,6 +3,7 @@ package com.example.puzzle;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.*;
@@ -62,12 +63,11 @@ public class QuestDialog {
             TableRow row = new TableRow(mContext);
             TextView title = new TextView(mContext);
             title.setText(questInfo.get("title").toString());
-            row.addView(title);
+            title.setTextSize(17);
             if (player.isQuestComplete(id)) {
-                TextView complete = new TextView(mContext);
-                complete.setText("Complete");
-                row.addView(complete);
+                title.setTextColor(Color.GREEN);
             }
+            row.addView(title);
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

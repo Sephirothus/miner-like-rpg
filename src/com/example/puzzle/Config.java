@@ -15,7 +15,6 @@ public class Config {
 
     final static int MIN_GOLD_AMOUNT = 1;
     final static int MAX_GOLD_AMOUNT = 5;
-    final static int QUEST_GOLD_MULTIPLIER = 5;
 
     public HashMap<String, String> mCurItem;
     public Context mContext;
@@ -681,23 +680,6 @@ public class Config {
         } else {
             mCurItem = foundItems.get(random.nextInt(foundItems.size()));
         }
-    }
-
-    public String getGoldAmountForQuest(int action, String count) {
-        String amount = "0";
-        switch (action) {
-            case Quest.QUEST_TYPE_KILL:
-                amount = String.valueOf(Integer.parseInt(count) * QUEST_GOLD_MULTIPLIER);
-                break;
-            case Quest.QUEST_TYPE_GET_ITEM:
-                if (mCurItem.get("drop_percent") != null) {
-                    amount = String.valueOf(100 - Integer.parseInt(mCurItem.get("drop_percent")));
-                } else {
-                    amount = String.valueOf(Integer.parseInt(count) * QUEST_GOLD_MULTIPLIER);
-                }
-                break;
-        }
-        return amount;
     }
 
     public void randomTreasureForQuest(String type) {

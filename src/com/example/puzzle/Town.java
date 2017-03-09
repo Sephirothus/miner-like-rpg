@@ -77,7 +77,6 @@ public class Town {
         Random random = new Random();
         Unit.units = new Class[] {UnitHouse.class, UnitTownsman.class, UnitDecor.class};
         Class[] unitsOnePerField = new Class[] {UnitChurch.class, UnitMerchant.class};
-        int lvl = ((ExtendActivity) context).mLvl.getLvl();
         for (String name : Config.mTowns.keySet()) {
             int countUnits = random.nextInt(MainMap.MAX_UNITS - MainMap.MIN_UNITS) + MainMap.MIN_UNITS;
             TownCellAdapter adapter = new TownCellAdapter(context);
