@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,20 +12,24 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.example.puzzle.Config;
+import com.example.puzzle.Player;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.ExtendActivity;
 
 /**
  * Created by sephirothus on 18.01.17.
  */
 public class EquipmentDialog {
 
-    final static int MAX_IDENTICAL_SLOTS = 5;
+    public final static int MAX_IDENTICAL_SLOTS = 5;
 
     private Context mContext;
     private int mInventorySize;
     private Config mConf;
     private View mView;
 
-    EquipmentDialog (Context context) {
+    public EquipmentDialog(Context context) {
         mContext = context;
         mConf = new Config(mContext);
         mInventorySize = (int) TypedValue.applyDimension(

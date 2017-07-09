@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +9,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.example.puzzle.Config;
+import com.example.puzzle.Player;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.ExtendActivity;
 
 import java.util.ArrayList;
 
@@ -26,7 +30,7 @@ public class MerchantDialog {
     private int mInventorySize;
     private ArrayList<String> mShopItems = new ArrayList<>();
 
-    MerchantDialog(Context context) {
+    public MerchantDialog(Context context) {
         mContext = context;
         mConf = new Config(mContext);
         mInventorySize = (int) TypedValue.applyDimension(

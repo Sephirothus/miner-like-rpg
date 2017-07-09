@@ -1,6 +1,8 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.content.Context;
+import com.example.puzzle.R;
+import com.example.puzzle.dialog.MerchantDialog;
 
 /**
  * Created by sephirothus on 29.01.17.

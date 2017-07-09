@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 /**
  * Created by sephiroth on 28.08.16.

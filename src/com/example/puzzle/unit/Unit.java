@@ -1,10 +1,12 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.example.puzzle.MainMap;
+import com.example.puzzle.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;

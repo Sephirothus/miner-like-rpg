@@ -2,6 +2,7 @@ package com.example.puzzle;
 
 import android.content.Context;
 import android.widget.GridView;
+import com.example.puzzle.activity.ExtendActivity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class Level {
     protected String[] mLvlTargets;
     public HashMap<String, String> mCurTarget = new HashMap<>();
 
-    Level(Context context, String[] lvlTargets) {
+    public Level(Context context, String[] lvlTargets) {
         mContext = context;
         mActivity = (ExtendActivity) mContext;
         mLvlTargets = lvlTargets;

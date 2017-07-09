@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,6 +7,11 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.*;
+import com.example.puzzle.Config;
+import com.example.puzzle.Player;
+import com.example.puzzle.Quest;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.ExtendActivity;
 
 import java.util.HashMap;
 
@@ -19,7 +24,7 @@ public class QuestDialog {
     private View mView;
     private int mImgSize;
 
-    QuestDialog(Context context) {
+    public QuestDialog(Context context) {
         mContext = context;
         mImgSize = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 35, mContext.getResources().getDisplayMetrics()

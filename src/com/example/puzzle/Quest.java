@@ -53,7 +53,7 @@ public class Quest {
                 "Can you bring me $count $type?");
     }};
 
-    Quest(Context context) {
+    public Quest(Context context) {
         mContext = context;
         mConf = new Config(mContext);
     }

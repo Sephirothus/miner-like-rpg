@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.activity;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -6,6 +6,11 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import com.example.puzzle.*;
+import com.example.puzzle.battle.BattleFieldFragment;
+import com.example.puzzle.dialog.EquipmentDialog;
+import com.example.puzzle.field.FieldFragment;
+import com.example.puzzle.unit.UnitEnemy;
 
 /**
  * Created by sephirothus on 26.01.17.

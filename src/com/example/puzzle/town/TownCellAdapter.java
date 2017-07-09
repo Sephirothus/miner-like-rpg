@@ -1,8 +1,10 @@
-package com.example.puzzle;
+package com.example.puzzle.town;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.puzzle.field.CellAdapter;
+import com.example.puzzle.unit.Unit;
 
 /**
  * Created by sephirothus on 29.01.17.

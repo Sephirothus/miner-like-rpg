@@ -1,6 +1,7 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.content.Context;
+import com.example.puzzle.R;
 
 /**
  * Created by sephirothus on 29.01.17.

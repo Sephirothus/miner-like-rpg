@@ -5,7 +5,7 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="17"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name=".MenuActivity"
+        <activity android:name=".activity.MenuActivity"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                   android:label="@string/app_name">
@@ -14,11 +14,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ArcadeActivity"
+        <activity android:name=".activity.ArcadeActivity"
                   android:screenOrientation="portrait"
                   android:label="@string/app_name">
         </activity>
-        <activity android:name=".AdventureActivity"
+        <activity android:name=".activity.AdventureActivity"
                   android:screenOrientation="portrait"
                   android:label="@string/app_name">
         </activity>

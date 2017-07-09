@@ -1,6 +1,10 @@
-package com.example.puzzle;
+package com.example.puzzle.activity;
 
 import android.os.Bundle;
+import com.example.puzzle.*;
+import com.example.puzzle.dialog.MerchantDialog;
+import com.example.puzzle.field.FieldFragment;
+import com.example.puzzle.unit.UnitEnemy;
 
 public class ArcadeActivity extends ExtendActivity {
 

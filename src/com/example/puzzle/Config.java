@@ -3,6 +3,8 @@ package com.example.puzzle;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.dialog.EquipmentDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -638,7 +640,7 @@ public class Config {
         put("mp", "Mana Points");
     }};
 
-    Config (Context context) {
+    public Config(Context context) {
         mContext = context;
     }
 
@@ -659,7 +661,7 @@ public class Config {
         ArrayList<HashMap<String, String>> foundItems = new ArrayList<>();
         Random random = new Random();
         if (random.nextInt(2) == 1) {
-            foundItems = ((AdventureActivity) mContext).mPlayer.getQuestItemsByLocation(location);
+            foundItems = ((ExtendActivity) mContext).mPlayer.getQuestItemsByLocation(location);
             if (foundItems.isEmpty()) {
                 float dropPerc = getDropPercent();
                 for (HashMap<String, String> item : mTreasures) {

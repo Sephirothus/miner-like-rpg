@@ -1,6 +1,9 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.content.Context;
+import com.example.puzzle.Config;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.battle.BattleUnitInterface;
 
 import java.io.Serializable;
 import java.util.HashMap;

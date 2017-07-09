@@ -8,6 +8,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import com.example.puzzle.activity.AdventureActivity;
+import com.example.puzzle.activity.ArcadeActivity;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.battle.CellBattleAdapter;
+import com.example.puzzle.field.CellAdapter;
+import com.example.puzzle.field.Location;
+import com.example.puzzle.town.Town;
+import com.example.puzzle.town.TownCellAdapter;
+import com.example.puzzle.unit.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,12 +26,12 @@ import java.util.Random;
  */
 public class MainMap {
 
-    final static int TOTAL_CELLS = 30;
-    final static int BATTLE_TOTAL_CELLS = 30;
-    final static int MAX_UNITS = 20;
-    final static int MIN_UNITS = 5;
-    final static int CELLS_PER_LINE = 6;
-    final static int OPENED_CELL_COLOR = Color.BLACK;
+    public final static int TOTAL_CELLS = 30;
+    public final static int BATTLE_TOTAL_CELLS = 30;
+    public final static int MAX_UNITS = 20;
+    public final static int MIN_UNITS = 5;
+    public final static int CELLS_PER_LINE = 6;
+    public final static int OPENED_CELL_COLOR = Color.BLACK;
     final static int MAX_DMG_POINT = 9;
     final static int STEPS_TILL_NEXT_SCREEN = 5;
 
@@ -35,7 +44,7 @@ public class MainMap {
         //add(UnitDungeon.class);
     }};
 
-    MainMap(Context context) {
+    public MainMap(Context context) {
         mRandom = new Random();
         mContext = context;
         mPlayer = ((ExtendActivity) mContext).mPlayer;
@@ -196,7 +205,7 @@ public class MainMap {
                 public void run() {
                     activity.exitField();
                 }
-            }, 1000);
+            }, 500);
         }
     }
 

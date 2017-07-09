@@ -1,10 +1,12 @@
-package com.example.puzzle;
+package com.example.puzzle.field;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.puzzle.MainMap;
+import com.example.puzzle.R;
 
 /**
  * Created by sephirothus on 12.01.17.

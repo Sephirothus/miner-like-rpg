@@ -12,6 +12,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.example.puzzle.activity.AdventureActivity;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.unit.UnitTownsman;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -27,7 +30,7 @@ public class Talk {
     private int mInterlocutorColor = Color.GREEN;
     private UnitTownsman mUnit;
 
-    Talk(Context context, String name, UnitTownsman unit) {
+    public Talk(Context context, String name, UnitTownsman unit) {
             mContext = context;
             mInterlocutorName = name;
             mUnit = unit;

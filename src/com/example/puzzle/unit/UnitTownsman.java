@@ -1,6 +1,8 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.content.Context;
+import com.example.puzzle.Quest;
+import com.example.puzzle.Talk;
 
 import java.util.ArrayList;
 import java.util.HashMap;

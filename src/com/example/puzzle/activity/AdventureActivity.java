@@ -1,8 +1,12 @@
-package com.example.puzzle;
+package com.example.puzzle.activity;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.widget.TextView;
+import com.example.puzzle.*;
+import com.example.puzzle.dialog.QuestDialog;
+import com.example.puzzle.field.Location;
+import com.example.puzzle.town.Town;
+import com.example.puzzle.town.TownFieldFragment;
 
 import java.util.ArrayList;
 

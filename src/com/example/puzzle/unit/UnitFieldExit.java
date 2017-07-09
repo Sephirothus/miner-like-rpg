@@ -1,8 +1,10 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.AdventureActivity;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ public class UnitFieldExit extends Unit {
     private Context mContext;
     private ArrayList<String> mPathLocations;
 
-    UnitFieldExit(Context context, Integer position, String location) {
+    public UnitFieldExit(Context context, Integer position, String location) {
         mContext = context;
     }
 

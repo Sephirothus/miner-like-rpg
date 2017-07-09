@@ -1,10 +1,12 @@
-package com.example.puzzle;
+package com.example.puzzle.field;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.example.puzzle.R;
+import com.example.puzzle.unit.Unit;
 
 import java.util.ArrayList;
 /**
@@ -16,7 +18,7 @@ public class CellAdapter extends BaseAdapter {
     protected Context mContext;
     private boolean mIsEnabled = true;
 
-    CellAdapter(Context context) {
+    public CellAdapter(Context context) {
         mContext = context;
     }
 

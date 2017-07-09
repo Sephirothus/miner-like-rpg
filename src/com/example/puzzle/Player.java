@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.battle.BattleUnitInterface;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -38,7 +40,7 @@ public class Player implements BattleUnitInterface {
         putAll(mStats);
     }};
 
-    Player (Context context) {
+    public Player(Context context) {
         mContext = context;
     }
 

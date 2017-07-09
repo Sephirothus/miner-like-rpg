@@ -1,6 +1,9 @@
-package com.example.puzzle;
+package com.example.puzzle.town;
 
 import android.content.Context;
+import com.example.puzzle.Config;
+import com.example.puzzle.MainMap;
+import com.example.puzzle.unit.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

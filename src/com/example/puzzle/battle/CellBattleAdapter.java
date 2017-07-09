@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.battle;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import com.example.puzzle.R;
+import com.example.puzzle.unit.UnitEnemy;
 
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public class CellBattleAdapter extends BaseAdapter {
 
     private ArrayList<Integer> mDmgs = new ArrayList<>();
 
-    CellBattleAdapter(Context context, UnitEnemy enemy) {
+    public CellBattleAdapter(Context context, UnitEnemy enemy) {
         mContext = context;
         mEnemy = enemy;
     }

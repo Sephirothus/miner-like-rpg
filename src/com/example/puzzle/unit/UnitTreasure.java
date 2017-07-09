@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.unit;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.example.puzzle.Config;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.ExtendActivity;
 
 /**
  * Created by konst on 22.08.16.

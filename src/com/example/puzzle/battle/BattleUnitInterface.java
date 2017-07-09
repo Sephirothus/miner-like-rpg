@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.battle;
 
 /**
  * Created by sephiroth on 28.08.16.

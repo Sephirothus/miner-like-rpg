@@ -1,10 +1,13 @@
-package com.example.puzzle;
+package com.example.puzzle.battle;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.puzzle.MainMap;
+import com.example.puzzle.R;
+import com.example.puzzle.unit.UnitEnemy;
 
 /**
  * Created by sephirothus on 13.01.17.

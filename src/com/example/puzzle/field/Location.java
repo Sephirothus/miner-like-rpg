@@ -1,4 +1,4 @@
-package com.example.puzzle;
+package com.example.puzzle.field;
 
 import android.content.Context;
 

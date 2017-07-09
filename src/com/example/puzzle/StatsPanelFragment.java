@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.puzzle.activity.ExtendActivity;
 
 /**
  * Created by sephirothus on 12.01.17.

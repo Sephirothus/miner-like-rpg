@@ -1,4 +1,6 @@
-package com.example.puzzle;
+package com.example.puzzle.town;
+
+import com.example.puzzle.field.FieldFragment;
 
 /**
  * Created by sephirothus on 29.01.17.

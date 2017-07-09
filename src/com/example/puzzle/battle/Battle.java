@@ -1,9 +1,14 @@
-package com.example.puzzle;
+package com.example.puzzle.battle;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+import com.example.puzzle.MainMap;
+import com.example.puzzle.Player;
+import com.example.puzzle.R;
+import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.unit.UnitEnemy;
 
 import java.util.Random;
 
@@ -34,7 +39,7 @@ public class Battle {
                 public void run() {
                     enemyMove();
                 }
-            }, 1000);
+            }, 500);
         }
     }
 
@@ -109,6 +114,6 @@ public class Battle {
             public void run() {
                 ((ExtendActivity) mContext).startBattle(mEnemy);
             }
-        }, 1000);
+        }, 500);
     }
 }
