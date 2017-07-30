@@ -14,8 +14,8 @@ import java.util.Random;
  */
 public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable {
 
-    final static int MIN_HP_LVL_PERCENT = 120;
-    final static int MAX_HP_LVL_PERCENT = 150;
+    final static int MIN_HP_LVL_PERCENT = 200;
+    final static int MAX_HP_LVL_PERCENT = 300;
     final static int MIN_STR_LVL_PERCENT = 30;
     final static int MAX_STR_LVL_PERCENT = 50;
     //final static int MP_LVL_RANGE = 3;

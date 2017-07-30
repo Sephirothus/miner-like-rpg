@@ -32,7 +32,7 @@ public class MainMap {
     public final static int MIN_UNITS = 5;
     public final static int CELLS_PER_LINE = 6;
     public final static int OPENED_CELL_COLOR = Color.BLACK;
-    final static int MAX_DMG_POINT = 9;
+    final static int MAX_DMG_POINT = 3;
     final static int STEPS_TILL_NEXT_SCREEN = 5;
 
     private Player mPlayer;

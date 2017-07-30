@@ -54,7 +54,7 @@ public class CellBattleAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.cell, parent, false);
         }
-        view.setBackgroundColor(Color.RED);
+        view.setBackgroundResource(R.drawable.battle_tile);
 
         if (mEnemy.getPosition() == position) {
             mEnemy.addUnitToCell(mContext, view, true);

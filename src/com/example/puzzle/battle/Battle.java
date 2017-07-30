@@ -3,13 +3,14 @@ package com.example.puzzle.battle;
 import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.TextView;
+import com.example.puzzle.Config;
 import com.example.puzzle.MainMap;
 import com.example.puzzle.Player;
 import com.example.puzzle.R;
 import com.example.puzzle.activity.ExtendActivity;
 import com.example.puzzle.unit.UnitEnemy;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -19,13 +20,22 @@ public class Battle {
 
     private GridView mGridView;
     private CellBattleAdapter mAdapter;
-    private Player mPlayer;
-    private UnitEnemy mEnemy;
     private Context mContext;
+
+    private ArrayList<UnitEnemy> mEnemies = new ArrayList<>();
+    private UnitEnemy mEnemy;
+    private Player mPlayer;
+    private int mTurn = 0;
+
+    final static int START_SEVERAL_FOES_PERCENT = 20;
+    final static int START_COUNT_FOES = 3;
 
     Battle (Context context, UnitEnemy enemy) {
         mContext = context;
-        mEnemy = enemy;
+        mEnemies.add(enemy);
+        if (Config.getDropPercent() <= START_SEVERAL_FOES_PERCENT) {
+            //mEnemies.add(new UnitEnemy(mContext, ));
+        }
         mPlayer = ((ExtendActivity) context).mPlayer;
         mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
@@ -33,6 +43,7 @@ public class Battle {
 
     public void move() {
         if ((new Random()).nextInt(2) == 0) {
+            mTurn = 1;
             mAdapter.disableAdapter();
             mGridView.postDelayed(new Runnable() {
                 @Override
@@ -40,6 +51,15 @@ public class Battle {
                     enemyMove();
                 }
             }, 500);
+        }
+        setTurn();
+    }
+
+    private void setTurn() {
+        if (mTurn > mEnemies.size()) mTurn = 0;
+        if (mTurn > 0) {
+            mEnemy = mEnemies.get(mTurn - 1);
+            mTurn++;
         }
     }
 
@@ -83,6 +103,19 @@ public class Battle {
         }
         mGridView.performItemClick(view, pos, mAdapter.getItemId(pos));
         return mAdapter.getItem(pos);
+    }
+
+    public Integer getFreeCell() {
+        if (!checkEmptyCells()) return null;
+
+        Random r = new Random();
+        int pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
+        View view = mGridView.getChildAt(pos);
+        while (!MainMap.isCellEmpty(view)) {
+            pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
+            view = mGridView.getChildAt(pos);
+        }
+        return pos;
     }
 
     private boolean checkEmptyCells() {
