@@ -25,6 +25,7 @@ public class Battle {
     private ArrayList<UnitEnemy> mEnemies = new ArrayList<>();
     private UnitEnemy mEnemy;
     private Player mPlayer;
+    // 0 is player move, other numbers is enemies' move
     private int mTurn = 0;
 
     final static int START_SEVERAL_FOES_PERCENT = 20;
@@ -33,46 +34,70 @@ public class Battle {
     Battle (Context context, UnitEnemy enemy) {
         mContext = context;
         mEnemies.add(enemy);
-        if (Config.getDropPercent() <= START_SEVERAL_FOES_PERCENT) {
-            //mEnemies.add(new UnitEnemy(mContext, ));
-        }
+        mEnemy = enemy;
         mPlayer = ((ExtendActivity) context).mPlayer;
         mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
+        // there can be more than one enemy
+        if (Config.getDropPercent() <= START_SEVERAL_FOES_PERCENT) {
+            int rand = (new Random()).nextInt(START_COUNT_FOES) + 1;
+            while (--rand > 0) {
+                UnitEnemy tmpEnemy = new UnitEnemy(mContext, getFreeCellId(), enemy.getLocation());
+                mEnemies.add(tmpEnemy);
+                mAdapter.add(tmpEnemy);
+            }
+            mGridView.setAdapter(mAdapter);
+        }
     }
 
-    public void move() {
+    public void firstMove() {
         if ((new Random()).nextInt(2) == 0) {
-            mTurn = 1;
             mAdapter.disableAdapter();
             mGridView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    enemyMove();
+                    takeTurn();
                 }
             }, 500);
         }
-        setTurn();
     }
 
-    private void setTurn() {
-        if (mTurn > mEnemies.size()) mTurn = 0;
-        if (mTurn > 0) {
-            mEnemy = mEnemies.get(mTurn - 1);
-            mTurn++;
+    public void takeTurn() {
+        mTurn++;
+        if (checkTurn()) {
+            enemyMove();
+        } else {
+            if (!checkEmptyCells()) return;
+            mAdapter.setIsPlayerMove(true);
+            mAdapter.enableAdapter();
         }
     }
 
+    private boolean checkTurn() {
+        if (mTurn > mEnemies.size()) mTurn = 0;
+        if (mTurn > 0) {
+            mEnemy = mEnemies.get(mTurn - 1);
+        }
+        return mTurn > 0;
+    }
+
     public void playerMove(int dmg) {
+        // TODO: set mEnemy with chosen foe
         mEnemy.getHit(mPlayer.strike(dmg));
         Boolean check = mEnemy.checkHp();
         if (!check) {
-            mAdapter.disableAdapter();
-            ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
-            mPlayer.lvlStatIncrease();
-            mPlayer.addKilledEnemy(mEnemy.getName());
-            endBattle(false);
-        } else enemyMove();
+            mEnemies.remove(mEnemy);
+            // TODO: change enemy img to skull with bones
+            if (mEnemies.size() == 0) {
+                mAdapter.disableAdapter();
+                ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
+                mPlayer.lvlStatIncrease();
+                mPlayer.addKilledEnemy(mEnemy.getName());
+                endBattle(false);
+                return;
+            }
+        }
+        takeTurn();
     }
 
     public void enemyMove() {
@@ -86,26 +111,18 @@ public class Battle {
         if (!check) {
             ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
             endBattle(true);
-        } else {
-            if (!checkEmptyCells()) return;
-            mAdapter.setIsPlayerMove(true);
-            mAdapter.enableAdapter();
+            return;
         }
+        takeTurn();
     }
 
     public int openCell() {
-        Random r = new Random();
-        int pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
-        View view = mGridView.getChildAt(pos);
-        while (!MainMap.isCellEmpty(view)) {
-            pos = r.nextInt(MainMap.BATTLE_TOTAL_CELLS);
-            view = mGridView.getChildAt(pos);
-        }
-        mGridView.performItemClick(view, pos, mAdapter.getItemId(pos));
+        int pos = getFreeCellId();
+        mGridView.performItemClick(mGridView.getChildAt(pos), pos, mAdapter.getItemId(pos));
         return mAdapter.getItem(pos);
     }
 
-    public Integer getFreeCell() {
+    public Integer getFreeCellId() {
         if (!checkEmptyCells()) return null;
 
         Random r = new Random();

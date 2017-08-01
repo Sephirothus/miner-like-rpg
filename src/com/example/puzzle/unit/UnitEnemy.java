@@ -33,7 +33,7 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
     private int mPosition;
     private Config mConfig;
 
-    UnitEnemy(Context context, Integer position, String location) {
+    public UnitEnemy(Context context, Integer position, String location) {
         Random r = new Random();
         mContext = context;
         mPosition = position;
@@ -52,6 +52,10 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
 
     public int getCurStat(String stat) {
         return (int) mCurStats.get(stat);
+    }
+
+    public String getLocation() {
+        return mConfig.getCurItemLocation();
     }
 
     public void addCurStat(String stat, int addValue) {

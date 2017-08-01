@@ -17,15 +17,15 @@ import java.util.ArrayList;
 public class CellBattleAdapter extends BaseAdapter {
 
     private Context mContext;
-    private UnitEnemy mEnemy;
     private boolean mIsPlayerMove = true;
     private boolean mIsEnabled = true;
 
     private ArrayList<Integer> mDmgs = new ArrayList<>();
+    private ArrayList<UnitEnemy> mEnemies = new ArrayList<>();
 
     public CellBattleAdapter(Context context, UnitEnemy enemy) {
         mContext = context;
-        mEnemy = enemy;
+        add(enemy);
     }
 
     @Override
@@ -47,6 +47,10 @@ public class CellBattleAdapter extends BaseAdapter {
         mDmgs.add(pos, dmg);
     }
 
+    public void add(UnitEnemy enemy) {
+        mEnemies.add(enemy);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -56,8 +60,10 @@ public class CellBattleAdapter extends BaseAdapter {
         }
         view.setBackgroundResource(R.drawable.battle_tile);
 
-        if (mEnemy.getPosition() == position) {
-            mEnemy.addUnitToCell(mContext, view, true);
+        for (UnitEnemy enemy : mEnemies) {
+            if (enemy.getPosition() == position) {
+                enemy.addUnitToCell(mContext, view, true);
+            }
         }
         return view;
     }
