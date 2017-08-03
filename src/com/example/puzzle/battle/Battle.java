@@ -3,6 +3,7 @@ package com.example.puzzle.battle;
 import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
 import com.example.puzzle.Config;
 import com.example.puzzle.MainMap;
 import com.example.puzzle.Player;
@@ -28,44 +29,34 @@ public class Battle {
     // 0 is player move, other numbers is enemies' move
     private int mTurn = 0;
 
-    final static int START_SEVERAL_FOES_PERCENT = 20;
-    final static int START_COUNT_FOES = 3;
+    public final static int START_SEVERAL_FOES_PERCENT = 20;
+    public final static int START_COUNT_FOES = 3;
 
-    Battle (Context context, UnitEnemy enemy) {
+    Battle (Context context, ArrayList<UnitEnemy> enemies) {
         mContext = context;
-        mEnemies.add(enemy);
-        mEnemy = enemy;
+        mEnemies = enemies;
+        mEnemy = enemies.get(0);
         mPlayer = ((ExtendActivity) context).mPlayer;
         mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
-        // there can be more than one enemy
-        if (Config.getDropPercent() <= START_SEVERAL_FOES_PERCENT) {
-            int rand = (new Random()).nextInt(START_COUNT_FOES) + 1;
-            while (--rand > 0) {
-                UnitEnemy tmpEnemy = new UnitEnemy(mContext, getFreeCellId(), enemy.getLocation());
-                mEnemies.add(tmpEnemy);
-                mAdapter.add(tmpEnemy);
-            }
-            mGridView.setAdapter(mAdapter);
-        }
     }
 
     public void firstMove() {
         if ((new Random()).nextInt(2) == 0) {
             mAdapter.disableAdapter();
-            mGridView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    takeTurn();
-                }
-            }, 500);
+            takeTurn();
         }
     }
 
     public void takeTurn() {
         mTurn++;
         if (checkTurn()) {
-            enemyMove();
+            mGridView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    enemyMove();
+                }
+            }, 500);
         } else {
             if (!checkEmptyCells()) return;
             mAdapter.setIsPlayerMove(true);
@@ -83,11 +74,16 @@ public class Battle {
 
     public void playerMove(int dmg) {
         // TODO: set mEnemy with chosen foe
+        ((ExtendActivity) mContext).mStatsPanelFragment.addEnemyStats(
+                mEnemy.getName(), mEnemy.getHp(), mEnemy.getStr()
+        );
         mEnemy.getHit(mPlayer.strike(dmg));
         Boolean check = mEnemy.checkHp();
         if (!check) {
             mEnemies.remove(mEnemy);
-            // TODO: change enemy img to skull with bones
+            //((ImageView) mGridView.getChildAt(mEnemy.getPosition()).findViewById(R.id.cell_img)).setImageResource();
+            ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyKillRec(mEnemy.getName());
+            // TODO: change enemy img to skull with bones and add log record of death
             if (mEnemies.size() == 0) {
                 mAdapter.disableAdapter();
                 ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
@@ -101,6 +97,10 @@ public class Battle {
     }
 
     public void enemyMove() {
+        // TODO: change enemy stats to current enemy
+        ((ExtendActivity) mContext).mStatsPanelFragment.addEnemyStats(
+                mEnemy.getName(), mEnemy.getHp(), mEnemy.getStr()
+        );
         mAdapter.setIsPlayerMove(false);
         mAdapter.disableAdapter();
         if (!checkEmptyCells()) return;
@@ -162,7 +162,7 @@ public class Battle {
         mGridView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((ExtendActivity) mContext).startBattle(mEnemy);
+                ((ExtendActivity) mContext).startBattle(mEnemies);
             }
         }, 500);
     }

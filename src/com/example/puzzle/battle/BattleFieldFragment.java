@@ -9,6 +9,8 @@ import com.example.puzzle.MainMap;
 import com.example.puzzle.R;
 import com.example.puzzle.unit.UnitEnemy;
 
+import java.util.ArrayList;
+
 /**
  * Created by sephirothus on 13.01.17.
  */
@@ -36,9 +38,9 @@ public class BattleFieldFragment extends Fragment {
     }
 
     public void createBattleField() {
-        UnitEnemy enemy = (UnitEnemy) getArguments().getSerializable("enemy");
-        mMainMap.create().setDmgPoints(enemy);
-        mBattle = new Battle(getActivity(), enemy);
+        ArrayList<UnitEnemy> enemies = (ArrayList<UnitEnemy>) getArguments().getSerializable("enemy");
+        mMainMap.create().setDmgPoints(enemies);
+        mBattle = new Battle(getActivity(), enemies);
         mBattle.firstMove();
     }
 }

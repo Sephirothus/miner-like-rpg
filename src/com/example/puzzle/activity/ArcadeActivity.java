@@ -6,6 +6,8 @@ import com.example.puzzle.dialog.MerchantDialog;
 import com.example.puzzle.field.FieldFragment;
 import com.example.puzzle.unit.UnitEnemy;
 
+import java.util.ArrayList;
+
 public class ArcadeActivity extends ExtendActivity {
 
     public MerchantDialog mMerchantDialog;
@@ -31,9 +33,9 @@ public class ArcadeActivity extends ExtendActivity {
     }
 
     @Override
-    public void startBattle(UnitEnemy enemy) {
+    public void startBattle(ArrayList<UnitEnemy> enemies) {
         mMerchantDialog.disableShop();
-        super.startBattle(enemy);
+        super.startBattle(enemies);
     }
 
     @Override

@@ -12,6 +12,8 @@ import com.example.puzzle.dialog.EquipmentDialog;
 import com.example.puzzle.field.FieldFragment;
 import com.example.puzzle.unit.UnitEnemy;
 
+import java.util.ArrayList;
+
 /**
  * Created by sephirothus on 26.01.17.
  */
@@ -59,12 +61,11 @@ public class ExtendActivity extends Activity {
         mPlayer.refreshSteps();
     }
 
-    public void startBattle(UnitEnemy enemy) {
+    public void startBattle(ArrayList<UnitEnemy> enemies) {
         mBattleFieldFragment = new BattleFieldFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("enemy", enemy);
+        bundle.putSerializable("enemy", enemies);
         mBattleFieldFragment.setArguments(bundle);
-        mStatsPanelFragment.addEnemyStats(enemy.getName(), enemy.getHp(), enemy.getStr());
 
         mFragmentManager.beginTransaction()
                 .replace(R.id.field, mBattleFieldFragment)

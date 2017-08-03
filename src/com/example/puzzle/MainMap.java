@@ -83,8 +83,8 @@ public class MainMap {
         return this;
     }
 
-    public MainMap setDmgPoints(UnitEnemy enemy) {
-        CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemy);
+    public MainMap setDmgPoints(ArrayList<UnitEnemy> enemies) {
+        CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemies);
         for (int pos = 0; pos < BATTLE_TOTAL_CELLS; pos++) {
             if (mRandom.nextInt(2) == 1) {
                 adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT) + 1);

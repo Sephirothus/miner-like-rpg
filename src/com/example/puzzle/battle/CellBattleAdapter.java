@@ -23,9 +23,9 @@ public class CellBattleAdapter extends BaseAdapter {
     private ArrayList<Integer> mDmgs = new ArrayList<>();
     private ArrayList<UnitEnemy> mEnemies = new ArrayList<>();
 
-    public CellBattleAdapter(Context context, UnitEnemy enemy) {
+    public CellBattleAdapter(Context context, ArrayList<UnitEnemy> enemies) {
         mContext = context;
-        add(enemy);
+        mEnemies = enemies;
     }
 
     @Override

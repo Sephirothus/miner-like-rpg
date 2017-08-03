@@ -75,6 +75,10 @@ public class LogHistoryFragment extends Fragment {
         addRecord(text, Color.RED);
     }
 
+    public void addEnemyKillRec(String name) {
+        addRecord("You've killed " + name, Color.RED);
+    }
+
     public void addEnemyHitPlayerRec(int dmg) {
         String text = "Enemy hit you on " + dmg + " point(s)";
         if (dmg == 0) text = "Enemy hit and missed";
