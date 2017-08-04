@@ -85,8 +85,7 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
         ArrayList<UnitEnemy> enemies = new ArrayList<>();
         enemies.add(this);
         // there can be more than one enemy
-        //if (Config.getDropPercent() <= Battle.START_SEVERAL_FOES_PERCENT) {
-        if (true) {
+        if (Config.getDropPercent() <= Battle.START_SEVERAL_FOES_PERCENT) {
             Random random = new Random();
             int randFoes = random.nextInt(Battle.START_COUNT_FOES) + 1;
             ArrayList<Integer> positions = new ArrayList<>();

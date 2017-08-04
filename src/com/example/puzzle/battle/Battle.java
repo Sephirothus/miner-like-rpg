@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
-import com.example.puzzle.Config;
 import com.example.puzzle.MainMap;
 import com.example.puzzle.Player;
 import com.example.puzzle.R;
@@ -43,7 +42,6 @@ public class Battle {
 
     public void firstMove() {
         if ((new Random()).nextInt(2) == 0) {
-            mAdapter.disableAdapter();
             takeTurn();
         }
     }
@@ -51,6 +49,7 @@ public class Battle {
     public void takeTurn() {
         mTurn++;
         if (checkTurn()) {
+            mAdapter.disableAdapter();
             mGridView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
