@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.puzzle.activity.AdventureActivity;
 import com.example.puzzle.activity.ArcadeActivity;
 import com.example.puzzle.activity.ExtendActivity;
+import com.example.puzzle.battle.Battle;
 import com.example.puzzle.battle.CellBattleAdapter;
 import com.example.puzzle.field.CellAdapter;
 import com.example.puzzle.field.Location;
@@ -132,6 +133,7 @@ public class MainMap {
     }
 
     public static boolean isCellEmpty(View view) {
+        if (view == null) return true;
         TextView textView = (TextView) view.findViewById(R.id.text);
         return textView.getText().toString() == "" && view.findViewById(R.id.cell_img) == null;
     }
@@ -264,6 +266,12 @@ public class MainMap {
                     view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
                     if (adapter.isPlayerMove()) {
                         ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
+                    }
+                } else if (view.findViewById(R.id.cell_img) != null) {
+                    Battle battle = ((ExtendActivity) mContext).mBattleFieldFragment.mBattle;
+                    UnitEnemy enemy = battle.getEnemyByPos(position);
+                    if (enemy != null) {
+                        battle.setEnemy(enemy);
                     }
                 }
             }

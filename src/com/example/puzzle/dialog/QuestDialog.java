@@ -62,25 +62,37 @@ public class QuestDialog {
         TableLayout table = (TableLayout) mView.findViewById(R.id.quests_list);
         table.removeAllViews();
         Player player = ((ExtendActivity) mContext).mPlayer;
-        for (Object questId : player.getQuests()) {
-            final String id = questId.toString();
-            final HashMap questInfo = player.getQuestById(id);
-            TableRow row = new TableRow(mContext);
-            TextView title = new TextView(mContext);
-            title.setText(questInfo.get("title").toString());
-            title.setTextSize(17);
-            if (player.isQuestComplete(id)) {
-                title.setTextColor(Color.GREEN);
+        HashMap quests = player.getQuestsByLocation();
+        for (Object locationId : quests.keySet().toArray()) {
+            table.addView(createRow(Config.mPathLocations.get(locationId), Color.MAGENTA));
+            for (Object questId : ((HashMap) quests.get(locationId.toString())).keySet().toArray()) {
+                final String id = questId.toString();
+                final HashMap questInfo = player.getQuestById(id);
+                TableRow row = createRow(
+                        questInfo.get("title").toString(),
+                        player.isQuestComplete(id) ? Color.GREEN : null
+                );
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addQuestInfo(id, questInfo);
+                    }
+                });
+                table.addView(row);
             }
-            row.addView(title);
-            row.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addQuestInfo(id, questInfo);
-                }
-            });
-            table.addView(row);
         }
+    }
+
+    public TableRow createRow(String text, Integer color) {
+        TableRow row = new TableRow(mContext);
+        TextView title = new TextView(mContext);
+        title.setText(text);
+        title.setTextSize(17);
+        if (color != null) {
+            title.setTextColor(color);
+        }
+        row.addView(title);
+        return row;
     }
 
     private void addQuestInfo(final String questId, final HashMap questInfo) {

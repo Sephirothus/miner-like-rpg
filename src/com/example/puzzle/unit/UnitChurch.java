@@ -1,6 +1,7 @@
 package com.example.puzzle.unit;
 
 import android.content.Context;
+import android.widget.Toast;
 import com.example.puzzle.R;
 
 /**
@@ -16,7 +17,7 @@ public class UnitChurch extends Unit {
 
     @Override
     public void action() {
-
+        Toast.makeText(mContext, "The church is closed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

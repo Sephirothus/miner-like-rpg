@@ -105,6 +105,7 @@ public class Quest {
             put("type", mConf.getCurItemName());
             put("count", count);
             put("progress_count", "0");
+            put("location", mConf.getCurItemLocation());
         }};
     }
 
@@ -131,6 +132,7 @@ public class Quest {
             put("description", replacePlaceholders(mFoundItemsTitles.get(title), count));
             put("type", mConf.getCurItemName());
             put("count", count);
+            put("location", mConf.getCurItemLocation());
         }};
     }
 

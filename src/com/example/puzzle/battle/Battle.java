@@ -34,7 +34,7 @@ public class Battle {
     Battle (Context context, ArrayList<UnitEnemy> enemies) {
         mContext = context;
         mEnemies = enemies;
-        mEnemy = enemies.get(0);
+        setEnemy(enemies.get(0));
         mPlayer = ((ExtendActivity) context).mPlayer;
         mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
@@ -50,6 +50,9 @@ public class Battle {
         mTurn++;
         if (checkTurn()) {
             mAdapter.disableAdapter();
+            mAdapter.setIsPlayerMove(false);
+            if (!checkEmptyCells()) return;
+
             mGridView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -66,28 +69,34 @@ public class Battle {
     private boolean checkTurn() {
         if (mTurn > mEnemies.size()) mTurn = 0;
         if (mTurn > 0) {
-            mEnemy = mEnemies.get(mTurn - 1);
+            setEnemy(mEnemies.get(mTurn - 1));
         }
         return mTurn > 0;
     }
 
-    public void playerMove(int dmg) {
-        // TODO: set mEnemy with chosen foe
+    public void setEnemy(UnitEnemy enemy) {
+        mEnemy = enemy;
         ((ExtendActivity) mContext).mStatsPanelFragment.addEnemyStats(
-                mEnemy.getName(), mEnemy.getHp(), mEnemy.getStr()
+                enemy.getName(), enemy.getHp(), enemy.getStr()
         );
+    }
+
+    public UnitEnemy getEnemyByPos(int pos) {
+        for (UnitEnemy enemy : mEnemies) {
+            if (enemy.getPosition() == pos) return enemy;
+        }
+        return null;
+    }
+
+    public void playerMove(int dmg) {
         mEnemy.getHit(mPlayer.strike(dmg));
         Boolean check = mEnemy.checkHp();
         if (!check) {
-            mEnemies.remove(mEnemy);
-            //((ImageView) mGridView.getChildAt(mEnemy.getPosition()).findViewById(R.id.cell_img)).setImageResource();
-            ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyKillRec(mEnemy.getName());
-            // TODO: change enemy img to skull with bones and add log record of death
+            killEnemy();
             if (mEnemies.size() == 0) {
                 mAdapter.disableAdapter();
                 ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
                 mPlayer.lvlStatIncrease();
-                mPlayer.addKilledEnemy(mEnemy.getName());
                 endBattle(false);
                 return;
             }
@@ -96,16 +105,7 @@ public class Battle {
     }
 
     public void enemyMove() {
-        // TODO: change enemy stats to current enemy
-        ((ExtendActivity) mContext).mStatsPanelFragment.addEnemyStats(
-                mEnemy.getName(), mEnemy.getHp(), mEnemy.getStr()
-        );
-        mAdapter.setIsPlayerMove(false);
-        mAdapter.disableAdapter();
-        if (!checkEmptyCells()) return;
-
-        Integer dmg = openCell();
-        mPlayer.getHit(mEnemy.strike(dmg));
+        mPlayer.getHit(mEnemy.strike(openCell()));
         Boolean check = mPlayer.checkHp();
         if (!check) {
             ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
@@ -113,6 +113,14 @@ public class Battle {
             return;
         }
         takeTurn();
+    }
+
+    private void killEnemy() {
+        mEnemies.remove(mEnemy);
+        ((ImageView) mGridView.getChildAt(mEnemy.getPosition()).findViewById(R.id.cell_img))
+                .setImageResource(R.drawable.death);
+        ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyKillRec(mEnemy.getName());
+        mPlayer.addKilledEnemy(mEnemy.getName());
     }
 
     public int openCell() {

@@ -1,6 +1,7 @@
 package com.example.puzzle.unit;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,7 +29,7 @@ public class UnitHouse extends Unit {
 
     @Override
     public void action() {
-
+        Toast.makeText(mContext, "This house is closed", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -248,6 +248,22 @@ public class Player implements BattleUnitInterface {
         return mQuests.keySet().toArray();
     }
 
+    public HashMap<String, HashMap> getQuestsByLocation() {
+        HashMap<String, HashMap> quests = new HashMap();
+        for (Object questId : getQuests()) {
+            final String id = questId.toString();
+            HashMap quest = getQuestById(id);
+            if (quests.containsKey(quest.get("location"))) {
+                quests.get(quest.get("location")).put(id, quest);
+            } else {
+                quests.put(quest.get("location").toString(), new HashMap<String, HashMap>() {{
+                    put(id, quest);
+                }});
+            }
+        }
+        return quests;
+    }
+
     public HashMap getQuestById(String questId) {
         return mQuests.get(questId);
     }
