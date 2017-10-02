@@ -4,7 +4,7 @@
     <item name="cell_img" type="id"/>
     <style name="MainMenuFont">
         <item name="android:textSize">25sp</item>
-        <item name="android:textColor">#c7bf1e</item>
+        <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">bold</item>
         <item name="android:clickable">true</item>
         <item name="android:gravity">center</item>

@@ -16,7 +16,6 @@ import java.util.ArrayList;
  */
 public class BattleFieldFragment extends Fragment {
 
-    public MainMap mMainMap;
     public Battle mBattle;
 
     @Override
@@ -33,13 +32,7 @@ public class BattleFieldFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMainMap = new MainMap(getActivity());
-        createBattleField();
-    }
-
-    public void createBattleField() {
         ArrayList<UnitEnemy> enemies = (ArrayList<UnitEnemy>) getArguments().getSerializable("enemy");
-        mMainMap.create().setDmgPoints(enemies);
         mBattle = new Battle(getActivity(), enemies);
         mBattle.firstMove();
     }

@@ -3,16 +3,10 @@ package com.example.puzzle;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.*;
 import com.example.puzzle.activity.AdventureActivity;
 import com.example.puzzle.activity.ArcadeActivity;
 import com.example.puzzle.activity.ExtendActivity;
-import com.example.puzzle.battle.Battle;
-import com.example.puzzle.battle.CellBattleAdapter;
 import com.example.puzzle.field.CellAdapter;
 import com.example.puzzle.field.Location;
 import com.example.puzzle.town.Town;
@@ -33,7 +27,7 @@ public class MainMap {
     public final static int MIN_UNITS = 5;
     public final static int CELLS_PER_LINE = 6;
     public final static int OPENED_CELL_COLOR = Color.BLACK;
-    final static int MAX_DMG_POINT = 3;
+    public final static int MAX_DMG_POINT = 3;
     final static int STEPS_TILL_NEXT_SCREEN = 5;
 
     private Player mPlayer;
@@ -81,20 +75,6 @@ public class MainMap {
         }
         mGridView.setAdapter(adapter);
         setMapClick();
-        return this;
-    }
-
-    public MainMap setDmgPoints(ArrayList<UnitEnemy> enemies) {
-        CellBattleAdapter adapter = new CellBattleAdapter(mContext, enemies);
-        for (int pos = 0; pos < BATTLE_TOTAL_CELLS; pos++) {
-            if (mRandom.nextInt(2) == 1) {
-                adapter.add(pos, mRandom.nextInt(MAX_DMG_POINT) + 1);
-            } else {
-                adapter.add(pos, 0);
-            }
-        }
-        mGridView.setAdapter(adapter);
-        setBattleClick();
         return this;
     }
 
@@ -241,37 +221,6 @@ public class MainMap {
                     unit.action();
                     if (!mDelayedCheckClasses.contains(unit.getClass())) {
                         differentChecks(((ArcadeActivity) mContext));
-                    }
-                }
-            }
-        });
-    }
-
-    public void setBattleClick() {
-        final CellBattleAdapter adapter = (CellBattleAdapter) mGridView.getAdapter();
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view.findViewById(R.id.text);
-                if (isCellEmpty(view)) {
-                    Integer dmg = adapter.getItem(position);
-                    textView.setText(dmg.toString());
-                    textView.setTextColor(Color.RED);
-
-                    ViewGroup.LayoutParams params = textView.getLayoutParams();
-                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    textView.setLayoutParams(params);
-
-                    view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
-                    if (adapter.isPlayerMove()) {
-                        ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
-                    }
-                } else if (view.findViewById(R.id.cell_img) != null) {
-                    Battle battle = ((ExtendActivity) mContext).mBattleFieldFragment.mBattle;
-                    UnitEnemy enemy = battle.getEnemyByPos(position);
-                    if (enemy != null) {
-                        battle.setEnemy(enemy);
                     }
                 }
             }

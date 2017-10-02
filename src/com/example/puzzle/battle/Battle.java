@@ -1,9 +1,10 @@
 package com.example.puzzle.battle;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.example.puzzle.MainMap;
 import com.example.puzzle.Player;
 import com.example.puzzle.R;
@@ -30,6 +31,7 @@ public class Battle {
 
     public final static int START_SEVERAL_FOES_PERCENT = 20;
     public final static int START_COUNT_FOES = 3;
+    public final static int DMG_POINTS_PER_LINE = 3;
 
     Battle (Context context, ArrayList<UnitEnemy> enemies) {
         mContext = context;
@@ -37,7 +39,88 @@ public class Battle {
         setEnemy(enemies.get(0));
         mPlayer = ((ExtendActivity) context).mPlayer;
         mGridView = (GridView) ((ExtendActivity) context).findViewById(R.id.gridView);
+        mGridView.setNumColumns(MainMap.CELLS_PER_LINE);
+        setCells();
         mAdapter = (CellBattleAdapter) mGridView.getAdapter();
+    }
+
+    public void setCells() {
+        CellBattleAdapter adapter = new CellBattleAdapter(mContext, mEnemies);
+        for (int pos = 0; pos < MainMap.BATTLE_TOTAL_CELLS; pos++) {
+            adapter.add(pos, 0);
+        }
+        mGridView.setAdapter(adapter);
+        setBattleClick();
+    }
+
+    public void setBattleClick() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // choose enemy
+                if (view.findViewById(R.id.cell_img) != null) {
+                    UnitEnemy enemy = getEnemyByPos(position);
+                    if (enemy != null) {
+                        setEnemy(enemy);
+                    }
+                }
+                if (mAdapter.isPlayerMove()) {
+                    createChooser();
+
+                } else {
+
+                }
+                /*TextView textView = (TextView) view.findViewById(R.id.text);
+                if (isCellEmpty(view)) {
+                    Integer dmg = adapter.getItem(position);
+                    textView.setText(dmg.toString());
+                    textView.setTextColor(Color.RED);
+
+                    ViewGroup.LayoutParams params = textView.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    textView.setLayoutParams(params);
+
+                    view.setBackgroundColor(MainMap.OPENED_CELL_COLOR);
+                    if (adapter.isPlayerMove()) {
+                        ((ExtendActivity) mContext).mBattleFieldFragment.mBattle.playerMove(dmg);
+                    }
+                }*/
+            }
+        });
+    }
+
+    private void createChooser() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1);
+        for (int i = 1; i <= MainMap.MAX_DMG_POINT; i++) {
+            adapter.add(i);
+        }
+        View layout = (((ExtendActivity) mContext).getLayoutInflater()).inflate(R.layout.field, null);
+        GridView grid = (GridView) layout.findViewById(R.id.gridView);
+        if (grid.getParent() != null) {
+            ((ViewGroup) grid.getParent()).removeView(grid);
+        }
+        grid.setNumColumns(DMG_POINTS_PER_LINE);
+        grid.setAdapter(adapter);
+        chooserAction(grid);
+        builder.setTitle("Choose a number")
+                .setView(grid);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void chooserAction(GridView grid) {
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int num = mAdapter.getItem(position);
+                if (true) {
+                    Toast.makeText(mContext, "You can't put this number here", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
     }
 
     public void firstMove() {
