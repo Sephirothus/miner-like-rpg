@@ -87,7 +87,7 @@ public class QuestDialog {
         TableRow row = new TableRow(mContext);
         TextView title = new TextView(mContext);
         title.setText(text);
-        title.setTextSize(17);
+        title.setTextSize(12);
         if (color != null) {
             title.setTextColor(color);
         }
@@ -100,7 +100,7 @@ public class QuestDialog {
         layout.removeAllViews();
         // title row
         TextView title = new TextView(mContext);
-        title.setTextSize(18);
+        title.setTextSize(12);
         title.setText(questInfo.get("title").toString());
         layout.addView(title);
         // description row

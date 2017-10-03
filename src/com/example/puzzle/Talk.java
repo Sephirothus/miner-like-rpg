@@ -84,7 +84,7 @@ public class Talk {
         for (Object talk : mUnit.mTalks.keySet().toArray()) {
             TextView textView = new TextView(mContext);
             textView.setText("- " + mUnit.mTalks.get(talk));
-            textView.setTextSize(15);
+            textView.setTextSize(12);
             textView.setTag(talk);
             textView.setOnClickListener(onClick);
             choose.addView(textView);
@@ -93,7 +93,7 @@ public class Talk {
         for (Object questId : mUnit.mQuests.keySet().toArray()) {
             TextView textView = new TextView(mContext);
             textView.setText(Quest.getQuestGiverString(player, questId.toString(), mUnit.mQuests.get(questId)));
-            textView.setTextSize(15);
+            textView.setTextSize(12);
             textView.setTag(questId);
             textView.setOnClickListener(onClickQuest);
             choose.addView(textView);

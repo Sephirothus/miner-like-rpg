@@ -20,7 +20,7 @@ public class CellBattleAdapter extends BaseAdapter {
     private boolean mIsPlayerMove = true;
     private boolean mIsEnabled = true;
 
-    private ArrayList<Integer> mDmgs = new ArrayList<>();
+    private ArrayList<Integer> mNumbers = new ArrayList<>();
     private ArrayList<UnitEnemy> mEnemies = new ArrayList<>();
 
     public CellBattleAdapter(Context context, ArrayList<UnitEnemy> enemies) {
@@ -30,12 +30,12 @@ public class CellBattleAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mDmgs.size();
+        return mNumbers.size();
     }
 
     @Override
     public Integer getItem(int position) {
-        return mDmgs.get(position);
+        return mNumbers.get(position);
     }
 
     @Override
@@ -43,8 +43,12 @@ public class CellBattleAdapter extends BaseAdapter {
         return position;
     }
 
-    public void add(int pos, int dmg) {
-        mDmgs.add(pos, dmg);
+    public void add(int pos, int num) {
+        mNumbers.add(pos, num);
+    }
+
+    public void set(int pos, int num) {
+        mNumbers.set(pos, num);
     }
 
     public void add(UnitEnemy enemy) {
