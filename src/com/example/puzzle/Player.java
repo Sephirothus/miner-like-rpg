@@ -23,6 +23,10 @@ public class Player implements BattleUnitInterface {
     private int mGold = 0;
     private int mKilledEnemies = 0;
     private HashMap<String, HashMap<String, String>> mQuests = new HashMap<>();
+    private ArrayList<String> mCombos = new ArrayList<String>() {{
+        add("war_cry");
+        add("war_cry");
+    }};
     private ArrayList<String> mInventory = new ArrayList<>();
     private HashMap<String, String> mEquipment = new HashMap<String, String>() {{
         put("Hat", "equip_head");
@@ -39,6 +43,7 @@ public class Player implements BattleUnitInterface {
     private HashMap mCurStats = new HashMap<String, Integer>() {{
         putAll(mStats);
     }};
+    private int mBlock = 0;
 
     public Player(Context context) {
         mContext = context;
@@ -48,6 +53,7 @@ public class Player implements BattleUnitInterface {
         return (int) mCurStats.get(stat);
     }
 
+    @Override
     public void addCurStat(String stat, int addValue) {
         mCurStats.put(stat, getCurStat(stat) + addValue);
     }
@@ -72,6 +78,16 @@ public class Player implements BattleUnitInterface {
             addCurStat(stat, addValue);
         }
         changeStatsPanel(stat);
+    }
+
+    @Override
+    public int getBlock() {
+        return mBlock;
+    }
+
+    @Override
+    public void setBlock(int block) {
+        mBlock = block;
     }
 
     public void decreaseStat(String stat, int removeValue) {
@@ -151,9 +167,13 @@ public class Player implements BattleUnitInterface {
     }
 
     public void getHit(int dmg) {
-        addCurStat("hp", -dmg);
-        ((ExtendActivity) mContext).mStatsPanelFragment.changeHpStat();
-        ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg);
+        ((ExtendActivity) mContext).mLogHistoryFragment.addEnemyHitPlayerRec(dmg, mBlock);
+        dmg -= mBlock;
+        mBlock = 0;
+        if (dmg > 0) {
+            addCurStat("hp", -dmg);
+            ((ExtendActivity) mContext).mStatsPanelFragment.changeHpStat();
+        }
     }
 
     public int strike(int dmg) {

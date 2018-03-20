@@ -640,6 +640,63 @@ public class Config {
         put("mp", "Mana Points");
     }};
 
+    public static ArrayList<HashMap<String, String>> mBattleCombos = new ArrayList<HashMap<String, String>>() {{
+        /*add(new HashMap<String, String>() {{
+            put("type", "default|special");
+            put("position", "horizontal|vertical|diagonal");
+            put("title", "War cry");
+            put("min_lvl", "5");
+            put("action", "strike|heal|block|skip_move|clear_line");
+            put("name", "war_cry");
+            put("pattern", "");
+        }});*/
+        add(new HashMap<String, String>() {{
+            put("type", "default");
+            put("position", "horizontal");
+            put("title", "Thunder strike");
+            put("min_lvl", "1");
+            put("action", "strike");
+            put("name", "thunder_strike");
+            put("pattern", "=,=");
+        }});
+        add(new HashMap<String, String>() {{
+            put("type", "default");
+            put("position", "diagonal");
+            put("title", "War cry");
+            put("min_lvl", "1");
+            put("action", "strike");
+            put("name", "war_cry");
+            put("pattern", "=,=");
+        }});
+        add(new HashMap<String, String>() {{
+            put("type", "default");
+            put("position", "vertical");
+            put("title", "Heal me");
+            put("min_lvl", "1");
+            put("action", "heal");
+            put("name", "heal_me");
+            put("pattern", ">,<");
+        }});
+        add(new HashMap<String, String>() {{
+            put("type", "default");
+            put("position", "horizontal");
+            put("title", "Block");
+            put("min_lvl", "1");
+            put("action", "block");
+            put("name", "block");
+            put("pattern", "<,<");
+        }});
+        add(new HashMap<String, String>() {{
+            put("type", "default");
+            put("position", "diagonal");
+            put("title", "Clear out");
+            put("min_lvl", "1");
+            put("action", "clear_line");
+            put("name", "clear_out");
+            put("pattern", ">,>");
+        }});
+    }};
+
     public Config(Context context) {
         mContext = context;
     }

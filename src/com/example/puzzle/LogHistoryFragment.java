@@ -69,9 +69,10 @@ public class LogHistoryFragment extends Fragment {
         addRecord("<=== BATTLE END ===>", Color.RED);
     }
 
-    public void addPlayerHitEnemyRec(int dmg) {
+    public void addPlayerHitEnemyRec(int dmg, int block) {
         String text = "You hit enemy on " + dmg + " point(s)";
         if (dmg == 0) text = "You hit and missed";
+        if (block > 0) text += ", but he blocked " + block;
         addRecord(text, Color.RED);
     }
 
@@ -79,9 +80,10 @@ public class LogHistoryFragment extends Fragment {
         addRecord("You've killed " + name, Color.RED);
     }
 
-    public void addEnemyHitPlayerRec(int dmg) {
+    public void addEnemyHitPlayerRec(int dmg, int block) {
         String text = "Enemy hit you on " + dmg + " point(s)";
         if (dmg == 0) text = "Enemy hit and missed";
+        if (block > 0) text += ", but you've blocked " + block;
         addRecord(text, Color.RED);
     }
 
@@ -93,7 +95,7 @@ public class LogHistoryFragment extends Fragment {
         addRecord("You open treasure chest and get " + name, Color.YELLOW);
     }
 
-    public String addStatIncreaseRec(String playerStat, int statVal) {
+    public void addStatIncreaseRec(String playerStat, int statVal) {
         String text = "Your " + Config.getFullStatName(playerStat);
         if (statVal == 0) {
             text += " have been fully restored";
@@ -101,6 +103,17 @@ public class LogHistoryFragment extends Fragment {
             text += " increased by " + statVal;
         }
         addRecord(text, Color.CYAN);
-        return text;
+    }
+
+    public void addHealRec(int statVal) {
+        addRecord("You have been healed by " + statVal + " " + Config.getFullStatName("hp"), Color.CYAN);
+    }
+
+    public void addBlockRec(int statVal) {
+        addRecord("You've gained " + statVal + " block points", Color.YELLOW);
+    }
+
+    public void addComboTypeRec(String type, boolean isPlayer) {
+        addRecord((isPlayer ? "You" : "Enemy") + " perform \"" + type + "\"", Color.BLUE);
     }
 }

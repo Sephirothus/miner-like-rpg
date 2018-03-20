@@ -14,4 +14,10 @@ public interface BattleUnitInterface {
     public int getHp();
 
     public int getStr();
+
+    public int getBlock();
+
+    public void setBlock(int block);
+
+    public void addCurStat(String stat, int addValue);
 }

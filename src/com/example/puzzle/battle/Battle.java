@@ -6,17 +6,14 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.example.puzzle.Config;
 import com.example.puzzle.MainMap;
 import com.example.puzzle.Player;
 import com.example.puzzle.R;
 import com.example.puzzle.activity.ExtendActivity;
 import com.example.puzzle.unit.UnitEnemy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-
-import static com.example.puzzle.MainMap.CELLS_PER_LINE;
+import java.util.*;
 
 /**
  * Created by sephiroth on 28.08.16.
@@ -70,7 +67,7 @@ public class Battle {
                 } else if (mAdapter.isPlayerMove()) {
                     createChooser(position, view);
                 } else {
-                    moveActions(position, 1, view);
+                    moveActions(position, (new Random()).nextInt(MainMap.MAX_DMG_POINT) + 1, view);
                 }
             }
         });
@@ -110,13 +107,8 @@ public class Battle {
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Integer num = position + 1;
-                if (checkCell(cellPosition, num)) {
-                    moveActions(cellPosition, num, cellView);
-                    playerMove(num);
-                } else {
-                    Toast.makeText(mContext, "You can't put this number here", Toast.LENGTH_SHORT).show();
-                }
+                moveActions(cellPosition, position + 1, cellView);
+                playerMove(cellPosition);
                 alert.cancel();
             }
         });
@@ -170,33 +162,6 @@ public class Battle {
         return null;
     }
 
-    public void playerMove(int dmg) {
-        mEnemy.getHit(mPlayer.strike(dmg));
-        Boolean check = mEnemy.checkHp();
-        if (!check) {
-            killEnemy();
-            if (mEnemies.size() == 0) {
-                mAdapter.disableAdapter();
-                ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
-                mPlayer.lvlStatIncrease();
-                endBattle(false);
-                return;
-            }
-        }
-        takeTurn();
-    }
-
-    public void enemyMove() {
-        mPlayer.getHit(mEnemy.strike(openCell()));
-        Boolean check = mPlayer.checkHp();
-        if (!check) {
-            ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
-            endBattle(true);
-            return;
-        }
-        takeTurn();
-    }
-
     private void killEnemy() {
         mEnemies.remove(mEnemy);
         ((ImageView) mGridView.getChildAt(mEnemy.getPosition()).findViewById(R.id.cell_img))
@@ -208,7 +173,7 @@ public class Battle {
     public int openCell() {
         int pos = getFreeCellId();
         mGridView.performItemClick(mGridView.getChildAt(pos), pos, mAdapter.getItemId(pos));
-        return mAdapter.getItem(pos);
+        return pos;
     }
 
     public Integer getFreeCellId() {
@@ -234,55 +199,173 @@ public class Battle {
         return false;
     }
 
-    private boolean checkCell(int pos, int num) {
-        int realPos = pos + 1;
-        HashMap<String, Integer> cells = new HashMap<>();
-        ArrayList<String> notEqualSides = new ArrayList<String>() {{
-            add("topLeft"); add("topRight"); add("bottomLeft"); add("bottomRight");
-        }};
-        ArrayList<String> equalSides = new ArrayList<String>() {{
-            add("top"); add("right"); add("left"); add("bottom");
-        }};
-        // is cells available
-        boolean isTopRow = realPos > MainMap.CELLS_PER_LINE;
-        boolean isLeftCell = (realPos % MainMap.CELLS_PER_LINE) != 1 && realPos > 1;
-        boolean isRightCell = (realPos % MainMap.CELLS_PER_LINE) > 0;
-        boolean isBottomRow = realPos <= (MainMap.BATTLE_TOTAL_CELLS / MainMap.CELLS_PER_LINE - 1) * MainMap.CELLS_PER_LINE;
-        if (isTopRow) {
-            cells.put("top", pos - MainMap.CELLS_PER_LINE);
+    public void enemyMove() {
+        checkCells(openCell());
+        Boolean check = mPlayer.checkHp();
+        if (!check) {
+            ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You lost :(");
+            endBattle(true);
+            return;
         }
-        if (isBottomRow) {
-            cells.put("bottom", pos + MainMap.CELLS_PER_LINE);
-        }
-        if (isLeftCell) {
-            cells.put("left", pos - 1);
-            if (isTopRow) {
-                cells.put("topLeft", cells.get("top") - 1);
-            }
-            if (isBottomRow) {
-                cells.put("bottomLeft", cells.get("bottom") - 1);
+        takeTurn();
+    }
+
+    public void playerMove(int cellPosition) {
+        checkCells(cellPosition);
+        Boolean check = mEnemy.checkHp();
+        if (!check) {
+            killEnemy();
+            if (mEnemies.size() == 0) {
+                mAdapter.disableAdapter();
+                ((ExtendActivity) mContext).mLogHistoryFragment.addEndBattleRec("You won :)");
+                mPlayer.lvlStatIncrease();
+                endBattle(false);
+                return;
             }
         }
-        if (isRightCell) {
-            cells.put("right", pos + 1);
-            if (isTopRow) {
-                cells.put("topRight", cells.get("top") + 1);
+        takeTurn();
+    }
+
+    private void checkCells(int pos) {
+        final int realPos = pos + 1;
+        checkCombo(createCellLine(new ArrayList<Integer>() {{
+            add(realPos - MainMap.CELLS_PER_LINE * 2);
+            add(realPos - MainMap.CELLS_PER_LINE);
+            add(realPos);
+            add(realPos + MainMap.CELLS_PER_LINE);
+            add(realPos + MainMap.CELLS_PER_LINE * 2);
+        }}), "vertical");
+
+        checkCombo(createCellLine(new ArrayList<Integer>() {{
+            for (int i = getMinRowNum(realPos); i <= getMaxRowNum(realPos); i++) {
+                add(i);
             }
-            if (isBottomRow) {
-                cells.put("bottomRight", cells.get("bottom") + 1);
+        }}), "horizontal");
+
+        final int upperNum = realPos - MainMap.CELLS_PER_LINE * 2 - 2;
+        final int upNum = realPos - MainMap.CELLS_PER_LINE - 1;
+        final int lowNum = realPos + MainMap.CELLS_PER_LINE + 1;
+        final int lowerNum = realPos + MainMap.CELLS_PER_LINE * 2 + 2;
+        checkCombo(createCellLine(new ArrayList<Integer>() {{
+            if (upperNum >= getMinRowNum(realPos - MainMap.CELLS_PER_LINE * 2)) add(upperNum);
+            if (upNum >= getMinRowNum(realPos - MainMap.CELLS_PER_LINE)) add(upNum);
+            add(realPos);
+            if (lowNum <= getMaxRowNum(realPos + MainMap.CELLS_PER_LINE)) add(lowNum);
+            if (lowerNum <= getMaxRowNum(realPos + MainMap.CELLS_PER_LINE * 2)) add(lowerNum);
+        }}), "diagonal");
+
+        final int secUpperNum = realPos - MainMap.CELLS_PER_LINE * 2 + 2;
+        final int secUpNum = realPos - MainMap.CELLS_PER_LINE + 1;
+        final int secLowNum = realPos + MainMap.CELLS_PER_LINE - 1;
+        final int secLowerNum = realPos + MainMap.CELLS_PER_LINE * 2 - 2;
+        checkCombo(createCellLine(new ArrayList<Integer>() {{
+            if (secUpperNum <= getMaxRowNum(realPos - MainMap.CELLS_PER_LINE * 2)) add(secUpperNum);
+            if (secUpNum <= getMaxRowNum(realPos - MainMap.CELLS_PER_LINE)) add(secUpNum);
+            add(realPos);
+            if (secLowNum >= getMinRowNum(realPos + MainMap.CELLS_PER_LINE)) add(secLowNum);
+            if (secLowerNum >= getMinRowNum(realPos + MainMap.CELLS_PER_LINE * 2)) add(secLowerNum);
+        }}), "diagonal");
+    }
+
+    private int getMinRowNum(int pos) {
+        int row = (int) Math.ceil((float) pos / MainMap.CELLS_PER_LINE);
+        return row * MainMap.CELLS_PER_LINE - MainMap.CELLS_PER_LINE + 1;
+    }
+
+    private int getMaxRowNum(int pos) {
+        int row = (int) Math.ceil((float) pos / MainMap.CELLS_PER_LINE);
+        return row * MainMap.CELLS_PER_LINE;
+    }
+
+    private TreeMap<Integer, Integer> createCellLine(ArrayList<Integer> cells) {
+        TreeMap<Integer, Integer> newCells = new TreeMap<>();
+        for (Integer cell : cells) {
+            if (cell > 0 && cell <= MainMap.BATTLE_TOTAL_CELLS) {
+                newCells.put(cell, mAdapter.getItem(getRealPos(cell)));
             }
         }
-        int checkNum;
-        for (String key : cells.keySet()) {
-            checkNum = mAdapter.getItem(cells.get(key));
-            if (checkNum > 0 && (
-                (notEqualSides.contains(key) && (checkNum == num || Math.abs(checkNum - num) > 1)) ||
-                (equalSides.contains(key) && checkNum != num)
-            )) {
-                return false;
+        return newCells;
+    }
+
+    private int getRealPos(int cellNum) {
+        return cellNum - 1;
+    }
+
+    private void checkCombo(TreeMap<Integer, Integer> cellLine, String position) {
+        // TODO change cycle to player combos
+        for (HashMap<String, String> combo : Config.mBattleCombos) {
+            List<String> pattern = Arrays.asList(combo.get("pattern").split(","));
+            if (combo.get("position") != position) continue;
+
+            ListIterator<String> iterator = pattern.listIterator();
+            HashMap<Integer, Integer> cells = new HashMap<>();
+            Integer prev = null;
+            for (Integer cellId : cellLine.keySet()) {
+                if (prev == null) {
+                    prev = cellLine.get(cellId);
+                    cells.put(cellId, cellLine.get(cellId));
+                    continue;
+                }
+                if (!iterator.hasNext()) {
+                    iterator = pattern.listIterator();
+                }
+                String curPattern = iterator.next();
+                Boolean isFit = false;
+                switch (curPattern) {
+                    case "=":
+                        if (prev == cellLine.get(cellId)) isFit = true;
+                        break;
+                    case "<":
+                        if (prev + 1 == cellLine.get(cellId)) isFit = true;
+                        break;
+                    case ">":
+                        if (prev - 1 == cellLine.get(cellId)) isFit = true;
+                        break;
+                }
+                if (!isFit || cellLine.get(cellId) == 0) cells.clear();
+                cells.put(cellId, cellLine.get(cellId));
+                prev = cellLine.get(cellId);
+
+                if (performCombo(cells, combo, cellLine)) {
+                    break;
+                }
             }
         }
-        return true;
+    }
+
+    private boolean performCombo(HashMap<Integer, Integer> cells, HashMap<String, String> combo, TreeMap<Integer, Integer> cellLine) {
+        if (cells.size() == 3) {
+            int pts = 0;
+            for (Integer cell : cells.keySet()) {
+                moveActions(getRealPos(cell), 0, mGridView.getChildAt(getRealPos(cell)));
+                pts += cells.get(cell);
+            }
+            BattleUnitInterface attackUnit = mTurn == 0 ? mPlayer : mEnemy;
+            BattleUnitInterface defendUnit = mTurn == 0 ? mEnemy : mPlayer;
+            ((ExtendActivity) mContext).mLogHistoryFragment.addComboTypeRec(combo.get("title"), mTurn == 0);
+            switch (combo.get("action")) {
+                case "strike":
+                    defendUnit.getHit(attackUnit.strike(pts));
+                    break;
+                case "heal":
+                    attackUnit.addCurStat("hp", pts);
+                    ((ExtendActivity) mContext).mLogHistoryFragment.addHealRec(pts);
+                    break;
+                case "block":
+                    attackUnit.setBlock(pts);
+                    ((ExtendActivity) mContext).mLogHistoryFragment.addBlockRec(pts);
+                    break;
+                case "clear_line":
+                    for (Integer cellId : cellLine.keySet()) {
+                        if (mAdapter.getItem(getRealPos(cellId)) > 0) {
+                            moveActions(getRealPos(cellId), 0, mGridView.getChildAt(getRealPos(cellId)));
+                        }
+                    }
+                    break;
+            }
+            return true;
+        }
+        return false;
     }
 
     public void endBattle(final Boolean isGameOver) {

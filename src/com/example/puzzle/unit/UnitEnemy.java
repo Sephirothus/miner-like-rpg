@@ -32,6 +32,7 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
     private HashMap mCurStats = new HashMap<String, Integer>() {{
         putAll(mStats);
     }};
+    private int mBlock = 0;
 
     private int mPosition;
     private Config mConfig;
@@ -61,6 +62,7 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
         return mConfig.getCurItemLocation();
     }
 
+    @Override
     public void addCurStat(String stat, int addValue) {
         mCurStats.put(stat, getCurStat(stat) + addValue);
     }
@@ -113,9 +115,13 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
     }
 
     public void getHit(int dmg) {
-        addCurStat("hp", -dmg);
-        ((ExtendActivity) mContext).mStatsPanelFragment.changeEnemyHp(getHp());
-        ((ExtendActivity) mContext).mLogHistoryFragment.addPlayerHitEnemyRec(dmg);
+        ((ExtendActivity) mContext).mLogHistoryFragment.addPlayerHitEnemyRec(dmg, mBlock);
+        dmg -= mBlock;
+        mBlock = 0;
+        if (dmg > 0) {
+            addCurStat("hp", -dmg);
+            ((ExtendActivity) mContext).mStatsPanelFragment.changeEnemyHp(getHp());
+        }
     }
 
     public int strike(int dmg) {
@@ -132,6 +138,16 @@ public class UnitEnemy extends Unit implements BattleUnitInterface, Serializable
 
     public int getStr() {
         return getCurStat("str");
+    }
+
+    @Override
+    public int getBlock() {
+        return mBlock;
+    }
+
+    @Override
+    public void setBlock(int block) {
+        mBlock = block;
     }
 
     public String getName() {
