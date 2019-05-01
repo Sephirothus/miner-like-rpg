@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.style.AlignmentSpan;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.example.puzzle.activity.ExtendActivity;
 import com.example.puzzle.unit.UnitTownsman;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -62,16 +65,11 @@ public class Talk {
         View.OnClickListener onClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    showHideAcceptQuestButton(false);
-                    curClass.getClass().getDeclaredMethod(v.getTag().toString()).invoke(curClass);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
+                showHideAcceptQuestButton(false);
+                String id = v.getTag().toString();
+                HashMap<String, String> currentTalk = Config.getTalkById(id);
+                addRecord(currentTalk.get("text"), false);
+                performTalk(id);
             }
         };
         View.OnClickListener onClickQuest = new View.OnClickListener() {
@@ -81,11 +79,11 @@ public class Talk {
                 talkGetQuest(v.getTag().toString());
             }
         };
-        for (Object talk : mUnit.mTalks.keySet().toArray()) {
+        for (HashMap<String, String> talk : Config.getQuestions(mUnit.mId, 0)) {
             TextView textView = new TextView(mContext);
-            textView.setText("- " + mUnit.mTalks.get(talk));
+            textView.setText("- " + talk.get("text"));
             textView.setTextSize(12);
-            textView.setTag(talk);
+            textView.setTag(talk.get("id"));
             textView.setOnClickListener(onClick);
             choose.addView(textView);
         }
@@ -120,6 +118,10 @@ public class Talk {
         span.setSpan(new AlignmentSpan.Standard(align), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         span.setSpan(new ForegroundColorSpan(color), name.length(), end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         textView.append(span);
+        scrollDownText(textView);
+    }
+
+    private void scrollDownText(TextView textView) {
         final ScrollView scroll = (ScrollView) textView.getParent();
         scroll.post(new Runnable() {
             @Override
@@ -129,13 +131,49 @@ public class Talk {
         });
     }
 
+    private void addQuestions(ArrayList<HashMap<String, String>> records) {
+        TextView textView = (TextView) mView.findViewById(R.id.dialog_text);
+        SpannableString startText = new SpannableString(textView.getText());
+        textView.append("\n");
+
+        for (HashMap<String, String> record : records) {
+            String text = "- " + record.get("text");
+            int end = text.length();
+            String id = record.get("id");
+            Spannable span = new SpannableString(text + "\n");
+            span.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            span.setSpan(new ClickableSpan() {
+                @Override
+                public void onClick(View v) {
+                    showHideAcceptQuestButton(false);
+                    textView.setText(startText);
+
+                    HashMap<String, String> currentTalk = Config.getTalkById(id);
+                    addRecord(currentTalk.get("text"), false);
+                    performTalk(id);
+                }
+            }, 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.append(span);
+        }
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        scrollDownText(textView);
+    }
+
+    private void performTalk(String talkId) {
+        ArrayList<HashMap<String, String>> talks = Config.getNextTalks(talkId);
+        // if more than one, then it's a list of player questions/answers
+        if (talks.size() > 1) {
+            addQuestions(talks);
+        } else if (talks.size() == 1) {
+            HashMap<String, String> talk = talks.get(0);
+            addRecord(talk.get("text"), true);
+            performTalk(talk.get("id"));
+        }
+    }
+
     public void talkAboutTown() {
         addRecord(mUnit.mTalks.get("talkAboutTown"), false);
         addRecord(Config.mTowns.get(((AdventureActivity) mContext).mDestinationTown), true);
-    }
-
-    public void talkRandomNews() {
-
     }
 
     public void talkGetQuest(final String questId) {

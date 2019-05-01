@@ -87,6 +87,7 @@ public class Town {
                 if (random.nextInt(2) == 1 && countUnits > 0) {
                     countUnits--;
                     adapter.add(pos, Unit.getRandomUnit(context, pos, name));
+                    // or add main quest unit
                 } else {
                     adapter.add(pos, new UnitEmpty());
                 }

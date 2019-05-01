@@ -697,8 +697,124 @@ public class Config {
         }});
     }};
 
+    public static ArrayList<HashMap<String, String>> mTalks = new ArrayList<HashMap<String, String>>() {{
+        add(new HashMap<String, String>() {{
+            put("id", "1");
+            put("unit_id", "0");
+            put("text", "Got any news?");
+            put("parent_id", "0");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "2");
+            put("unit_id", "0");
+            put("text", "Nothing new here");
+            put("parent_id", "1");
+            put("is_player", "0");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "3");
+            put("unit_id", "0");
+            put("text", "Tell me something interesting");
+            put("parent_id", "0");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "4");
+            put("unit_id", "0");
+            put("text", "Do you heard about The well of souls?");
+            put("parent_id", "3");
+            put("is_player", "0");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "5");
+            put("unit_id", "0");
+            put("text", "Yes, not interested");
+            put("parent_id", "4");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "6");
+            put("unit_id", "0");
+            put("text", "No, please tell me about it");
+            put("parent_id", "4");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "7");
+            put("unit_id", "0");
+            put("text", "In the south-east of this town you can find the well of souls");
+            put("parent_id", "6");
+            put("is_player", "0");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "8");
+            put("unit_id", "0");
+            put("text", "And what's in there?");
+            put("parent_id", "7");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "9");
+            put("unit_id", "0");
+            put("text", "I bet there can be gold");
+            put("parent_id", "7");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "10");
+            put("unit_id", "0");
+            put("text", "Ah, I know this story");
+            put("parent_id", "7");
+            put("is_player", "1");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "11");
+            put("unit_id", "0");
+            put("text", "No, you're wrong, there's nothing there");
+            put("parent_id", "9");
+            put("is_player", "0");
+        }});
+        add(new HashMap<String, String>() {{
+            put("id", "12");
+            put("unit_id", "0");
+            put("text", "I wish I could know");
+            put("parent_id", "8");
+            put("is_player", "0");
+        }});
+    }};
+
     public Config(Context context) {
         mContext = context;
+    }
+
+    public static ArrayList<HashMap<String, String>> getQuestions(int unitId, int talkId) {
+        ArrayList<HashMap<String, String>> talks = new ArrayList<>();
+        for (HashMap<String, String> item : mTalks) {
+            if (item.get("unit_id").equals(String.valueOf(unitId)) && item.get("is_player").equals("1") && item.get("parent_id").equals(String.valueOf(talkId))) {
+                talks.add(item);
+            }
+        }
+        return talks;
+    }
+
+    public static HashMap<String, String> getTalkById(String talkId) {
+        for (HashMap<String, String> item : mTalks) {
+            if (item.get("id") == talkId) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<HashMap<String, String>> getNextTalks(String talkId) {
+        ArrayList<HashMap<String, String>> talks = new ArrayList<>();
+        for (HashMap<String, String> item : mTalks) {
+            if (item.get("parent_id") == talkId) {
+                talks.add(item);
+            }
+        }
+        return talks;
     }
 
     public void treasureByName(String name) {

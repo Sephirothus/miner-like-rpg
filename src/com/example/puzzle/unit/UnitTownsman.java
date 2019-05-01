@@ -27,10 +27,10 @@ public class UnitTownsman extends Unit {
     }};
     private Integer mCurImg;
 
+    public final int mId = 0;
     public HashMap<String, HashMap<String, String>> mQuests = new HashMap<>();
     public HashMap<String, String> mTalks = new HashMap<String, String>(){{
-            put("talkAboutTown", "Tell me about this town");
-            put("talkRandomNews", "Got any news?");
+        put("talkAboutTown", "Tell me about this town");
     }};
 
     UnitTownsman(Context context, Integer position, String location) {
